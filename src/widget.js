@@ -45,36 +45,59 @@ class PaymentWidget {
     }
 
     setupWebSocket(paymentId) {
-
         if (!paymentId) {
             console.error('PaymentId is required for WebSocket setup');
             return;
         }
+    
         // Close existing connection if any
         if (this.ws) {
             this.ws.close();
         }
+    
+        try {
+            this.ws = new WebSocket(this.config.wsUrl);
+    
+            this.ws.onopen = () => {
+                console.log('WebSocket connected');
 
-        this.ws = new WebSocket(this.config.wsUrl);
+                this.ws.send(JSON.stringify({
+                    type: 'subscribe_payment',
+                    paymentId: paymentId
+                }));
 
-        this.ws.onopen = () => {
-            this.ws.send(JSON.stringify({
-                type: 'subscribe_payment',
-                paymentId: paymentId
-            }));
-        };
-
-        this.ws.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            if (data.type === 'payment_completed') {
-                this.goToScreen3();
-                this.cleanupWebSocket();
-            }
-        };
-
-        this.ws.onerror = (error) => {
-            console.error('WebSocket error:', error);
-        };
+                this.pingInterval = setInterval(() => {
+                    if (this.ws.readyState === WebSocket.OPEN) {
+                        this.ws.send(JSON.stringify({ type: 'ping' }));
+                    }
+                }, 20000);
+            };
+    
+            this.ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+                // Try to reconnect after 3 seconds
+                setTimeout(() => this.setupWebSocket(paymentId), 3000);
+            };
+    
+            this.ws.onclose = () => {
+                clearInterval(this.pingInterval);
+                // Try to reconnect after 3 seconds
+                setTimeout(() => this.setupWebSocket(paymentId), 3000);
+            };
+    
+            this.ws.onmessage = (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    if (data.type === 'payment_completed') {
+                        this.goToScreen3();
+                    }
+                } catch (error) {
+                    console.error('Error processing message:', error);
+                }
+            };
+        } catch (error) {
+            console.error('Failed to create WebSocket connection:', error);
+        }
     }
 
     setupEventListeners() {
@@ -294,6 +317,7 @@ class PaymentWidget {
 
     cleanupWebSocket() {
         if (this.ws) {
+            clearInterval(this.pingInterval);
             this.ws.close();
             this.ws = null;
         }
@@ -314,7 +338,7 @@ class PaymentWidget {
             if (timeLeft < 0) {
                 clearInterval(countdown);
                 if(!this.shadow.querySelector("#screen2").classList.contains("hidden")) {
-                    goToScreen4();
+                    this.goToScreen4();
                 }
             }
         }, 1000);
