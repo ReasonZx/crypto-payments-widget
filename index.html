@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v0.0.3/dist/crypto-payments-widget.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v0.0.5/dist/crypto-payments-widget.js"></script>
 </head>
 <body>
     <div id="payment-container"></div>
     <script>
         const widget = new PaymentWidget({
             amount: 10,
-            container: document.getElementById('payment-container')
+            container: document.getElementById('payment-container'),
+            serverUrl: 'https://crypto-payments-backend-90e8ca11c89f.herokuapp.com/',
+            wsUrl: 'wss://crypto-payments-backend-90e8ca11c89f.herokuapp.com'
         });
     </script>
 </body>
