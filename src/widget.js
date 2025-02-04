@@ -136,7 +136,7 @@ class PaymentWidget {
         }
 
         try {
-            const response = await fetch('/api/payment', {
+            const response = await fetch(`${this.config.serverUrl}api/payment`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
