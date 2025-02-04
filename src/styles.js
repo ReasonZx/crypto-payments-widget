@@ -1,0 +1,521 @@
+export const widgetStyles = `
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f5f5f5;
+}
+
+.widget {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    width: 400px;
+    min-height: 400px;
+    height: calc(200px + (var(--num-options, 2) * 60px));
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 30px;
+}
+
+.hidden {
+    display: none !important;
+}
+/* Screen 1 */
+.dropdown {
+    margin: 20px 0;
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.dropdown-select {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    background: linear-gradient(145deg, #ffffff, #f5f5f5);
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 5px 5px 10px #d9d9d9,
+                -5px -5px 10px #ffffff;
+    transition: all 0.3s ease;
+}
+
+.dropdown-select:hover {
+    background: linear-gradient(145deg, #f2fffa, #dcfff2);
+    box-shadow: 6px 6px 12px #d9d9d9,
+                -6px -6px 12px #ffffff;
+    border-color: #4dbb9a;
+    color: #4dbb9a;
+}
+
+.dropdown-arrow {
+    transition: transform 0.3s ease;
+}
+
+.dropdown.open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 12px;
+    margin-top: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    max-height: calc(var(--num-options, 2) * 60px);
+    overflow-y: auto;
+}
+
+.dropdown.open .dropdown-options {
+    opacity: 1;
+    visibility: visible;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.option:hover {
+    background: linear-gradient(145deg, #f2fffa, #dcfff2);
+    color: #4dbb9a;
+}
+
+.option-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.option-main span {
+    line-height: 24px;
+}
+
+.option-tokens {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 14px;
+}
+
+.option-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.token-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.selected {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0;
+}
+
+.selected .option-tokens {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 14px;
+    margin-right: 14px;
+}
+
+#screen1 {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.button {
+    width: 100%;
+    margin-top: auto;
+    padding: 10px 20px;
+    background-color: #4dbb9a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #008359;
+}
+
+.button.disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.button.disabled:hover {
+    background-color: #cccccc;
+}
+
+/* Screen 2 */
+
+.payment-details-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    /* gap: 20px; */
+    /* padding: 20px; */
+    align-items: start;
+    
+}
+
+.qr-container {
+    grid-row: 1;
+    grid-column: 2;
+    background: white;
+    padding-right: 5px;
+    padding-top: 20px;
+    /* padding: 10px; */
+    /* border-radius: 12px; */
+    /* box-shadow: 0 4px 8px rgba(0,0,0,0.1); */
+    /* width: 150px; */
+}
+
+#qrCode {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+}
+
+.chain-instructions {
+    text-align: left;
+    padding: 10px;
+}
+
+.chain-instructions p {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.payment-amount {
+    font-weight: 500;
+    white-space: nowrap;
+    color: #666;
+    font-size: 22px;
+    flex-shrink: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: auto;
+}
+
+.inline-token {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.token-icons {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 205px;
+    height: 25px;
+    margin-top: 11px;
+    margin-bottom: 25px;
+    padding: 5px 15px;
+    background: linear-gradient(145deg, #f5f5f5, #ffffff);
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    box-shadow: inset 1px 1px 3px rgba(0,0,0,0.05);
+    cursor: pointer;
+}
+
+.token-icons:hover {
+    background: linear-gradient(145deg, #f2fffa, #dcfff2);
+    box-shadow: 3px 3px 6px #d9d9d9,
+                -3px -3px 6px #ffffff;
+    border-color: #4dbb9a;
+    color: #4dbb9a;
+}
+
+.token-icons:hover .payment-amount {
+    color: #4dbb9a;
+}
+
+.token-icons.copied {
+    font-family: 'Courier New', monospace;
+    background: #4dbb9a;
+    border-color: #4dbb9a;
+    color: white;
+}
+
+.token-icons.copied::after {
+    content: 'Copied!';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #4dbb9a;
+    color: white;
+    border-radius: 10px;
+    z-index: 1;
+}
+
+.token-icons.copied > * {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.token-icons.copied .payment-amount {
+    color: white;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+}
+
+.address-section {
+    grid-row: 2;
+    grid-column: 1 / 3;
+    width: 100%;
+    text-align: center;
+}
+
+#addressContainer {
+    grid-row: 1;
+    grid-column: 1;
+    display: flex;
+    align-items: top;
+    text-align: left;
+    padding: 5px 10px;
+    /* margin-bottom: 1px; */
+    font-size: 16px;
+    color: #666;
+    height: 100%;
+}
+
+#walletAddress {
+    width: 95%;
+    padding: 5px 0px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    letter-spacing: 0.01px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    background: linear-gradient(145deg, #ffffff, #f5f5f5);
+    color: #333;
+    cursor: pointer;
+    justify-content: space-between;
+    align-items: center;
+    word-break: break-all;
+    text-align: center;
+    margin: 0 auto;
+    box-shadow: 1px 1px 3px #d9d9d9,
+                -1px -1px 3px #ffffff;
+    transition: all 0.3s ease;
+}
+
+#walletAddress:hover {
+    background: linear-gradient(145deg, #f2fffa, #dcfff2);
+    box-shadow: 3px 3px 6px #d9d9d9,
+                -3px -3px 6px #ffffff;
+    border-color: #4dbb9a;
+    color: #4dbb9a;
+}
+
+#walletAddress.copied {
+    background: #4dbb9a;
+    border-color: #4dbb9a;
+    color: white;
+}
+
+.payment-status {
+    margin-top: 65px;
+}
+
+.timer-container {
+    /* gap: 8px; */
+    /* margin: 10px; */
+    font-size: 16px;
+    color: #666;
+    font-weight: 500;
+    margin-right: 4px;
+}
+
+.status-message {
+    color: #666;
+    font-size: 14px;
+    margin-top: 7px;
+    animation: fadeIn 1s ease-in-out infinite alternate;
+}
+
+/* Screen 3 */
+
+#screen3 {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    height: 100vh;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* .animation-complete {
+    animation: fadeIn 1s ease-in-out infinite alternate;
+    color: #4dbb9a;
+    font-size: 24px;
+}  */
+
+.checkmark-container {
+    width: 80px;
+    height: 80px;
+    margin: 20px auto;
+}
+
+.checkmark {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2;
+    stroke: #4dbb9a;
+    stroke-miterlimit: 10;
+    animation: scale .5s ease-in-out 1s both;
+}
+
+.checkmark-circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 1.5;
+    stroke-miterlimit: 10;
+    stroke: #4dbb9a;
+    animation: stroke 0.9s cubic-bezier(0.65, 0, 0.45, 1) forwards,
+               ease-in-out 0.8s forwards;
+}
+
+.checkmark-check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    stroke-width: 2;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes scale {
+    0%, 100% {
+        transform: none;
+    }
+    50% {
+        transform: scale3d(1.1, 1.1, 1);
+    }
+}
+
+
+@keyframes fadeIn {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Screen4 */
+
+#screen4 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    width: 100%;
+    margin: auto;
+}
+
+.cross-container {
+    width: 80px;
+    height: 80px;
+    margin: 20px auto;
+}
+
+.cross {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2;
+    stroke: #ff6b6b;
+    stroke-miterlimit: 10;
+    animation: scale .5s ease-in-out 1s both;
+}
+
+.cross-circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 1.5;
+    stroke-miterlimit: 10;
+    stroke: #ff6b6b;
+    animation: stroke 0.9s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.cross-x {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    stroke-width: 2;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+.payment-expired {
+    text-align: center;
+    color: #666;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.payment-expired h2 {
+    color: #ff6b6b;
+    margin-bottom: 20px;
+}
+
+.payment-expired p {
+    margin-top: 20px;
+    font-size: 16px;
+}
+`;
