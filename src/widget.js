@@ -1,17 +1,31 @@
-import { widgetTemplate } from './template.js';
-import { widgetStyles } from './styles.js';
+import styles from './styles.css?inline'
+import template from './template.html?raw'
 import QRCode from 'qrcode';
 
 
 
 class PaymentWidget {
     constructor(config = {}) {
+        const defaultChains = ['solana', 'base'];
+
         this.config = {
-            amount: config.amount || 1,
+            amount: config.amount || 5,
             container: config.container || document.body,
-            serverUrl: config.serverUrl || 'http://localhost:3000',
-            wsUrl: config.wsUrl || 'ws://localhost:8080'
+            serverUrl: config.serverUrl || 'http://localhost:3000/',
+            wsUrl: config.wsUrl || 'ws://localhost:3000',
+            availableChains: config.chains || defaultChains,
+            userID: config.userID || null
         };
+
+        // Validate chains
+        this.config.availableChains = this.config.availableChains.filter(
+            chain => defaultChains.includes(chain)
+        );
+        
+        if (this.config.availableChains.length === 0) {
+            this.config.availableChains = defaultChains;
+        }
+
         this.init();
         this.selectedValue = null;
         this.ws = null;
@@ -24,24 +38,36 @@ class PaymentWidget {
         
         // Add styles
         const style = document.createElement('style');
-        style.textContent = widgetStyles;
+        style.textContent = styles;
         this.shadow.appendChild(style);
-
-        // Add HTML
-        this.shadow.innerHTML += widgetTemplate;
-
+    
+        // Create temporary container and add template
+        const tempContainer = document.createElement('div');
+        tempContainer.innerHTML = template;
+        
+        // Find and filter chain options
+        const dropdownOptions = tempContainer.querySelector('.dropdown-options');
+        const options = dropdownOptions.querySelectorAll('.option');
+        
+        options.forEach(option => {
+            const chainType = option.getAttribute('data-value');
+            if (!this.config.availableChains.includes(chainType)) {
+                option.remove();
+            }
+        });
+    
+        // Update widget height variable based on remaining options
+        const remainingOptions = dropdownOptions.querySelectorAll('.option').length;
+        this.shadow.host.style.setProperty('--num-options', remainingOptions);
+    
+        // Add filtered content to shadow DOM
+        this.shadow.appendChild(tempContainer.querySelector('.widget'));
+        
         // Mount to container
         this.config.container.appendChild(this.container);
-
+    
         // Initialize functionality
         this.setupEventListeners();
-
-        // Force layout calculation
-        const dropdown = this.shadow.querySelector('.dropdown-options');
-        dropdown.getBoundingClientRect();
-
-        // Add initial state class
-        dropdown.classList.add('dropdown-init');
     }
 
     setupWebSocket(paymentId) {
@@ -257,7 +283,7 @@ class PaymentWidget {
     goToScreen4() {
         this.shadow.querySelector("#screen2").classList.add("hidden");
         this.shadow.querySelector("#screen4").classList.remove("hidden");
-        cleanupWebSocket();
+        this.cleanupWebSocket();
     }
 
     

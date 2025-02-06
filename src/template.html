@@ -1,5 +1,14 @@
-export const widgetTemplate = `
-    <div class="widget">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Widget</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./widget.js" defer></script>
+</head>
+<body>
+  <div class="widget">
     <!-- Screen 1: Select Payment Method -->
     <div id="screen1">
       <h2>Choose a Payment Method</h2>
@@ -30,7 +39,7 @@ export const widgetTemplate = `
 				</div>
 			</div>
 		</div>
-	</div>
+	  </div>
     <button class="button disabled" id="nextButton" disabled>Next</button>
     </div>
 
@@ -97,4 +106,5 @@ export const widgetTemplate = `
 			<p>Please restart the process</p>
 		</div>
 	</div>
-`;
+</body>
+</html>
