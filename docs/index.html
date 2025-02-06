@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>StablePay Integration Guide</title>
+        <link rel="stylesheet" href="styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">    
+    </head>
+<body>
+    <div class="guide-container">
+        <div class="progress-bar">
+            <div class="step active">Introduction</div>
+            <div class="step">Chain Setup</div>
+            <div class="step">Amount</div>
+            <div class="step">Client ID</div>
+        </div>
+
+        <div class="guide-content">
+            <!-- Step 1 -->
+            <div class="step-content active" id="step1">
+                <h2>StablePay</h2>
+                <p>
+                    This walkthrough demo is intended for vendors or anyone who wants to receive payments through crypto.
+                </p>
+                <p>
+                    Each stage takes the vendor through the one-time configuration inputs needed to generate a payment.
+                </p>
+                <p>
+                    In the end you can see the payment UI from the client's perspective:
+                </p>
+                <ul class="feature-list">
+                    <li>No need to connect a wallet</li>
+                    <li>No need to wait for the payment</li>
+                    <li>Instant and secure</li>
+                </ul>
+            </div>
+            <!-- Step 2 -->
+            <div class="step-content" id="step2">
+                <h2>Select Payment Chains</h2>
+                <p>
+                    Select the chains through which you want to be able to receive payments and in case you want the payment to be immediately redirected to your wallet enter it here
+                </p>
+                <div class="chain-selector">
+                    <div class="chain">
+                        <div class="chain-logo-container">
+                            <img src="img/sol-logo.png" alt="Solana" class="chain-logo"/>
+                            <div class="token-logos">
+                                <img src="img/usdt-logo.png" alt="USDT"/>
+                                <img src="img/usdc-logo.png" alt="USDC"/>
+                            </div>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" class="chain-toggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <div class="wallet-input-group">
+                            <label class="custodian-checkbox">
+                                <input type="checkbox" class="use-default" checked>
+                                Use default custodian wallet
+                            </label>
+                            <input type="text" class="wallet-input" placeholder="Enter Solana wallet address" disabled>
+                        </div>
+                    </div>
+                    <div class="chain">
+                        <div class="chain-logo-container">
+                            <img src="img/base-logo.png" alt="Base" class="chain-logo"/>
+                            <div class="token-logos">
+                                <img src="img/usdc-logo.png" alt="USDC"/>
+                            </div>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" class="chain-toggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <div class="wallet-input-group">
+                            <label class="custodian-checkbox">
+                                <input type="checkbox" class="use-default" checked>
+                                Use default custodian wallet
+                            </label>
+                            <input type="text" class="wallet-input" placeholder="Enter Base wallet address" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step-content" id="step3">
+                <h2>Set Payment Amount</h2>
+                <p>
+                    Currently we only accept USD pegged stablecoins as the payment currency.<br>
+                    Please enter the amount you want to receive in USD.
+                </p>
+                <div class="amount-config">
+                    <input type="number" value="5" min="0" step="0.01"/>
+                    <span>USD</span>
+                </div>
+            </div>
+
+            <!-- Client ID -->
+            <div class="step-content" id="step4">
+                <h2>Client ID</h2>
+                <p>
+                    In case you have a platform with users, you would be able to add an ID that can be used to track the payment completion.
+                </p>
+                <div class="demo-field">
+                    <label>User ID (Demo)</label>
+                    <input type="text" disabled value="demo-user-123"/>
+                </div>
+                <div class="info-box">
+                    <span class="info-icon">ℹ</span>
+                    <p>This demo runs on testnets:<br>
+                    • Solana Devnet<br>
+                    • Base Sepolia</p>
+                </div>
+                <div id="payment-container"></div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button id="prevBtn" disabled>Previous</button>
+            <button id="nextBtn">Next</button>
+        </div>
+    </div>
+
+    <div id="final-widget-container" style="display: none;"></div>
+
+    <script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v0.0.7/dist/crypto-payments-widget.js"></script>
+    <script src="guide.js"></script>
+</body>
+</html>
