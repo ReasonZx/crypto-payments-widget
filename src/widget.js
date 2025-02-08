@@ -6,25 +6,25 @@ import QRCode from 'qrcode';
 
 class PaymentWidget {
     constructor(config = {}) {
-        const defaultChains = ['solana', 'base'];
-
         this.config = {
             amount: config.amount || 5,
             container: config.container || document.body,
             serverUrl: config.serverUrl || 'http://localhost:3000/',
             wsUrl: config.wsUrl || 'ws://localhost:3000',
-            availableChains: config.chains || defaultChains,
-            userID: config.userID || null
+            wallets: config.wallets || { 'solana': null, 'base': null },
+            userID: config.userID || null,
+            serverKey: config.serverKey || null
         };
 
-        // Validate chains
-        this.config.availableChains = this.config.availableChains.filter(
-            chain => defaultChains.includes(chain)
-        );
+        // Get available chains from wallets
+        this.availableChains = Object.keys(this.config.wallets);
+
         
-        if (this.config.availableChains.length === 0) {
-            this.config.availableChains = defaultChains;
+        // Validate at least one chain
+        if (this.availableChains.length === 0) {
+            throw new Error('At least one chain must be configured in wallets');
         }
+
 
         this.init();
         this.selectedValue = null;
@@ -47,11 +47,12 @@ class PaymentWidget {
         
         // Find and filter chain options
         const dropdownOptions = tempContainer.querySelector('.dropdown-options');
+
+        // Filter chain options based on available chains from wallets
         const options = dropdownOptions.querySelectorAll('.option');
-        
         options.forEach(option => {
             const chainType = option.getAttribute('data-value');
-            if (!this.config.availableChains.includes(chainType)) {
+            if (!this.availableChains.includes(chainType)) {
                 option.remove();
             }
         });
@@ -85,8 +86,6 @@ class PaymentWidget {
             this.ws = new WebSocket(this.config.wsUrl);
     
             this.ws.onopen = () => {
-                console.log('WebSocket connected');
-
                 this.ws.send(JSON.stringify({
                     type: 'subscribe_payment',
                     paymentId: paymentId
@@ -107,8 +106,6 @@ class PaymentWidget {
     
             this.ws.onclose = () => {
                 clearInterval(this.pingInterval);
-                // Try to reconnect after 3 seconds
-                setTimeout(() => this.setupWebSocket(paymentId), 3000);
             };
     
             this.ws.onmessage = (event) => {
@@ -185,14 +182,20 @@ class PaymentWidget {
         }
 
         try {
+
+            const selectedWallet = this.config.wallets[this.selectedValue];
+
             const response = await fetch(`${this.config.serverUrl}api/payment`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ 
+                body: JSON.stringify({
                     chain: this.selectedValue,
-                    amount: this.config.amount                       
+                    amount: this.config.amount,
+                    userID: this.config.userID,
+                    wallet: selectedWallet,
+                    serverKey: this.config.serverKey
                 })
             });
 
@@ -207,20 +210,6 @@ class PaymentWidget {
 
             // Setup WebSocket connection
             this.setupWebSocket(paymentId);
-
-            this.ws.onopen = () => {
-                this.ws.send(JSON.stringify({
-                    type: 'subscribe_payment',
-                    paymentId: paymentId
-                }));
-            };
-
-            this.ws.onmessage = (event) => {
-                const data = JSON.parse(event.data);
-                if (data.type === 'payment_completed') {
-                    this.goToScreen3();
-                }
-            };
 
             const screen1 = this.shadow.querySelector("#screen1");
             const screen2 = this.shadow.querySelector("#screen2");
@@ -286,7 +275,7 @@ class PaymentWidget {
         this.cleanupWebSocket();
     }
 
-    
+
 
     /** Helper Functions **/
     
@@ -349,7 +338,6 @@ class PaymentWidget {
         }
     }
 
-    // Timer logic
     startTimer() {
         const timerElement = this.shadow.querySelector("#timer");
         let timeLeft = 10 * 60; // 10 minutes in seconds

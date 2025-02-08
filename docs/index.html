@@ -19,7 +19,7 @@
         </div>
 
         <div class="guide-content">
-            <!-- Step 1 -->
+            <!-- Step 1 : Intro -->
             <div class="step-content active" id="step1">
                 <h2>StablePay</h2>
                 <p>
@@ -37,12 +37,15 @@
                     <li>Instant and secure</li>
                 </ul>
             </div>
-            <!-- Step 2 -->
+            <!-- Step 2 : Chains -->
             <div class="step-content" id="step2">
                 <h2>Select Payment Chains</h2>
-                <p>
-                    Select the chains through which you want to be able to receive payments and in case you want the payment to be immediately redirected to your wallet enter it here
-                </p>
+                <p>Select the chains through which you want to be able to receive payments and, in case you want the payment to be immediately redirected to your wallet, enter it here.</p>
+                <label class="custodian-checkbox global-default">
+                    <input type="checkbox" id="use-default-all" checked>
+                    Use default custodian wallet for all chains
+                </label>
+            
                 <div class="chain-selector">
                     <div class="chain">
                         <div class="chain-logo-container">
@@ -57,10 +60,6 @@
                             <span class="slider"></span>
                         </label>
                         <div class="wallet-input-group">
-                            <label class="custodian-checkbox">
-                                <input type="checkbox" class="use-default" checked>
-                                Use default custodian wallet
-                            </label>
                             <input type="text" class="wallet-input" placeholder="Enter Solana wallet address" disabled>
                         </div>
                     </div>
@@ -76,17 +75,13 @@
                             <span class="slider"></span>
                         </label>
                         <div class="wallet-input-group">
-                            <label class="custodian-checkbox">
-                                <input type="checkbox" class="use-default" checked>
-                                Use default custodian wallet
-                            </label>
                             <input type="text" class="wallet-input" placeholder="Enter Base wallet address" disabled>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Step 3 -->
+            <!-- Step 3 : Amount -->
             <div class="step-content" id="step3">
                 <h2>Set Payment Amount</h2>
                 <p>
@@ -99,7 +94,7 @@
                 </div>
             </div>
 
-            <!-- Client ID -->
+            <!-- Step 4 : Client ID -->
             <div class="step-content" id="step4">
                 <h2>Client ID</h2>
                 <p>
@@ -124,10 +119,15 @@
             <button id="nextBtn">Next</button>
         </div>
     </div>
+    <div class="loading-overlay">
+        <div class="loading-content">
+            Generating client payment view...
+        </div>
+    </div>
 
     <div id="final-widget-container" style="display: none;"></div>
 
-    <script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v0.0.7/dist/crypto-payments-widget.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v0.0.9/dist/crypto-payments-widget.js"></script>
     <script src="guide.js"></script>
 </body>
 </html>

@@ -210,7 +210,9 @@ body {
     align-items: center;
     gap: 8px;
     font-size: 14px;
-    color: #666;
+    color: #4a5568;
+    line-height: 1;
+    padding: 2px 0;
 }
 
 .custodian-checkbox input[type="checkbox"] {
@@ -268,6 +270,16 @@ body {
     color: #a0aec0;
     font-family: 'Poppins', sans-serif;
     font-style: italic;
+}
+
+.wallet-input.error,
+.amount-config input[type="number"].error {
+    border-color: #e53e3e;
+    box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+}
+
+.wallet-input.error::placeholder {
+    color: #e53e3e;
 }
 
 /*** Amount screen ***/
@@ -390,7 +402,55 @@ body {
     line-height: 1;
 }
 
+/*** Loading Screen ***/
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1000;
+}
+
+.loading-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.loading-overlay.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loading-content {
+    background: white;
+    padding: 20px 40px;
+    border-radius: 8px;
+    text-align: center;
+    color: #4a5568;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+}
+
 /*** General Paramenters ***/
+
+.global-default {
+    margin: 0 0 25px 0;
+    display: flex;
+    align-items: center;
+}
+
+.global-default input[type="checkbox"] {
+    margin-right: 10px;
+}
 
 .navigation {
     display: flex;
