@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     let currentStep = 1;
-    const totalSteps = 4;
+    const totalSteps = 5;
     
     const nextBtn = document.getElementById('nextBtn');
     const prevBtn = document.getElementById('prevBtn');
@@ -52,6 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentStep === 3 && !validateAmount()) {
             currentStep--;
             return;
+        }
+
+        if (currentStep === 5) {
+            updateCodeBlock();
         }
         
         prevBtn.disabled = currentStep === 1;
@@ -125,16 +129,30 @@ document.addEventListener('DOMContentLoaded', () => {
         return true;
     }
 
+    function updateCodeBlock() {
+        const amount = getAmount();
+        const wallets = getWalletsConfig();
+        const userID = 'demo-user-123'; // Or get from input if needed
+        
+        document.getElementById('codeAmount').textContent = amount;
+        document.getElementById('codeWallets').textContent = JSON.stringify(wallets);
+        document.getElementById('codeUserID').textContent = `'${userID}'`;
+    }
+
         
     function showFinalWidget() {
         const loadingOverlay = document.querySelector('.loading-overlay');
         const guideContainer = document.querySelector('.guide-container');
         const widgetContainer = document.getElementById('final-widget-container');
+        const vendorLabel = document.querySelector('.vendor-label');
+        const payerLabel = document.querySelector('.payer-label');    
         const amount = getAmount();
         const wallets = getWalletsConfig();
     
         loadingOverlay.classList.add('show');
         guideContainer.style.display = 'none';
+        vendorLabel.style.display = 'none';
+
     
         setTimeout(() => {
             loadingOverlay.classList.add('fade-out');
@@ -143,13 +161,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 loadingOverlay.classList.remove('show');
                 loadingOverlay.classList.remove('fade-out');
                 widgetContainer.style.display = 'block';
+                payerLabel.style.display = 'flex';
                 
                 const widget = new PaymentWidget({
                     amount: amount,
                     wallets: wallets,
                     container: widgetContainer,
-                    serverUrl: 'https://crypto-payments-backend-90e8ca11c89f.herokuapp.com/',
-                    wsUrl: 'wss://crypto-payments-backend-90e8ca11c89f.herokuapp.com'
+                    userID: 'demo-user-123',
                 });
             }, 200);
         }, 1800);

@@ -11,11 +11,16 @@
     </head>
 <body>
     <div class="guide-container">
+        <div class="vendor-label">
+            <span class="info-icon-pov">ℹ</span>
+            <span class="label-text">Vendor Point of View</span>
+        </div>
         <div class="progress-bar">
             <div class="step active">Introduction</div>
             <div class="step">Chain Setup</div>
             <div class="step">Amount</div>
             <div class="step">Client ID</div>
+            <div class="step">Frontend Code</div>
         </div>
 
         <div class="guide-content">
@@ -80,7 +85,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Step 3 : Amount -->
             <div class="step-content" id="step3">
                 <h2>Set Payment Amount</h2>
@@ -93,7 +97,6 @@
                     <span>USD</span>
                 </div>
             </div>
-
             <!-- Step 4 : Client ID -->
             <div class="step-content" id="step4">
                 <h2>Client ID</h2>
@@ -104,13 +107,33 @@
                     <label>User ID (Demo)</label>
                     <input type="text" disabled value="demo-user-123"/>
                 </div>
+            </div>
+            <!-- Step 5 : Frontend Code -->
+            <div class="step-content" id="step5">
+                <h2>Frontend Code</h2>
+                <p>Add this code to your frontend to integrate the payment widget:</p>
+                <div class="code-block">
+<pre><code>&lt;head&gt;
+    &lt;script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v0.0.9/dist/crypto-payments-widget.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id="payment-container"&gt;&lt;/div&gt;
+    &lt;script&gt;
+        const widget = new PaymentWidget({
+            amount: <span class="highlight" id="codeAmount">5</span>,
+            wallets: <span class="highlight" id="codeWallets">null</span>,
+            container: document.getElementById('payment-container'),
+            userID: <span class="highlight" id="codeUserID">'demo-user-123'</span>
+        });
+    &lt;/script&gt;
+&lt;/body&gt;</code></pre>
+                </div>
                 <div class="info-box">
                     <span class="info-icon">ℹ</span>
                     <p>This demo runs on testnets:<br>
                     • Solana Devnet<br>
                     • Base Sepolia</p>
                 </div>
-                <div id="payment-container"></div>
             </div>
         </div>
 
@@ -124,8 +147,12 @@
             Generating client payment view...
         </div>
     </div>
-
-    <div id="final-widget-container" style="display: none;"></div>
+    <div id="final-widget-container" style="display: none;">
+        <div class="payer-label" style="display: none;">
+            <span class="info-icon-pov">ℹ</span>
+            <span class="label-text">Payer Point of View</span>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v0.0.9/dist/crypto-payments-widget.js"></script>
     <script src="guide.js"></script>

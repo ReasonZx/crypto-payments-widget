@@ -6,17 +6,19 @@ Simple integration for stablecoin crypto payments.
 
 ```html
 <head>
-    <script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v0.0.8/dist/crypto-payments-widget.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v0.1.0/dist/crypto-payments-widget.js"></script>
 </head>
 <body>
     <div id="payment-container"></div>
     <script>
         const widget = new PaymentWidget({
-            amount: 5,
+            amount: <amount_of_your_payment>,
+            wallets: <{
+                    'solana': 'your_sol_wallet',
+                    'base': 'your_base_wallet'  
+                },>,
             container: document.getElementById('payment-container'),
-            serverUrl: 'https://crypto-payments-backend-90e8ca11c89f.herokuapp.com/',
-            wsUrl: 'wss://crypto-payments-backend-90e8ca11c89f.herokuapp.com',
-            chains: ['base', 'solana'],
+            userID: <the_user_that_will_be_paying>,
         });
     </script>
 </body>

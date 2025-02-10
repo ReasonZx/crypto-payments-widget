@@ -4,17 +4,20 @@ import QRCode from 'qrcode';
 
 
 
+
 class PaymentWidget {
     constructor(config = {}) {
         this.config = {
             amount: config.amount || 5,
             container: config.container || document.body,
-            serverUrl: config.serverUrl || 'http://localhost:3000/',
-            wsUrl: config.wsUrl || 'ws://localhost:3000',
+            serverUrl: config.serverUrl || 'https://crypto-payments-backend-90e8ca11c89f.herokuapp.com/',
+            wsUrl: config.wsUrl || 'https://crypto-payments-backend-90e8ca11c89f.herokuapp.com/',
             wallets: config.wallets || { 'solana': null, 'base': null },
             userID: config.userID || null,
-            serverKey: config.serverKey || null
         };
+        this._authToken = null;
+        this._publicKey = null;
+        this.crypto = window.crypto;
 
         // Get available chains from wallets
         this.availableChains = Object.keys(this.config.wallets);
@@ -83,7 +86,11 @@ class PaymentWidget {
         }
     
         try {
-            this.ws = new WebSocket(this.config.wsUrl);
+            const wsUrl = new URL(this.config.wsUrl);
+            wsUrl.searchParams.append('token', this.config._authToken);
+
+
+            this.ws = new WebSocket(wsUrl);
     
             this.ws.onopen = () => {
                 this.ws.send(JSON.stringify({
@@ -108,12 +115,25 @@ class PaymentWidget {
                 clearInterval(this.pingInterval);
             };
     
-            this.ws.onmessage = (event) => {
+            this.ws.onmessage = async (event) => {
                 try {
-                    const data = JSON.parse(event.data);
-                    if (data.type === 'payment_completed') {
+                    const { data, signature, timestamp } = JSON.parse(event.data);
+
+                    const messageData = typeof data === 'string' ? JSON.parse(data) : data;
+
+                    // Verify timestamp is recent
+                    if (Date.now() - timestamp > 5000) {
+                        throw new Error('Message expired');
+                    }
+
+                    // Verify message signature
+                    if (!await this.verifyMessage(data, signature)) {
+                        throw new Error('Invalid signature');
+                    }
+                    if (messageData.type === 'payment_completed') {
                         this.goToScreen3();
                     }
+
                 } catch (error) {
                     console.error('Error processing message:', error);
                 }
@@ -195,13 +215,22 @@ class PaymentWidget {
                     amount: this.config.amount,
                     userID: this.config.userID,
                     wallet: selectedWallet,
-                    serverKey: this.config.serverKey
                 })
             });
 
             if (!response.ok) throw new Error('Payment request failed');
-            const { address } = await response.json();
-            const paymentId = address;
+            const { address, authToken, publicKey } = await response.json();
+            this.config._authToken = authToken;
+            this.config._publicKey = await this.crypto.subtle.importKey(
+                "jwk",
+                publicKey,
+                {
+                    name: "RSASSA-PKCS1-v1_5",
+                    hash: "SHA-256"
+                },
+                true,
+                ["verify"]
+            );
 
             const qrCodeData = await QRCode.toDataURL(address, {
                 width: 120,
@@ -209,7 +238,7 @@ class PaymentWidget {
             });
 
             // Setup WebSocket connection
-            this.setupWebSocket(paymentId);
+            this.setupWebSocket(address);
 
             const screen1 = this.shadow.querySelector("#screen1");
             const screen2 = this.shadow.querySelector("#screen2");
@@ -357,6 +386,26 @@ class PaymentWidget {
             }
         }, 1000);
     }
+
+    async verifyMessage(message, signatureBase64) {
+        try {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(JSON.stringify(message));
+            
+            const signature = Uint8Array.from(atob(signatureBase64), c => c.charCodeAt(0));
+
+            return await this.crypto.subtle.verify(
+                "RSASSA-PKCS1-v1_5",
+                this.config._publicKey,
+                signature,
+                data
+            );
+        } catch (error) {
+            console.error('Message verification failed:', error);
+            return false;
+        }
+    }
+
 }
 
 
