@@ -4,36 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const nextBtn = document.getElementById('nextBtn');
     const prevBtn = document.getElementById('prevBtn');
-    const guideContainer = document.querySelector('.guide-container');
-    const widgetContainer = document.getElementById('final-widget-container');
     const useDefaultAll = document.getElementById('use-default-all');
     const walletInputs = document.querySelectorAll('.wallet-input');
-
-    useDefaultAll.addEventListener('change', (e) => {
-        walletInputs.forEach(input => {
-            input.disabled = e.target.checked;
-            if (e.target.checked) {
-                input.value = '';
-            }
-        });
-    });
-
-    // Add chain toggle handlers
-    document.querySelectorAll('.chain-toggle').forEach(toggle => {
-        toggle.addEventListener('change', (e) => {
-            const chain = e.target.closest('.chain');
-            const walletInput = chain.querySelector('.wallet-input');
-            
-            if (!e.target.checked) {
-                walletInput.disabled = true;
-                chain.classList.add('chain-disabled');
-            } else {
-                walletInput.disabled = useDefaultAll.checked;
-                chain.classList.remove('chain-disabled');
-            }
-        });
-    });
     
+
+    /*** Demo State Machine ***/
     function updateSteps() {
         document.querySelectorAll('.step-content').forEach(step => {
             step.classList.remove('active');
@@ -62,16 +37,108 @@ document.addEventListener('DOMContentLoaded', () => {
         nextBtn.textContent = currentStep === totalSteps ? 'Client UI' : 'Next';
     }
 
+
+    /*** Call widget (Client View) ***/
+    function showFinalWidget() {
+        const loadingOverlay = document.querySelector('.loading-overlay');
+        const guideContainer = document.querySelector('.guide-container');
+        const widgetContainer = document.getElementById('final-widget-container');
+        const vendorLabel = document.querySelector('.vendor-label');
+        const payerLabel = document.querySelector('.payer-label');    
+        const useDefaultAll = document.getElementById('use-default-all');
+        const amount = getAmount();
+        const wallets = getWalletsConfig();
+        const isUsingDefaultWallet = useDefaultAll.checked;
+    
+        loadingOverlay.classList.add('show');
+        guideContainer.style.display = 'none';
+        vendorLabel.style.display = 'none';
+
+    
+        setTimeout(() => {
+            loadingOverlay.classList.add('fade-out');
+            
+            setTimeout(() => {
+                loadingOverlay.classList.remove('show');
+                loadingOverlay.classList.remove('fade-out');
+                widgetContainer.style.display = 'block';
+                payerLabel.style.display = 'flex';
+                
+                const widget = new PaymentWidget({
+                    type: 'standAlonePayment',
+                    amount: amount,
+                    vendorID: 'demo_vendor_123',
+                    isCustodial: isUsingDefaultWallet,
+                    wallets: wallets,
+                    container: widgetContainer,
+                    userID: 'demo-user-123',
+                });
+            }, 200);
+        }, 1800);
+    }
+
+
+    /*** Listeners ***/
+    useDefaultAll.addEventListener('change', (e) => {
+        walletInputs.forEach(input => {
+            input.disabled = e.target.checked;
+            if (e.target.checked) {
+                input.value = '';
+            }
+        });
+    });
+
+    document.querySelectorAll('.chain-toggle').forEach(toggle => {
+        toggle.addEventListener('change', (e) => {
+            const chain = e.target.closest('.chain');
+            const walletInput = chain.querySelector('.wallet-input');
+            
+            if (!e.target.checked) {
+                walletInput.disabled = true;
+                chain.classList.add('chain-disabled');
+            } else {
+                walletInput.disabled = useDefaultAll.checked;
+                chain.classList.remove('chain-disabled');
+            }
+        });
+    });
+    
+    nextBtn.addEventListener('click', () => {
+        if (currentStep < totalSteps) {
+            if (currentStep === 2 && !validateChainWallets()) return;
+            if (currentStep === 3 && !validateAmount()) return;
+            
+            currentStep++;
+            updateSteps();
+        } else {
+            showFinalWidget();
+        }
+    });
+    
+    prevBtn.addEventListener('click', () => {
+        if (currentStep > 1) {
+            currentStep--;
+            updateSteps();
+        }
+    });
+
+    /*** Helper functions ***/
+
     function getWalletsConfig() {
         const useDefaultWallet = document.getElementById('use-default-all').checked;
-        const wallets = {};
+        const wallets = [];
         
         document.querySelectorAll('.chain').forEach(chain => {
             const chainToggle = chain.querySelector('.chain-toggle');
             if (chainToggle.checked) {
                 const chainType = chain.querySelector('.chain-logo').alt.toLowerCase();
                 const walletInput = chain.querySelector('.wallet-input');
-                wallets[chainType] = useDefaultWallet ? null : walletInput.value.trim() || null;
+                const chainAddress = useDefaultWallet ? null : walletInput.value.trim() || null;
+                
+                wallets.push({
+                    chain: chainType,
+                    chainAddress: chainAddress
+                });
             }
         });
         
@@ -132,64 +199,37 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateCodeBlock() {
         const amount = getAmount();
         const wallets = getWalletsConfig();
-        const userID = 'demo-user-123'; // Or get from input if needed
-        
-        document.getElementById('codeAmount').textContent = amount;
-        document.getElementById('codeWallets').textContent = JSON.stringify(wallets);
-        document.getElementById('codeUserID').textContent = `'${userID}'`;
+        const userID = 'demo-user-123';
+        const useDefaultAll = document.getElementById('use-default-all');
+        const isCustodial = useDefaultAll.checked;
+
+        // Create code block HTML
+        const codeBlockHTML = `
+        <div class="code-block">
+            <pre><code>&lt;head&gt;
+    &lt;script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v0.2.0/dist/crypto-payments-widget.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id="payment-container"&gt;&lt;/div&gt;
+    &lt;script&gt;
+        const widget = new PaymentWidget({
+            type: 'standAlonePayment',
+            vendorID: 'demo_vendor_123',
+            amount: <span class="highlight" id="codeAmount">${amount}</span>,
+            isCustodial: <span class="highlight" id="codeCustodial">${isCustodial}</span>,
+            ${!isCustodial ? `wallets: <span class="highlight" id="codeWallets">${JSON.stringify(wallets)}</span>,\n            ` : ''}userID: '${userID}'
+        });
+    &lt;/script&gt;
+&lt;/body&gt;</code></pre>
+        </div>`;
+
+        // Find the step5 content and add the code block after the paragraph
+        const step5 = document.getElementById('step5');
+        const existingCodeBlock = step5.querySelector('.code-block');
+        if (existingCodeBlock) {
+            existingCodeBlock.remove();
+        }
+        step5.querySelector('p').insertAdjacentHTML('afterend', codeBlockHTML);
     }
 
-        
-    function showFinalWidget() {
-        const loadingOverlay = document.querySelector('.loading-overlay');
-        const guideContainer = document.querySelector('.guide-container');
-        const widgetContainer = document.getElementById('final-widget-container');
-        const vendorLabel = document.querySelector('.vendor-label');
-        const payerLabel = document.querySelector('.payer-label');    
-        const amount = getAmount();
-        const wallets = getWalletsConfig();
-    
-        loadingOverlay.classList.add('show');
-        guideContainer.style.display = 'none';
-        vendorLabel.style.display = 'none';
-
-    
-        setTimeout(() => {
-            loadingOverlay.classList.add('fade-out');
-            
-            setTimeout(() => {
-                loadingOverlay.classList.remove('show');
-                loadingOverlay.classList.remove('fade-out');
-                widgetContainer.style.display = 'block';
-                payerLabel.style.display = 'flex';
-                
-                const widget = new PaymentWidget({
-                    amount: amount,
-                    wallets: wallets,
-                    container: widgetContainer,
-                    userID: 'demo-user-123',
-                });
-            }, 200);
-        }, 1800);
-        console.log(wallets)
-    }
-    
-    nextBtn.addEventListener('click', () => {
-        if (currentStep < totalSteps) {
-            if (currentStep === 2 && !validateChainWallets()) return;
-            if (currentStep === 3 && !validateAmount()) return;
-            
-            currentStep++;
-            updateSteps();
-        } else {
-            showFinalWidget();
-        }
-    });
-    
-    prevBtn.addEventListener('click', () => {
-        if (currentStep > 1) {
-            currentStep--;
-            updateSteps();
-        }
-    });
 });

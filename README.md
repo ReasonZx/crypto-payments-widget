@@ -6,19 +6,18 @@ Simple integration for stablecoin crypto payments.
 
 ```html
 <head>
-    <script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v0.1.0/dist/crypto-payments-widget.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v0.2.0/dist/crypto-payments-widget.js"></script>
 </head>
 <body>
     <div id="payment-container"></div>
     <script>
         const widget = new PaymentWidget({
-            amount: <amount_of_your_payment>,
-            wallets: <{
-                    'solana': 'your_sol_wallet',
-                    'base': 'your_base_wallet'  
-                },>,
-            container: document.getElementById('payment-container'),
-            userID: <the_user_that_will_be_paying>,
+            type: 'standAlonePayment',
+            vendorID: <your_vendor_id>,
+            amount: <amount>,
+            isCustodial: <true_or_false>,
+            wallets: <[{"chain":"your_address_chain","chainAddress":"your_address"}]>, (only needed is isCustodial is false)
+            userID: <the_user_that_will_be_paying>
         });
     </script>
 </body>

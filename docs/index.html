@@ -48,7 +48,7 @@
                 <p>Select the chains through which you want to be able to receive payments and, in case you want the payment to be immediately redirected to your wallet, enter it here.</p>
                 <label class="custodian-checkbox global-default">
                     <input type="checkbox" id="use-default-all" checked>
-                    Use default custodian wallet for all chains
+                    Use our default custodian wallet for all chains
                 </label>
             
                 <div class="chain-selector">
@@ -112,22 +112,7 @@
             <div class="step-content" id="step5">
                 <h2>Frontend Code</h2>
                 <p>Add this code to your frontend to integrate the payment widget:</p>
-                <div class="code-block">
-<pre><code>&lt;head&gt;
-    &lt;script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v0.1.0/dist/crypto-payments-widget.js"&gt;&lt;/script&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;div id="payment-container"&gt;&lt;/div&gt;
-    &lt;script&gt;
-        const widget = new PaymentWidget({
-            amount: <span class="highlight" id="codeAmount">5</span>,
-            wallets: <span class="highlight" id="codeWallets">null</span>,
-            container: document.getElementById('payment-container'),
-            userID: <span class="highlight" id="codeUserID">'demo-user-123'</span>
-        });
-    &lt;/script&gt;
-&lt;/body&gt;</code></pre>
-                </div>
+                <!-- Code Block comes here -->
                 <div class="info-box">
                     <span class="info-icon">ℹ</span>
                     <p>This demo runs on testnets:<br>
@@ -154,7 +139,7 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v0.1.0/dist/crypto-payments-widget.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v0.2.0/dist/crypto-payments-widget.js"></script>
     <script src="guide.js"></script>
 </body>
 </html>
