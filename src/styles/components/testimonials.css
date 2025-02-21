@@ -1,0 +1,25 @@
+.testimonials {
+    background: var(--background-light);
+    padding: var(--spacing-xl) 0;
+}
+
+.testimonial-card {
+    background: var(--white);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    margin: var(--spacing-md);
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    margin-top: var(--spacing-md);
+}
+
+.author-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: var(--spacing-md);
+}

@@ -1,0 +1,136 @@
+.hero {
+    min-height: 100vh;
+    background: linear-gradient(145deg, var(--primary-light), var(--primary-dark));
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-xl) 0;
+}
+
+#hero .container {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero-header {
+    margin-bottom: var(--spacing-xl);
+    max-width: 100%;
+}
+
+.hero-header h1 {
+    color: var(--text-color);
+    font-size: 2.5rem;
+    line-height: 1.2;
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    align-items: center;
+    width: 100%;
+}
+
+
+.hero-content {
+    grid-column: 1;
+    text-align: left;
+    padding-right: var(--spacing-lg);
+    width: 100%;
+}
+
+.hero-features .feature-item:hover {
+    transform: translateX(10px);
+    color: var(--primary-light);
+}
+
+.hero-features .feature-item {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: transform 0.3s ease;
+}
+
+
+.hero-description {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--text-color);
+    text-transform: none;
+    margin: 3rem 0 1rem;
+    letter-spacing: normal;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+
+/* Right side showcase */
+.hero-showcase {
+    grid-column: 2;
+    position: relative;
+    width: 100%;
+    height: 500px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.showcase-image {
+    position: absolute;
+    max-width: 500px; 
+    height: auto;
+    transition: all 0.4s ease-in-out;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.showcase-image img {
+    display: block;
+    width: auto; 
+    height: auto;
+    max-width: 100%; 
+    object-fit: cover; 
+    border-radius: 12px;
+}
+
+/* Position images in a stack */
+.showcase-image:nth-child(1) {
+    transform: translateX(0%) translateY(0%);
+    z-index: 3;
+}
+
+.showcase-image:nth-child(2) {
+    transform: translateX(15%) translateY(-0.5%);
+    z-index: 2;
+}
+
+.showcase-image:nth-child(3) {
+    transform: translateX(30%) translateY(-1%);
+    z-index: 1;
+}
+
+/* Hover effects */
+.showcase-image:hover {
+    z-index: 4;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.showcase-image:nth-child(1):hover {
+    transform: translateX(-10%) ;
+} 
+
+.showcase-image:nth-child(2):hover {
+    transform: translateX(10%) ;
+}
+
+.showcase-image:nth-child(3):hover {
+    transform: translateX(25%) ;
+} 

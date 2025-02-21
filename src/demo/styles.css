@@ -1,19 +1,37 @@
 body {
     margin: 0;
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background: linear-gradient(145deg, #7bac9d, #3c5e52);
     font-family: 'Poppins', sans-serif;
     color: #4a5568;
+    display: flex;
+    flex-direction: column;
 }
 
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 200px;
+}
+
+
 .guide-container {
+    margin: 20px auto;
     position: relative;
-    max-width: 800px;
+    max-width: 1000px;
     width: 90%;
-    margin: 20px;
     padding: 30px;
     background: white;
     border-radius: 10px;
@@ -24,7 +42,7 @@ body {
     position: absolute;
     top: -40px;
     left: 0px;
-    background: rgba(77, 187, 154, 0.9);
+    background: #4dbb9ae6;
     color: white;
     padding: 6px 12px;
     border-radius: 15px;
@@ -402,7 +420,7 @@ body {
 .info-box {
     position: absolute;
     bottom: 75px;
-    right: 30px;
+    right: 50px;
     background: #f8f9fa;
     border-left: 4px solid #4dbb9a;
     padding: 12px;
@@ -410,7 +428,7 @@ body {
     display: flex;
     align-items: flex-start;
     gap: 8px;
-    width: 180px;
+    width: 220px;
 }
 
 .info-box p {
@@ -434,7 +452,7 @@ body {
     border-radius: 8px;
     overflow-x: auto;
     margin: 20px 0;
-    margin-bottom: 40px;
+    margin-bottom: 60px;
 }
 
 .code-block pre {
@@ -529,72 +547,4 @@ button:disabled {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-@media (max-width: 768px) {
-    .progress-bar {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .vendor-label {
-        top: 10px;
-        font-size: 12px;
-        padding: 6px 12px;
-    }
-
-    .step {
-        margin: 2px 0;
-    }
-
-    .chain {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .chain input[type="text"] {
-        width: 100%;
-    }
-
-    .wallet-input-group {
-        max-width: 100%;
-    }
-
-    .navigation {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 15px;
-        background: white;
-        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-    }
-
-    .guide-container {
-        margin-bottom: 80px;
-        padding: 15px;
-    }
-
-    #step4 {
-        padding-right: 30px;
-    }
-    
-    .info-box {
-        position: static;
-        width: auto;
-        max-width: 400px;
-        margin: 20px 0;
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        align-items: flex-start;
-    }
-
-    .guide-container {
-        width: 100%;
-        margin: 0;
-        border-radius: 0;
-    }
 }
