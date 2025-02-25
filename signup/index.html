@@ -15,7 +15,7 @@
         <nav class="navbar">
             <div class="container">
                 <div class="logo">
-                    <a href="../../index.html">
+                    <a href="../../.">
                         <img src="../assets/logoSmall.png" alt="CryptoPayments Logo">
                         <span>Stablecoin Payments</span>
                     </a>
@@ -27,25 +27,31 @@
             <section class="auth-section">
                 <div class="container">
                     <h1>Sign Up</h1>
-                    <form class="auth-form">
+                    <form class="auth-form" novalidate onsubmit="handleSignup(event)">
                         <div class="form-group">
-                            <label for="name">Full Name</label>
-                            <input type="text" id="name" required>
+                            <label for="username">Username</label>
+                            <input type="text" id="username" required>
+                            <span class="validation-message">Please enter a username</span>
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input type="email" id="email" required>
+                            <span class="validation-message">Please enter a valid email address</span>
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>
                             <input type="password" id="password" required>
+                            <span class="validation-message">Please enter a password</span>
                         </div>
+                        <div id="error-message" class="error-text"></div>
                         <button type="submit" class="btn btn-primary">Create Account</button>
                     </form>
-                    <p>Already have an account? <a href="login.html">Login</a></p>
+                    <p>Already have an account? <a href="../login/">Login</a></p>
                 </div>
             </section>
         </main>
     </div>
+    <script src="../config/config.js"></script>
+    <script src="signup.js"></script>
 </body>
 </html>

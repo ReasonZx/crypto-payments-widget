@@ -1,4 +1,35 @@
 document.addEventListener('DOMContentLoaded', () => {
+    
+    const burgerMenu = document.querySelector('.burger-menu');
+    const burgerContent = document.querySelector('.burger-content');
+
+    if (burgerMenu && burgerContent) {
+        burgerMenu.addEventListener('click', (e) => {
+            e.stopPropagation();
+            burgerMenu.classList.toggle('active');
+            burgerContent.classList.toggle('active');
+            document.body.classList.toggle('menu-open');
+        });
+
+        // Close burger menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!burgerMenu.contains(e.target) && !burgerContent.contains(e.target)) {
+                burgerMenu.classList.remove('active');
+                burgerContent.classList.remove('active');
+                document.body.classList.remove('menu-open');
+            }
+        });
+
+        // Close menu when clicking a link
+        burgerContent.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                burgerMenu.classList.remove('active');
+                burgerContent.classList.remove('active');
+                document.body.classList.remove('menu-open');
+            });
+        });
+    }
+
     // Navigation scroll
     const navLinks = document.querySelectorAll('nav a');
     navLinks.forEach(link => {
@@ -74,6 +105,9 @@ document.addEventListener('DOMContentLoaded', () => {
         background.style.backgroundPosition = `${scrollProgress}% ${scrollProgress}%`;
     });
 });
+
+
+
 
 
 function scrollToSection(sectionId) {

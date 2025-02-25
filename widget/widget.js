@@ -511,22 +511,25 @@ class PaymentWidget {
     }
 
     setupCopyAmount() {
-        const tokenIcons = this.shadow.querySelector('.token-icons');
+        const tokenIconsElements = this.shadow.querySelectorAll('.token-icons');
         
-        tokenIcons.addEventListener('click', async () => {
-            const amountWithSymbol = tokenIcons.querySelector('.payment-amount').textContent;
-            const numericAmount = amountWithSymbol.replace(/[$\s]/g, ''); // Remove $ and spaces
-            
-            try {
-                await navigator.clipboard.writeText(numericAmount);
-                tokenIcons.classList.add('copied');
+        tokenIconsElements.forEach(tokenIcons => {
+            tokenIcons.addEventListener('click', async () => {
+                const amountWithSymbol = tokenIcons.querySelector('.payment-amount').textContent;
+                const numericAmount = amountWithSymbol.replace(/[$\s]/g, '');
                 
-                setTimeout(() => {
-                    tokenIcons.classList.remove('copied');
-                }, 1000);
-            } catch (err) {
-                console.error('Failed to copy:', err);
-            }
+                try {
+                    await navigator.clipboard.writeText(numericAmount);
+                    tokenIcons.classList.add('copied');
+                    console.log('Copied:', numericAmount);
+                    
+                    setTimeout(() => {
+                        tokenIcons.classList.remove('copied');
+                    }, 1000);
+                } catch (err) {
+                    console.error('Failed to copy:', err);
+                }
+            });
         });
     }
 

@@ -15,7 +15,7 @@
         <nav class="navbar">
             <div class="container">
                 <div class="logo">
-                    <a href="../../index.html">
+                    <a href="../../.">
                         <img src="../assets/logoSmall.png" alt="CryptoPayments Logo">
                         <span>Stablecoin Payments</span>
                     </a>
@@ -27,21 +27,26 @@
             <section class="auth-section">
                 <div class="container">
                     <h1>Login</h1>
-                    <form class="auth-form">
+                    <form class="auth-form" novalidate onsubmit="handleLogin(event)">
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input type="email" id="email" required>
+                            <span class="validation-message">Please enter a valid email address</span>
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>
                             <input type="password" id="password" required>
+                            <span class="validation-message">Please enter your password</span>
                         </div>
+                        <div id="error-message" class="error-text"></div>
                         <button type="submit" class="btn btn-primary">Login</button>
                     </form>
-                    <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+                    <p>Don't have an account? <a href="../signup/">Sign up</a></p>
                 </div>
             </section>
         </main>
     </div>
+    <script src="../config/config.js"></script>
+    <script src="login.js"></script>
 </body>
 </html>

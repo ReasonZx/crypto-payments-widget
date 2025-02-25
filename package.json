@@ -3,11 +3,25 @@
     "version": "0.2.0",
     "description": "Crypto payments widget for web integration",
     "main": "dist/crypto-payments-widget.js",
-    "files": ["dist"],
+    "files": [
+        "dist"
+    ],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/ReasonZx/crypto-payments-widget.git"
     },
-    "keywords": ["crypto", "payments", "widget", "solana", "base"],
-    "license": "MIT"
-  }
+    "keywords": [
+        "crypto",
+        "payments",
+        "widget",
+        "solana",
+        "base"
+    ],
+    "scripts": {
+        "deploy": "gh-pages -d ."
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "gh-pages": "^6.3.0"
+    }
+}
