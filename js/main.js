@@ -1,14 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
+        
+    // Burger Menu
     const burgerMenu = document.querySelector('.burger-menu');
     const burgerContent = document.querySelector('.burger-content');
+    const body = document.body;
+
 
     if (burgerMenu && burgerContent) {
         burgerMenu.addEventListener('click', (e) => {
             e.stopPropagation();
             burgerMenu.classList.toggle('active');
             burgerContent.classList.toggle('active');
-            document.body.classList.toggle('menu-open');
+            body.classList.toggle('menu-open');
         });
 
         // Close burger menu when clicking outside

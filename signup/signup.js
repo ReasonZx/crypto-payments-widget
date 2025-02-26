@@ -86,7 +86,7 @@ async function handleSignup(event) {
         // Handle successful signup
         const data = await response.json();
         localStorage.setItem('token', data.token);
-        window.location.href = '/dashboard';
+        window.location.href = '../dashboard/';
       
     } catch (error) {
         console.error('Signup error:', error);

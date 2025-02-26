@@ -1,4 +1,5 @@
 .navbar {
+    height:120px;
     padding: 20px 0;
     background: var(--white);
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -42,9 +43,32 @@
 }
 
 .nav-buttons {
-    display: flex;
+    display: none; /* Hide initially */
     align-items: center;
     gap: 1rem;
+}
+
+.nav-buttons.visible {
+    display: flex; /* Show when JavaScript adds the 'visible' class */
+}
+
+.btn-logout {
+    background: var(--error);
+    color: var(--white);
+    border: none;
+}
+
+.btn-logout:hover {
+    background: #c53030;
+}
+
+.btn-dashboard {
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+.btn-dashboard:hover {
+    background: var(--primary-dark);
 }
 
 .burger-menu {
@@ -85,7 +109,6 @@
     display: none;
     position: absolute;
     top: 100%;
-    left: 0;
     width: 100%;
     background: var(--white);
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -127,6 +150,22 @@
     color: var(--primary-color);
 }
 
+.nav-logged-in {
+    display: none;
+}
+
+.nav-logged-out {
+    display: flex;
+}
+
+/* Show logged-in buttons and hide logged-out buttons when user is logged in */
+.logged-in .nav-logged-in {
+    display: flex;
+}
+
+.logged-in .nav-logged-out {
+    display: none;
+}
 
 @media (max-width: 768px) {
     /* Update navbar positioning for mobile */
@@ -199,7 +238,6 @@
     .burger-content.active {
         display: block;
     }
-
 
     .footer-grid {
         grid-template-columns: 1fr;

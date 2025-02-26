@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CryptoPayments</title>
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/variables.css">
+    <link rel="stylesheet" href="../styles/components/navbar.css">
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/wallets.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body.loading #app {
+            display: none;
+        }
+    </style>
+</head>
+<body class="loading">
+    <div id="app" class="logged-in">
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <a href="../.">
+                        <img src="../assets/images/logoSmall.png" alt="CryptoPayments Logo">
+                        <span>Stablecoin Payments</span>
+                    </a>
+                </div>
+                <div class="nav-buttons">
+                    <button onclick="handleLogout()" class="btn btn-primary">Log out</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="dashboard-container">
+            <aside class="sidebar">
+                <ul class="sidebar-menu">
+                    <li class="sidebar-item active" data-tab="home">Home</li>
+                    <li class="sidebar-item" data-tab="wallets">Wallets</li>
+                    <li class="sidebar-item" data-tab="poss">POSs</li>
+                    <li class="sidebar-item" data-tab="customers">Customers</li>
+                    <li class="sidebar-item" data-tab="settings">Settings</li>
+                </ul>
+            </aside>
+            <main class="content">
+                <div id="home" class="tab-content active">
+                    <h2>Home</h2>
+                    <p>Welcome to your dashboard.</p>
+                </div>
+                <div id="wallets" class="tab-content">
+                    <h2>Wallets configuration</h2>
+                    <h3 class="wallet-subtitle">Choose how to start collecting payments</h3>
+                    <p class="wallet-description">Select the chains through which you want to be able to receive payments and if you want the payments to be immediately redirected to your own wallet or not.</p>
+                    <div class="wallet-layout">
+                        <div class="chain-selector">
+                            <div class="chain">
+                                <div class="chain-logo-container">
+                                    <img src="../assets/icons/sol-logo.png" alt="solana" class="chain-logo"/>
+                                    <div class="token-logos">
+                                        <img src="../assets/icons/usdt-logo.png" alt="USDT"/>
+                                        <img src="../assets/icons/usdc-logo.png" alt="USDC"/>
+                                    </div>
+                                </div>
+                                <label class="toggle">
+                                    <input type="checkbox" class="chain-toggle" checked>
+                                    <span class="slider"></span>
+                                </label>
+                                <div class="wallet-input-group">
+                                    <input type="text" class="wallet-input" placeholder="Enter Solana wallet address" disabled>
+                                </div>
+                            </div>
+                            <div class="chain">
+                                <div class="chain-logo-container">
+                                    <img src="../assets/icons/base-logo.png" alt="base" class="chain-logo"/>
+                                    <div class="token-logos">
+                                        <img src="../assets/icons/usdc-logo.png" alt="USDC"/>
+                                    </div>
+                                </div>
+                                <label class="toggle">
+                                    <input type="checkbox" class="chain-toggle" checked>
+                                    <span class="slider"></span>
+                                </label>
+                                <div class="wallet-input-group">
+                                    <input type="text" class="wallet-input" placeholder="Enter Base wallet address" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <label class="custodian-checkbox global-default">
+                            <input type="checkbox" id="use-default-all" checked>
+                            Use the default custodian wallet for all the selected chains
+                        </label>
+                    </div>
+                    <div class="wallet-error-message"></div>
+                    <div class="save-button-container">
+                        <button id="save-wallet-config" class="save-button" disabled>Save changes</button>
+                    </div>
+                </div>
+                <div id="poss" class="tab-content">
+                    <h2>POSs</h2>
+                    <p>Manage your POSs here.</p>
+                </div>
+                <div id="customers" class="tab-content">
+                    <h2>Customers</h2>
+                    <p>Manage your customers here.</p>
+                </div>
+                <div id="settings" class="tab-content">
+                    <h2>Settings</h2>
+                    <p>Manage your settings here.</p>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="../config/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="dashboard.js"></script>
+    <script src="js/wallets.js"></script>
+</body>
+</html>

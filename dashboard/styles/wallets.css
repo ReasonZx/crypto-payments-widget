@@ -1,0 +1,328 @@
+#wallets h2 {
+    margin-bottom: 20px; /* Add margin-bottom to the h2 element */
+    color: var(--primary-light);
+    font-weight: 1000;
+}
+
+.wallet-subtitle {
+    text-align: center;
+    color: var(--primary-dark);
+    font-size: 2rem;
+    margin: 30px 0 20px;
+    font-weight: 1000;
+}
+
+.wallet-description {
+    text-align: center;
+    color: var(--text-color);
+    font-size: 0.95rem;
+    max-width: 800px;
+    margin: 0 auto 40px;
+    line-height: 1.5;
+}
+
+.wallet-layout {
+    display: flex;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 80px;
+    width: 90%;
+    max-width: 1200px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Add a subtle shadow */
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.chain-selector {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    position: relative;
+}
+
+.chain {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    max-width: 100%;
+    margin: 0;
+    width: 100%;
+}
+
+.custodian-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #4a5568;
+    line-height: 1;
+    padding: 2px 0;
+}
+
+.global-default {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+    height: 90%;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    z-index: 10;
+    border: 2px solid #cccccc;
+    border-radius: 8px;
+    padding: 0px;
+    transition: all 0.5s ease ;
+    text-align: center;
+}
+
+
+/* Custom Toggle Switch */
+.toggle {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+    margin: 0 10px;
+}
+
+.toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+.chain-toggle:checked + .slider {
+    background-color: #4dbb9a;
+}
+
+.chain-toggle:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+.wallet-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    /* min-width: 0; */
+    min-width: 100px;
+    width: 500px;
+    max-width: 600px;
+}
+
+.chain-disabled {
+    opacity: 0.5;
+}
+
+.chain-disabled .wallet-input-group {
+    pointer-events: none;
+}
+
+
+
+
+.global-default.active {
+    background-color: rgb(230, 255, 250);
+    width: calc(100% - 160px); /* Adjust this value based on the space taken by chain logo + toggle */
+    border: 2px solid #4dbb9a;
+}
+
+
+
+.custodian-checkbox input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    min-width: 18px;
+    min-height: 18px;
+    border: 2px solid #cccccc;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+    margin-left: 15px; /* Add left margin */
+    transition: all 0.2s ease;
+}
+
+.custodian-checkbox input[type="checkbox"]:checked {
+    background-color: #4dbb9a;
+    border: 2px solid #4dbb9a;
+}
+
+.custodian-checkbox input[type="checkbox"]:checked:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 6px;
+    height: 11px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: translate(-50%, -65%) rotate(45deg);
+}
+
+.custodian-checkbox input[type="checkbox"]:disabled {
+    border-color: #ccc;
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+.custodian-checkbox input[type="checkbox"]:disabled:checked:after {
+    border-color: #999;
+}
+
+
+
+.wallet-input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.wallet-input:disabled {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+}
+
+.wallet-input::placeholder {
+    color: #a0aec0;
+    font-family: 'Poppins', sans-serif;
+    font-style: italic;
+}
+
+.wallet-input.error {
+    border-color: #e53e3e;
+    box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+}
+
+.wallet-input.error::placeholder {
+    color: #e53e3e;
+}
+
+
+
+.chain img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.chain-logo-container {
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
+
+.chain-logo-container img.chain-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.token-logos {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    display: flex;
+    gap: 2px;
+}
+
+.token-logos img {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+
+
+.save-button-container {
+    position: fixed;
+    bottom: 5vh; /* Increased from 0 to 40px */
+    left: 250px;
+    right: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 100;
+}
+
+.save-button {
+    padding: 12px 40px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.save-button:disabled {
+    background-color: #cbd5e0;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.save-button:not(:disabled):hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.wallet-error-message {
+    position: fixed;
+    display: none;
+    bottom: 15vh;
+    /* left: 250px; */
+    /* right: 0; */
+    width: 70%;
+    
+    
+    color: var(--error);
+    font-size: 14px;
+    padding: 8px 16px;
+    background-color: rgba(254, 226, 226, 0.5);
+    border: 1px solid #f56565;
+    border-radius: 6px;
+    text-align: center;
+    display: none;
+    z-index: 100;
+}

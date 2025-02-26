@@ -4,7 +4,6 @@ async function handleLogin(event) {
     const form = event.target;
     form.classList.add('form-submitted'); // Add class on form submission
 
-    
     // Get form inputs
     const email = document.getElementById('email');
     const password = document.getElementById('password');
@@ -65,9 +64,11 @@ async function handleLogin(event) {
         
         // Store user info if needed
         localStorage.setItem('user', JSON.stringify(data.user));
+
+        updateNavbar();
         
         // Redirect to dashboard
-        window.location.href = '/dashboard';
+        window.location.href = '../dashboard/';
 
     } catch (error) {
         console.error('Login error:', error);
