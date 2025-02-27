@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../styles/components/navbar.css">
     <link rel="stylesheet" href="styles/dashboard.css">
     <link rel="stylesheet" href="styles/wallets.css">
+    <link rel="stylesheet" href="styles/poss.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body.loading #app {
@@ -49,7 +50,7 @@
                 </div>
                 <div id="wallets" class="tab-content">
                     <h2>Wallets configuration</h2>
-                    <h3 class="wallet-subtitle">Choose how to start collecting payments</h3>
+                    <h3 class="wallet-subtitle">Choose where to redirect your payments</h3>
                     <p class="wallet-description">Select the chains through which you want to be able to receive payments and if you want the payments to be immediately redirected to your own wallet or not.</p>
                     <div class="wallet-layout">
                         <div class="chain-selector">
@@ -96,8 +97,56 @@
                     </div>
                 </div>
                 <div id="poss" class="tab-content">
-                    <h2>POSs</h2>
-                    <p>Manage your POSs here.</p>
+                    <h2>Points of Sale</h2>
+                    <h3 class="poss-subtitle">Choose how to start collecting payments</h3>
+                    <p class="poss-description">Select from our ready-to-use payment solutions for your business.</p>
+                    
+                    <div class="pos-widgets-container">
+                        <!-- First Widget: Pay by Link -->
+                        <div class="pos-widget">
+                            <div class="tag no-code-tag">No code required</div>
+                            <div class="pos-widget-image">
+                                <img src="../assets/images/payWithLink.png" alt="Payment Link">
+                            </div>
+                            <h4>Pay by Link</h4>
+                            <p>Create shareable payment links with pre-defined amounts.</p>
+                            <button class="pos-button">Setup Pay by Link</button>
+                        </div>
+                        
+                        <!-- Second Widget: Web Checkout -->
+                        <div class="pos-widget">
+                            <div class="tag low-code-tag">Low code required</div>
+                            <div class="pos-widget-image">
+                                <img src="../assets/images/webCheckout.png" alt="Checkout">
+                            </div>
+                            <h4>Web Checkout</h4>
+                            <p>Integrate our payment solution into your existing website checkout.</p>
+                            <button class="pos-button">How to setup checkout</button>
+                        </div>
+                        
+                        <!-- Third Widget: Custom Payment UI -->
+                        <div class="pos-widget">
+                            <div class="tag code-tag">Code required</div>
+                            <div class="pos-widget-image coming-soon">
+                                <!-- <img src="../assets/icons/custom-ui.png" alt="Custom UI"> -->
+                                <div class="coming-soon-overlay">Coming Soon</div>
+                            </div>
+                            <h4>Build a Custom Payment UI</h4>
+                            <p>Create a fully customized payment experience tailored to your brand.</p>
+                            <button class="pos-button" disabled>Coming Soon</button>
+                        </div>
+                        <!-- Fourth Widget: Subscriptions -->
+                        <div class="pos-widget">
+                            <div class="tag low-code-tag">Low code required</div>
+                            <div class="pos-widget-image coming-soon">
+                                <!-- <img src="../assets/icons/subscription.png" alt="Subscriptions"> -->
+                                <div class="coming-soon-overlay">Coming Soon</div>
+                            </div>
+                            <h4>Subscriptions</h4>
+                            <p>Set up recurring payments and manage subscription plans for your customers.</p>
+                            <button class="pos-button" disabled>Coming Soon</button>
+                        </div>
+                    </div>
                 </div>
                 <div id="customers" class="tab-content">
                     <h2>Customers</h2>
@@ -110,9 +159,152 @@
             </main>
         </div>
     </div>
+    <!-- Modal Walkthrough for Web Checkout -->
+    <div id="checkout-modal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Web Checkout Setup Guide</h3>
+                <button class="modal-close-btn">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="walkthrough-stepper">
+                    <div class="step active" data-step="1">1</div>
+                    <div class="step" data-step="2">2</div>
+                    <div class="step" data-step="3">3</div>
+                    <div class="step" data-step="4">4</div>
+                    <div class="step" data-step="5">5</div>
+                </div>
+                
+                <div class="walkthrough-content">
+                    <div class="step-panel active" data-step="1">
+                        <h4>Step 1: Get Your Inputs Ready</h4>
+                        <p>During implementation of the checkout, you will need these variables:</p>
+                        
+                        <div class="input-checklist">
+                            <div class="input-item">
+                                <div class="check-circle">✓</div>
+                                <div class="input-details">
+                                    <h5>Amount of the payment</h5>
+                                    <p>The total amount you're charging your customer</p>
+                                </div>
+                            </div>
+                            
+                            <div class="input-item">
+                                <div class="check-circle">✓</div>
+                                <div class="input-details">
+                                    <h5>Your vendorID</h5>
+                                    <p>You can find this in your Stablio's dashboard settings</p>
+                                </div>
+                            </div>
+                            
+                            <div class="input-item">
+                                <div class="check-circle">✓</div>
+                                <div class="input-details">
+                                    <h5>Customer's userID (optional)</h5>
+                                    <p>For tracking who's making the payment. You can leave this null if not needed.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-panel" data-step="2">
+                        <h4>Step 2: Add Script to Your Page</h4>
+                        <p>Include our JavaScript SDK in your checkout page:</p>
+                        <div class="code-block">
+                            <pre><code>&lt;!-- Add this to your HTML head --&gt;
+&lt;script src="<span class="highlight-green">https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v0.2.0/dist/crypto-payments-widget.js</span>"&gt;&lt;/script&gt;</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="step-panel" data-step="3">
+                        <h4>Step 3: Initialize Payment Widget</h4>
+                        <p>Create a div with id 'payment-container' for the payment widget. It should have at least 400px by 400px space.</p>
+                        <p>Replace the <span class="highlight-orange">orange variables</span> in the code below and then use it to initialize the widget:</p>
+                        <div class="code-block">
+                            <pre><code>&lt;body&gt;
+&lt;div id="<span class="highlight-green">payment-container</span>"&gt;&lt;/div&gt;
+&lt;script&gt;
+    const <span class="highlight-green">widget</span> = new <span class="highlight-green">PaymentWidget</span>({
+        type: <span class="highlight-green">'defaultPayment'</span>,
+        vendorID: <span class="highlight-orange">'your_vendor_id'</span>,   <span class="highlight-white">//must be a string</span>
+        amount: <span class="highlight-orange">your_amount</span>,          <span class="highlight-white">//must be a number</span>
+        userID: <span class="highlight-orange">'your_customer_id'</span>,   <span class="highlight-white">//must be a string</span>
+    });
+&lt;/script&gt;
+&lt;/body&gt;</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="step-panel" data-step="4">
+                        <h4>Step 4: Listen for status changes</h4>
+                        <p>The widget will emit events when there is an update in the payment process.</p>
+                        <p>You can use these events to know when the user has finished the payment and update your website accordingly.</p>
+                        <div class="code-block">
+                            <pre><code><span class="highlight-white">// Listen for payment events</span>
+document.getElementById(<span class="highlight-green">'payment-container'</span>).addEventListener(<span class="highlight-green">'payment_status'</span>, (event) => {
+    const {<span class="highlight-green">status</span>, <span class="highlight-green">data</span> } = event.detail;
+    
+    switch(<span class="highlight-green">status</span>) {
+        case <span class="highlight-green">'payment_completed'</span>:
+            console.log(`Payment completed! User: <span class="highlight-green">${data.userID}</span>`);
+            break;
+            
+        case <span class="highlight-green">'payment_failed'</span>:
+            console.log(`Payment completed! User: <span class="highlight-green">${data.userID}</span>`);
+            break;
+            
+        case <span class="highlight-green">'payment_pending'</span>:
+            console.log(`Payment pending! Address: <span class="highlight-green">${data.address}</span>`);
+            break;
+    }
+});</code></pre>
+                        </div>
+                    </div>
+                    <div class="step-panel" data-step="5">
+                        <h4>Step 5: See Insights</h4>
+                        <p>Once payments start coming in, you can access insights and analytics from your dashboard.</p>
+                        
+                        <div class="insights-overview">
+                            <div class="insight-card">
+                                <div class="insight-icon">📊</div>
+                                <div class="insight-details">
+                                    <h5>Home Tab</h5>
+                                    <p>View payment analytics, transaction volumes, and revenue trends at a glance.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="insight-card">
+                                <div class="insight-icon">👥</div>
+                                <div class="insight-details">
+                                    <h5>Customers Tab</h5>
+                                    <p>Track individual customer payment histories and analyze spending patterns.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step-tip">
+                            <p><strong>💡 Tip:</strong> Use these insights to optimize your payment experience and understand your customers better.</p>
+                        </div>
+                        
+                        <div class="completion-message">
+                            <p>🎉 Congratulations! You've completed the Web Checkout setup guide.</p>
+                            <p>You're now ready to start accepting crypto payments on your website!</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="walkthrough-navigation">
+                    <button class="nav-btn prev-btn" disabled>Previous</button>
+                    <button class="nav-btn next-btn">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="../config/config.js"></script>
     <script src="../js/auth.js"></script>
     <script src="dashboard.js"></script>
     <script src="js/wallets.js"></script>
+    <script src="js/poss.js"></script>
 </body>
 </html>

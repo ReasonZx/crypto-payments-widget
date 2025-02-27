@@ -1,5 +1,5 @@
 #wallets h2 {
-    margin-bottom: 20px; /* Add margin-bottom to the h2 element */
+    margin-bottom: 20px; 
     color: var(--primary-light);
     font-weight: 1000;
 }
@@ -8,7 +8,7 @@
     text-align: center;
     color: var(--primary-dark);
     font-size: 2rem;
-    margin: 30px 0 20px;
+    margin: 0px 0 20px;
     font-weight: 1000;
 }
 

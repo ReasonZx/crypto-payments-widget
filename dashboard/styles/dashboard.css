@@ -1,6 +1,6 @@
 .dashboard-container {
     display: flex;
-    height: calc(100vh - 120px); /* Adjust height based on navbar height */
+    height: calc(100vh - 120px);
 }
 
 .sidebar {
