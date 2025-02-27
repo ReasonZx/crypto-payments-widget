@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../styles/variables.css">
     <link rel="stylesheet" href="../styles/components/navbar.css">
     <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/home.css">
     <link rel="stylesheet" href="styles/wallets.css">
     <link rel="stylesheet" href="styles/poss.css">
     <link rel="stylesheet" href="styles/settings.css">
@@ -48,8 +49,220 @@
             </aside>
             <main class="content">
                 <div id="home" class="tab-content active">
-                    <h2>Home</h2>
-                    <p>Welcome to your dashboard.</p>
+                    <h2>Dashboard</h2>
+                    <h3 class="home-subtitle">Welcome to your payment analytics</h3>
+                    <p class="home-description">Track your payment performance and view detailed transaction history.</p>
+                    
+                    <!-- Home Sub-Navigation -->
+                    <div class="home-tabs">
+                        <button class="home-tab-btn active" data-tab="analytics">Analytics</button>
+                        <button class="home-tab-btn" data-tab="transactions">All Transactions</button>
+                    </div>
+                    
+                    <!-- Analytics Tab Content -->
+                    <div id="analytics" class="home-tab-content active">
+                        <div class="analytics-header">
+                            <div class="period-selector">
+                                <button class="period-btn active" data-period="7d">7 Days</button>
+                                <button class="period-btn" data-period="30d">30 Days</button>
+                                <button class="period-btn" data-period="90d">90 Days</button>
+                                <button class="period-btn" data-period="1y">1 Year</button>
+                            </div>
+                            <div class="date-range-picker">
+                                <button class="date-range-toggle">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    Custom Range
+                                </button>
+                                <div class="date-range-dropdown hidden">
+                                    <div class="date-inputs">
+                                        <div class="date-input-group">
+                                            <label for="start-date">Start Date</label>
+                                            <input type="date" id="start-date">
+                                        </div>
+                                        <div class="date-input-group">
+                                            <label for="end-date">End Date</label>
+                                            <input type="date" id="end-date">
+                                        </div>
+                                    </div>
+                                    <button class="apply-date-range">Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stats-cards">
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <h4>Total Volume</h4>
+                                    <div class="stat-trend positive">
+                                        <i class="fas fa-arrow-up"></i> 12.5%
+                                    </div>
+                                </div>
+                                <div class="stat-value">$8,245.50</div>
+                                <div class="stat-label">vs. previous period</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <h4>Total Transactions</h4>
+                                    <div class="stat-trend positive">
+                                        <i class="fas fa-arrow-up"></i> 5.2%
+                                    </div>
+                                </div>
+                                <div class="stat-value">142</div>
+                                <div class="stat-label">vs. previous period</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <h4>Average Transaction</h4>
+                                    <div class="stat-trend positive">
+                                        <i class="fas fa-arrow-up"></i> 3.8%
+                                    </div>
+                                </div>
+                                <div class="stat-value">$58.07</div>
+                                <div class="stat-label">vs. previous period</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <h4>Success Rate</h4>
+                                    <div class="stat-trend neutral">
+                                        <i class="fas fa-minus"></i> 0%
+                                    </div>
+                                </div>
+                                <div class="stat-value">98.6%</div>
+                                <div class="stat-label">vs. previous period</div>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h4>Payment Volume</h4>
+                                <div class="chart-options">
+                                    <button class="chart-option active" data-type="volume">Volume</button>
+                                    <button class="chart-option" data-type="count">Count</button>
+                                </div>
+                            </div>
+                            <canvas id="payments-chart"></canvas>
+                        </div>
+                        
+                        <div class="analytics-grid">
+                            <div class="payment-methods-chart">
+                                <h4>Payment Methods</h4>
+                                <div class="chart-wrapper">
+                                    <canvas id="payment-methods-chart"></canvas>
+                                </div>
+                                <div class="chart-legend">
+                                    <div class="legend-item">
+                                        <div class="color-dot" style="background-color: #4dbb9a;"></div>
+                                        <div class="legend-label">USDC (Solana): 65%</div>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="color-dot" style="background-color: #2C7BE5;"></div>
+                                        <div class="legend-label">USDC (Base): 22%</div>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="color-dot" style="background-color: #9D7BD8;"></div>
+                                        <div class="legend-label">USDT (Solana): 13%</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="payment-source-chart">
+                                <h4>Payment Source</h4>
+                                <div class="chart-wrapper">
+                                    <canvas id="payment-source-chart"></canvas>
+                                </div>
+                                <div class="chart-legend">
+                                    <div class="legend-item">
+                                        <div class="color-dot" style="background-color: #4dbb9a;"></div>
+                                        <div class="legend-label">Web Checkout: 72%</div>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="color-dot" style="background-color: #2C7BE5;"></div>
+                                        <div class="legend-label">Payment Links: 28%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Transactions Tab Content -->
+                    <div id="transactions" class="home-tab-content">
+                        <div class="transactions-header">
+                            <div class="search-container">
+                                <input type="text" id="transaction-search" placeholder="Search transactions...">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="filter-container">
+                                <select id="transaction-status-filter">
+                                    <option value="all">All Statuses</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="failed">Failed</option>
+                                </select>
+                                <select id="transaction-source-filter">
+                                    <option value="all">All Sources</option>
+                                    <option value="web-checkout">Web Checkout</option>
+                                    <option value="payment-link">Payment Link</option>
+                                </select>
+                                <select id="transaction-date-filter">
+                                    <option value="all">All Time</option>
+                                    <option value="today">Today</option>
+                                    <option value="week">This Week</option>
+                                    <option value="month">This Month</option>
+                                    <option value="quarter">Last 3 Months</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="transactions-table-container">
+                            <table class="transactions-table">
+                                <thead>
+                                    <tr>
+                                        <th>Payment ID</th>
+                                        <th>Date & Time</th>
+                                        <th>Amount</th>
+                                        <th>Customer</th>
+                                        <th>Source</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transactions-table-body">
+                                    <!-- Transaction rows will be inserted here dynamically -->
+                                </tbody>
+                            </table>
+                            
+                            <div id="transactions-loading" class="loading-indicator">
+                                <div class="spinner"></div>
+                                <p>Loading transaction data...</p>
+                            </div>
+                            
+                            <div id="transactions-empty" class="empty-state hidden">
+                                <div class="empty-icon"><i class="fas fa-exchange-alt"></i></div>
+                                <h3>No transactions found</h3>
+                                <p>No payment transactions match your current filters.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="pagination">
+                            <button id="trans-prev-page" disabled><i class="fas fa-chevron-left"></i> Previous</button>
+                            <span id="trans-page-indicator">Page 1 of 1</span>
+                            <button id="trans-next-page" disabled>Next <i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    
+                    <!-- Transaction Details Modal -->
+                    <div id="transaction-details-modal" class="modal-overlay hidden">
+                        <div class="modal-container transaction-modal">
+                            <div class="modal-header">
+                                <h3>Transaction Details</h3>
+                                <button class="modal-close-btn">&times;</button>
+                            </div>
+                            
+                            <div class="modal-body">
+                                <div id="transaction-details-content">
+                                    <!-- Transaction details will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div id="wallets" class="tab-content">
                     <h2>Wallets configuration</h2>
@@ -536,6 +749,8 @@ document.getElementById(<span class="highlight-green">'payment-container'</span>
     <script src="../config/config.js"></script>
     <script src="../js/auth.js"></script>
     <script src="dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/home.js"></script>
     <script src="js/wallets.js"></script>
     <script src="js/poss.js"></script>
     <script src="js/settings.js"></script>
