@@ -22,6 +22,12 @@ async function handleSignup(event) {
     
     if (!username.value.trim()) {
         username.nextElementSibling.classList.add('show-error');
+        username.nextElementSibling.textContent = 'Username is required';
+        username.nextElementSibling.style.display = 'block';
+        isValid = false;
+    } else if (!isValidUsername(username.value)) {
+        username.nextElementSibling.classList.add('show-error');
+        username.nextElementSibling.textContent = 'Username can only contain lowercase letters and numbers';
         username.nextElementSibling.style.display = 'block';
         isValid = false;
     }
@@ -85,7 +91,14 @@ async function handleSignup(event) {
   
         // Handle successful signup
         const data = await response.json();
-        localStorage.setItem('token', data.token);
+
+        // Extract the token and user data
+        const { token, user } = data;
+        
+        // Store token in localStorage for future API calls
+        localStorage.setItem('token', token);
+        localStorage.setItem('userData', JSON.stringify(user));
+
         window.location.href = '../dashboard/';
       
     } catch (error) {
@@ -108,6 +121,12 @@ function isValidEmail(email) {
     return emailRegex.test(email);
 }
 
+function isValidUsername(username) {
+    // Check for lowercase letters and numbers only (no spaces, capitals, or symbols)
+    const usernameRegex = /^[a-z0-9]+$/;
+    return usernameRegex.test(username);
+}
+
 // Add input event listeners to clear validation messages
 document.querySelectorAll('.auth-form input').forEach(input => {
     input.addEventListener('input', () => {
@@ -115,4 +134,30 @@ document.querySelectorAll('.auth-form input').forEach(input => {
         input.nextElementSibling.classList.remove('show-error');
         document.getElementById('error-message').textContent = '';
     });
+});
+
+document.getElementById('username').addEventListener('input', function() {
+    const usernameInput = this;
+    const errorElement = usernameInput.nextElementSibling;
+    
+    if (usernameInput.value.trim() === '') {
+        // Don't show error when field is empty during typing
+        errorElement.style.display = 'none';
+        errorElement.classList.remove('show-error');
+    } else if (usernameInput.value.includes(' ')) {
+        errorElement.textContent = 'Username cannot contain spaces';
+        errorElement.style.display = 'block';
+        errorElement.classList.add('show-error');
+    } else if (/[A-Z]/.test(usernameInput.value)) {
+        errorElement.textContent = 'Username cannot contain capital letters';
+        errorElement.style.display = 'block';
+        errorElement.classList.add('show-error');
+    } else if (/[^a-z0-9]/.test(usernameInput.value)) {
+        errorElement.textContent = 'Username can only contain lowercase letters and numbers';
+        errorElement.style.display = 'block';
+        errorElement.classList.add('show-error');
+    } else {
+        errorElement.style.display = 'none';
+        errorElement.classList.remove('show-error');
+    }
 });

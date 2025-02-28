@@ -57,13 +57,15 @@ async function handleLogin(event) {
             throw new Error('Invalid credentials');
         }
 
+        // Handle successful signup
         const data = await response.json();
+
+        // Extract the token and user data
+        const { token, user } = data;
         
-        // Store auth token
-        localStorage.setItem('token', data.token);
-        
-        // Store user info if needed
-        localStorage.setItem('user', JSON.stringify(data.user));
+        // Store token in localStorage for future API calls
+        localStorage.setItem('token', token);
+        localStorage.setItem('userData', JSON.stringify(user));
 
         updateNavbar();
         

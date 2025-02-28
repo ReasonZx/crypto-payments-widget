@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function getInitialConfig() {
         try {
             const token = localStorage.getItem('token');
-            const user = JSON.parse(localStorage.getItem('user'));
+            const user = JSON.parse(localStorage.getItem('userData'));
             const userId = user ? user.id : null;
             const response = await fetch(`${API_URL}/api/getVendorConfig`,
                 {
@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     saveButton.addEventListener('click', async () => {
         try {
             const token = localStorage.getItem('token');
-            const user = JSON.parse(localStorage.getItem('user'));
+            const user = JSON.parse(localStorage.getItem('userData'));
             const userId = user ? user.id : null;
 
             // Create wallets array

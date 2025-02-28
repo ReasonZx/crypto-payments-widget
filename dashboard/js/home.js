@@ -555,94 +555,132 @@ document.addEventListener('DOMContentLoaded', function() {
     const countData = [];
     const dateLabels = [];
     
-    // Load initial data
-    function initializeDashboard() {
-        // Load sample data
-        generateSampleData();
-        
-        // Setup charts
-        setupPaymentVolumeChart();
-        setupPaymentMethodsChart();
-        setupPaymentSourceChart();
 
-        // Update chart data with initial period (this will populate the chart)
-        updateDashboardData(currentPeriod);
+
+    //***********************/
+    //**** Main Function ****/
+    //***********************/
+
+    async function initializeDashboard() {
+        // Set up loading indicator
+        document.body.classList.add('loading');
         
-        // Initial load of transaction data
-        loadTransactionData();
-        
-        // Update stats cards
-        updateStatsCards();
+        try {
+            const dataLoaded = await fetchAllTransactions();
+            
+            if (!dataLoaded) {
+                // If data failed to load, show appropriate message
+                document.body.classList.remove('loading');
+                return;
+            }
+            
+            // Setup charts
+            setupPaymentVolumeChart();
+            setupPaymentMethodsChart();
+            setupPaymentSourceChart();
+            
+            // Update chart data with initial period
+            updateDashboardData(currentPeriod);
+            
+            // Load transactions table
+            loadTransactionData();
+            
+            // Update stats cards
+            updateStatsCards();
+            
+            // Everything is ready, remove loading state
+            document.body.classList.remove('loading');
+            
+        } catch (error) {
+            console.error('Dashboard initialization error:', error);
+            document.body.classList.remove('loading');
+            
+            // Show error message
+            const errorEl = document.createElement('div');
+            errorEl.className = 'error-message';
+            errorEl.innerHTML = '<h3>Error loading dashboard</h3><p>Something went wrong. Please try refreshing the page.</p>';
+            document.querySelector('.dashboard-container').appendChild(errorEl);
+        }
     }
         
-        // Generate random data for demo
-    function generateSampleData() {
-        // Generate dates for the last 30 days
-        const today = new Date();
-        
-        // Create arrays to store all transaction data by date
-        const transactionsByDate = {};
-        
-        // Initialize the arrays for each date in the last 30 days
-        for (let i = 29; i >= 0; i--) {
-            const date = new Date();
-            date.setDate(today.getDate() - i);
-            const dateString = formatDate(date);
-            dateLabels.push(dateString);
-            
-            // Initialize the object to store transactions for this date
-            transactionsByDate[dateString] = {
-                totalVolume: 0,
-                transactionCount: 0
-            };
-        }
-        
-        // Generate sample transactions
-        for (let i = 0; i < 50; i++) {
-            const daysAgo = Math.floor(Math.random() * 30);
-            const transDate = new Date();
-            transDate.setDate(today.getDate() - daysAgo);
-            const dateString = formatDate(transDate);
-            
-            const statuses = ['completed', 'pending', 'failed'];
-            const sources = ['web-checkout', 'payment-link'];
-            const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
-            const randomAmount = (Math.random() * 450 + 50).toFixed(2);
-            
-            // Create the transaction
-            const transaction = {
-                id: `pay_${Math.random().toString(36).substring(2, 10)}`,
-                date: transDate,
-                amount: randomAmount,
-                customer: `cust_${Math.floor(Math.random() * 5) + 1}`,
-                source: sources[Math.floor(Math.random() * sources.length)],
-                status: randomStatus,
-                chain: Math.random() > 0.3 ? 'Solana' : 'Base',
-                token: Math.random() > 0.7 ? 'USDT' : 'USDC',
-                transactionId: `0x${Math.random().toString(36).substring(2, 40)}`,
-                wallet: `${Math.random() > 0.3 ? 'C' : '0x'}${Math.random().toString(36).substring(2, 40)}`
-            };
-            
-            allTransactions.push(transaction);
-            
-            // Only add completed transactions to the chart data
-            if (randomStatus === 'completed') {
-                // Add to the total for this date
-                if (transactionsByDate[dateString]) {
-                    transactionsByDate[dateString].totalVolume += parseFloat(randomAmount);
-                    transactionsByDate[dateString].transactionCount += 1;
-                }
+    
+    //FetchAllTransactions from backend
+    async function fetchAllTransactions() {
+        try {
+            // Show loading states
+            if (transactionsLoading) {
+                transactionsLoading.style.display = 'flex';
             }
-        }
-        
-        // Sort transactions by date (newest first)
-        allTransactions.sort((a, b) => b.date - a.date);
-        
-        // Now convert the transactions by date into our chart data arrays
-        for (let i = 0; i < dateLabels.length; i++) {
-            const dateData = transactionsByDate[dateLabels[i]];
-            volumeData.push(dateData.totalVolume);
-            countData.push(dateData.transactionCount);
+            
+            const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+            const userId = localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData')).id : null;
+            if (!token && requiresAuthentication) {
+                console.error('No authentication token found');
+                window.location.href = '../login/';
+                return false;
+            }
+                    
+            // Fetch all transaction data from your API
+            const response = await fetch(`${API_URL}/api/transactions/all?vendorID=${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error(`API error: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            // Reset existing data
+            allTransactions = [];
+            volumeData.length = 0;
+            countData.length = 0;
+            dateLabels.length = 0;
+            
+            // Process the transaction data
+            if (data && data.transactions && Array.isArray(data.transactions)) {
+                // Convert date strings to Date objects
+                allTransactions = data.transactions.map(transaction => ({
+                    ...transaction,
+                    date: new Date(transaction.date)
+                }));
+                
+                // Sort by date (newest first)
+                allTransactions.sort((a, b) => b.date - a.date);
+                
+                // Process the data for charts
+                processTransactionsForCharts();
+                
+                return true;
+            } else {
+                throw new Error('Invalid data structure received from API');
+            }
+        } catch (error) {
+            console.error('Error fetching transaction data:', error);
+            
+            // Show error in UI
+            if (transactionsLoading) {
+                transactionsLoading.style.display = 'none';
+            }
+            
+            if (transactionsEmpty) {
+                transactionsEmpty.classList.remove('hidden');
+                const errorTitle = transactionsEmpty.querySelector('h3');
+                const errorMsg = transactionsEmpty.querySelector('p');
+                
+                if (errorTitle) errorTitle.textContent = 'Error loading data';
+                if (errorMsg) errorMsg.textContent = 'Could not connect to the server. Please try again later.';
+            }
+            
+            return false;
+        } finally {
+            if (transactionsLoading) {
+                transactionsLoading.style.display = 'none';
+            }
         }
     }
     
@@ -698,7 +736,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const today = new Date();
                     
                     // For each day in our dataset (30 days), check if it's within the range
-                    for (let i = 29; i >= 0; i--) {
+                    for (let i = 365; i >= 0; i--) {
                         const date = new Date();
                         date.setDate(today.getDate() - i);
                         
@@ -715,7 +753,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 (sum, t) => sum + parseFloat(t.amount), 0
                             );
                             
-                            labels.push(dateLabels[29-i]);
+                            labels.push(dateLabels[365-i]);
                             volumes.push(dayVolume);
                             counts.push(completedTransactionsForDay.length);
                         }
@@ -951,6 +989,48 @@ document.addEventListener('DOMContentLoaded', function() {
         if (successRateEl) {
             successRateEl.querySelector('.stat-value').textContent = `${successRate}%`;
             updateTrendIndicator(successRateEl, successRateChange);
+        }
+    }
+
+    //Process the backend transactions data for charts
+    function processTransactionsForCharts() {
+        // Generate date ranges for the last 30 days
+        const today = new Date();
+        const transactionsByDate = {};
+        
+        // Initialize the date buckets
+        for (let i = 29; i >= 0; i--) {
+            const date = new Date();
+            date.setDate(today.getDate() - i);
+            const dateString = formatDate(date);
+            dateLabels.push(dateString);
+            
+            transactionsByDate[dateString] = {
+                totalVolume: 0,
+                transactionCount: 0
+            };
+        }
+        
+        // Process each transaction and add it to the appropriate date bucket
+        allTransactions.forEach(transaction => {
+            // Only include completed transactions in chart data
+            if (transaction.status === 'completed') {
+                const dateString = formatDate(transaction.date);
+                
+                // If this transaction falls within our 30-day window
+                if (transactionsByDate[dateString]) {
+                    const amount = parseFloat(transaction.amount);
+                    transactionsByDate[dateString].totalVolume += amount;
+                    transactionsByDate[dateString].transactionCount += 1;
+                }
+            }
+        });
+        
+        // Convert the bucketed data into arrays for our charts
+        for (let i = 0; i < dateLabels.length; i++) {
+            const dateData = transactionsByDate[dateLabels[i]];
+            volumeData.push(dateData.totalVolume);
+            countData.push(dateData.transactionCount);
         }
     }
         
@@ -1214,8 +1294,66 @@ document.addEventListener('DOMContentLoaded', function() {
         
         document.body.removeChild(textarea);
     }
+
+    // Add a refresh data function for manual refreshing
+    async function refreshDashboardData() {
+        try {
+            document.body.classList.add('refreshing');
+            
+            // Clear current data
+            allTransactions = [];
+            filteredTransactions = [];
+            
+            // Fetch new data
+            const success = await fetchAllTransactions();
+            
+            if (success) {
+                // Update everything
+                updateDashboardData(currentPeriod);
+                loadTransactionData();
+                updateStatsCards();
+                
+                // Show success message
+                showToast('Dashboard data refreshed successfully');
+            } else {
+                // Show error message
+                showToast('Failed to refresh data', 'error');
+            }
+        } catch (error) {
+            console.error('Error refreshing data:', error);
+            showToast('Failed to refresh data', 'error');
+        } finally {
+            document.body.classList.remove('refreshing');
+        }
+    }
+
+    // Add this toast notification function if you don't have it yet
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+        
+        document.body.appendChild(toast);
+        
+        // Show the toast
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 10);
+        
+        // Hide and remove after 3 seconds
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                document.body.removeChild(toast);
+            }, 300);
+        }, 3000);
+    }
     
-    // Helper functions
+
+    //***************************/
+    //**** Helper functions ****//
+    //***************************/
+
     function formatDate(date) {
         return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     }
@@ -1239,7 +1377,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return `${str.substr(0, visibleChars)}...${str.substr(str.length - visibleChars, visibleChars)}`;
     }
 
-    // Helper function to update trend indicator
     function updateTrendIndicator(cardElement, changePercentage) {
         const trendEl = cardElement.querySelector('.stat-trend');
         if (!trendEl) return;
@@ -1250,19 +1387,28 @@ document.addEventListener('DOMContentLoaded', function() {
         // Parse the change percentage
         const change = parseFloat(changePercentage);
         
-        // Set the appropriate class and icon
+        // Set the appropriate class, icon, and title
         if (change > 0) {
             trendEl.classList.add('positive');
             trendEl.innerHTML = `<i class="fas fa-arrow-up"></i> ${Math.abs(change)}%`;
+            trendEl.setAttribute('title', 'Increase compared to previous period');
         } else if (change < 0) {
             trendEl.classList.add('negative');
             trendEl.innerHTML = `<i class="fas fa-arrow-down"></i> ${Math.abs(change)}%`;
+            trendEl.setAttribute('title', 'Decrease compared to previous period');
         } else {
             trendEl.classList.add('neutral');
             trendEl.innerHTML = `<i class="fas fa-minus"></i> 0%`;
+            trendEl.setAttribute('title', 'No change from previous period');
         }
     }
     
     // Initialize the dashboard
     initializeDashboard();
+
+    // Add this to your event listeners
+    const refreshBtn = document.getElementById('refresh-data-btn');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', refreshDashboardData);
+    }
 });

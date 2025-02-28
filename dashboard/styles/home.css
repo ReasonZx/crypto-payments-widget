@@ -207,6 +207,7 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    position: relative;
 }
 
 .stat-header {
@@ -257,6 +258,15 @@
 .stat-label {
     font-size: 0.8rem;
     color: #a0aec0;
+}
+
+.trend-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: absolute;
+    top: 20px;
+    right: 20px;
 }
 
 /* Chart Container */
@@ -749,4 +759,75 @@
     .transactions-table td:nth-child(5) {
         display: none;
     }
+}
+
+/* Refresh Button */
+.refresh-btn {
+    background-color: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: #4a5568;
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.refresh-btn:hover {
+    background-color: #edf2f7;
+    color: #2d3748;
+    border-color: #cbd5e0;
+}
+
+.refresh-btn:active {
+    transform: translateY(1px);
+}
+
+.refresh-btn i {
+    font-size: 12px;
+}
+
+/* Add a spinning animation for when data is refreshing */
+body.refreshing .refresh-btn i {
+    animation: spin 1s linear infinite;
+}
+
+/* Position the refresh button in the analytics header */
+.analytics-header .refresh-btn {
+    margin-left: auto; /* Push it to the right */
+}
+
+/* Style for toast notifications */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #2d3748;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(30px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.toast-success {
+    background: #4dbb9a;
+    color: white;
+}
+
+.toast-error {
+    background: #e53e3e;
+    color: white;
 }

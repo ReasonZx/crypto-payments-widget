@@ -62,16 +62,15 @@
                     <!-- Analytics Tab Content -->
                     <div id="analytics" class="home-tab-content active">
                         <div class="analytics-header">
-                            <div class="period-selector">
-                                <button class="period-btn active" data-period="7d">7 Days</button>
-                                <button class="period-btn" data-period="30d">30 Days</button>
-                                <button class="period-btn" data-period="90d">90 Days</button>
-                                <button class="period-btn" data-period="1y">1 Year</button>
+                            <div class="period-filters">
+                                <button class="period-btn active" data-period="7d">7D</button>
+                                <button class="period-btn" data-period="30d">30D</button>
+                                <button class="period-btn" data-period="90d">90D</button>
+                                <button class="period-btn" data-period="1y">1Y</button>
                             </div>
                             <div class="date-range-picker">
                                 <button class="date-range-toggle">
                                     <i class="fas fa-calendar-alt"></i>
-                                    Custom Range
                                 </button>
                                 <div class="date-range-dropdown hidden">
                                     <div class="date-inputs">
@@ -87,38 +86,40 @@
                                     <button class="apply-date-range">Apply</button>
                                 </div>
                             </div>
+                            <button id="refresh-data-btn" class="refresh-btn">
+                                <i class="fas fa-sync-alt"></i> Refresh Data
+                            </button>
                         </div>
                         
                         <div class="stats-cards">
                             <div class="stat-card">
                                 <div class="stat-header">
                                     <h4>Total Volume</h4>
+                                </div>
+                                <div class="stat-value">$0</div>
+                                <div class="trend-section">
                                     <div class="stat-trend positive">
-                                        <i class="fas fa-arrow-up"></i> 12.5%
+                                        <i class="fas fa-arrow-up"></i> 0%
                                     </div>
                                 </div>
-                                <div class="stat-value">$8,245.50</div>
-                                <div class="stat-label">vs. previous period</div>
                             </div>
                             <div class="stat-card">
                                 <div class="stat-header">
                                     <h4>Total Transactions</h4>
                                     <div class="stat-trend positive">
-                                        <i class="fas fa-arrow-up"></i> 5.2%
+                                        <i class="fas fa-arrow-up"></i> 0%
                                     </div>
                                 </div>
-                                <div class="stat-value">142</div>
-                                <div class="stat-label">vs. previous period</div>
+                                <div class="stat-value">0</div>
                             </div>
                             <div class="stat-card">
                                 <div class="stat-header">
                                     <h4>Average Transaction</h4>
                                     <div class="stat-trend positive">
-                                        <i class="fas fa-arrow-up"></i> 3.8%
+                                        <i class="fas fa-arrow-up"></i> 0%
                                     </div>
                                 </div>
-                                <div class="stat-value">$58.07</div>
-                                <div class="stat-label">vs. previous period</div>
+                                <div class="stat-value">$0</div>
                             </div>
                             <div class="stat-card">
                                 <div class="stat-header">
@@ -127,8 +128,7 @@
                                         <i class="fas fa-minus"></i> 0%
                                     </div>
                                 </div>
-                                <div class="stat-value">98.6%</div>
-                                <div class="stat-label">vs. previous period</div>
+                                <div class="stat-value">0%</div>
                             </div>
                         </div>
                         
@@ -658,7 +658,7 @@
                         <p>Include our JavaScript SDK in your checkout page:</p>
                         <div class="code-block">
                             <pre><code>&lt;!-- Add this to your HTML head --&gt;
-&lt;script src="<span class="highlight-green">https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v0.2.0/dist/crypto-payments-widget.js</span>"&gt;&lt;/script&gt;</code></pre>
+&lt;script src="<span class="highlight-green">https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v0.2.1/dist/crypto-payments-widget.js</span>"&gt;&lt;/script&gt;</code></pre>
                         </div>
                     </div>
                     
