@@ -20,7 +20,7 @@ function updateNavbar() {
 function handleLogout() {
     localStorage.removeItem('token');
     localStorage.removeItem('userData');
-    window.location.href = '/.';
+    window.location.reload();
 }
 
 // Check auth status when page loads

@@ -341,12 +341,14 @@ class PaymentWidget {
                     }
                     if (messageData.type === 'payment_completed') {
                         this.goToScreen3(address, this.paymentID);
-                        this.emitPaymentEvent('payment_completed', {
-                            address: messageData.address,
-                            userID: this.config.userID,
-                            timestamp: Date.now()
-                        });
                         clearInterval(this.countdown);
+                        setTimeout(() => {
+                            this.emitPaymentEvent('payment_completed', {
+                                address: messageData.address,
+                                userID: this.config.userID,
+                                timestamp: Date.now()
+                            });
+                        }, 3000); // 3000 ms = 3 s
                     }
 
                 } catch (error) {

@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Not Found - CryptoPayments</title>
-    <link rel="stylesheet" href="/crypto-payments/styles/global.css">
-    <link rel="stylesheet" href="/crypto-payments/styles/variables.css">
-    <link rel="stylesheet" href="/crypto-payments/styles/components/navbar.css">
+    <link rel="stylesheet" href="./styles/global.css">
+    <link rel="stylesheet" href="./styles/variables.css">
+    <link rel="stylesheet" href="./styles/components/navbar.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <meta http-equiv="refresh" content="5;url=/crypto-payments/" />
+    <meta http-equiv="refresh" content="5;url=/crypto-payments-widget/" />
     <style>
         .error-container {
             display: flex;
@@ -58,7 +58,7 @@
         // Dynamically determine base path - works for both local and GitHub Pages
         const basePath = window.location.hostname === 'localhost' || 
                         window.location.hostname === '127.0.0.1' ? 
-                        '/' : '/crypto-payments/';
+                        '/' : '/crypto-payments-widget/';
         
         // Use this for redirection
         document.querySelector('meta[http-equiv="refresh"]').content = `5;url=${basePath}`;
@@ -77,7 +77,7 @@
             <div class="container">
                 <div class="logo">
                     <a href=".">
-                        <img src="/crypto-payments/assets/images/logoSmall.png" alt="CryptoPayments Logo">
+                        <img src="./assets/images/logoSmall.png" alt="CryptoPayments Logo">
                         <span>Stablecoin Payments</span>
                     </a>
                 </div>
@@ -90,13 +90,12 @@
                     <div class="error-code">404</div>
                     <h1 class="error-title">Page Not Found</h1>
                     <p class="error-message">The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
-                    <a href="/crypto-payments/" class="btn btn-primary btn-large">Return to Homepage</a>
+                    <a href="/crypto-payments-widget/" class="btn btn-primary btn-large">Return to Homepage</a>
                     <div class="countdown">Redirecting to homepage in <span id="countdown">5</span> seconds...</div>
                 </div>
             </div>
         </main>
     </div>
-
     <script>
         let seconds = 5;
         const countdownElement = document.getElementById('countdown');
@@ -107,12 +106,12 @@
             
             if (seconds <= 0) {
                 clearInterval(intervalId);
-                window.location.href = window.basePathForRedirect || '/crypto-payments/';
+                window.location.href = window.basePathForRedirect || '/crypto-payments-widget/';
             }
         }, 1000);
     </script>
 
-    <script src="/crypto-payments/js/auth.js"></script>
+    <script src="./js/auth.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </body>
 </html>
