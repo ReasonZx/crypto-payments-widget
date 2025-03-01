@@ -63,16 +63,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 loadingOverlay.classList.remove('fade-out');
                 widgetContainer.style.display = 'block';
                 payerLabel.style.display = 'flex';
-                
-                const widget = new PaymentWidget({
+
+                let widgetConfig = {
                     type: 'standAlonePayment',
                     amount: amount,
                     vendorID: 'demo_vendor_123',
                     isCustodial: isUsingDefaultWallet,
-                    wallets: wallets,
                     container: widgetContainer,
-                    userID: 'demo-user-123',
-                });
+                    userID: 'demo-user-123'
+                };
+
+                if (isUsingDefaultWallet) {
+                    const chains = getChainsConfig();
+                    widgetConfig.chains = chains;
+                } else {
+                    widgetConfig.wallets = wallets;
+                }
+                
+                const widget = new PaymentWidget(widgetConfig);
+
             }, 200);
         }, 1800);
     }
@@ -145,6 +154,20 @@ document.addEventListener('DOMContentLoaded', () => {
         return wallets;
     }
 
+    function getChainsConfig() {
+        const chains = [];
+        
+        document.querySelectorAll('.chain').forEach(chain => {
+            const chainToggle = chain.querySelector('.chain-toggle');
+            if (chainToggle.checked) {
+                const chainType = chain.querySelector('.chain-logo').alt.toLowerCase();
+                chains.push(chainType);
+            }
+        });
+        
+        return chains;
+    }
+
     function validateChainWallets() {
         const useDefaultWallet = document.getElementById('use-default-all').checked;
         const chains = document.querySelectorAll('.chain');
@@ -199,6 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateCodeBlock() {
         const amount = getAmount();
         const wallets = getWalletsConfig();
+        const chains = getChainsConfig();
         const userID = 'demo-user-123';
         const useDefaultAll = document.getElementById('use-default-all');
         const isCustodial = useDefaultAll.checked;
@@ -217,7 +241,9 @@ document.addEventListener('DOMContentLoaded', () => {
             vendorID: 'demo_vendor_123',
             amount: <span class="highlight" id="codeAmount">${amount}</span>,
             isCustodial: <span class="highlight" id="codeCustodial">${isCustodial}</span>,
-            ${!isCustodial ? `wallets: <span class="highlight" id="codeWallets">${JSON.stringify(wallets)}</span>,\n            ` : ''}userID: '${userID}'
+            ${!isCustodial ? 
+                `wallets: <span class="highlight" id="codeWallets">${JSON.stringify(wallets)}</span>,\n            ` : 
+                `chains: <span class="highlight" id="codeChains">${JSON.stringify(chains)}</span>,\n            `}userID: '${userID}'
         });
     &lt;/script&gt;
 &lt;/body&gt;</code></pre>

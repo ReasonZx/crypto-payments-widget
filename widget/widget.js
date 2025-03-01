@@ -7,7 +7,9 @@ import QRCode from 'qrcode';
  * Mandatory fields according to each payment type:
  * - defaultPayment: amount, vendorID (optional - userID, chains)
  * - paymentById: paymentID, vendorID (optional - userID)
- * - standAlonePayment: amount, vendorID, isCustodial, wallets - if isCustodial is false - (optional - userID)
+ * - standAlonePayment: amount, vendorID, isCustodial, (optional - userID)
+ *                      wallets - if isCustodial is false, 
+ *                      chains - if isCustodial is True, (optional - defaults to both chains)
  */
 class PaymentWidget {
     constructor(config = {}) {
@@ -107,7 +109,12 @@ class PaymentWidget {
 
         // Next button click
         if (nextButton) {
-            nextButton.addEventListener('click', () => this.goToScreen2());
+            nextButton.addEventListener('click', () => {
+                // Only proceed if button is not already in loading state
+                if (!nextButton.classList.contains('loading') && !nextButton.disabled) {
+                    this.goToScreen2();
+                }
+            });
         }
     }
 
@@ -173,8 +180,15 @@ class PaymentWidget {
             return;
         }
 
+        // Get reference to the next button
+        const nextButton = this.shadow.querySelector('#nextButton');
+        
+        // Disable button and show loading state
+        nextButton.disabled = true;
+        nextButton.classList.add('loading');
+
         try {
-            let {address, authToken, publicKey , amount} = await this.sendPaymentRequest();
+            let {address, authToken, publicKey, amount} = await this.sendPaymentRequest();
             
             this.config._authToken = authToken;
             this.config._publicKey = await this.crypto.subtle.importKey(
@@ -249,6 +263,11 @@ class PaymentWidget {
             this.startTimer();
         } catch (error) {
             console.error('Payment creation failed:', error);
+            
+            // Re-enable button and remove loading state on error
+            nextButton.disabled = false;
+            nextButton.classList.remove('loading');
+            
             alert('Failed to create payment. Please try again.');
         }
     }
@@ -307,11 +326,18 @@ class PaymentWidget {
                     address: address
                 }));
 
-                this.pingInterval = setInterval(() => {
+                // Add ONLY application-level heartbeat every 30 seconds
+                this.heartbeatInterval = setInterval(() => {
                     if (this.ws.readyState === WebSocket.OPEN) {
-                        this.ws.send(JSON.stringify({ type: 'ping' }));
+                        this.ws.send(JSON.stringify({ 
+                            type: 'heartbeat',
+                            timestamp: Date.now()
+                        }));
                     }
-                }, 20000);
+                }, 30000); // Every 30 seconds
+
+                // Track last received message time
+                this.lastMessageTime = Date.now();
             };
     
             this.ws.onerror = (error) => {
@@ -321,36 +347,43 @@ class PaymentWidget {
             };
     
             this.ws.onclose = () => {
-                clearInterval(this.pingInterval);
+                if (this.heartbeatInterval) {
+                    clearInterval(this.heartbeatInterval);
+                    this.heartbeatInterval = null;
+                }
             };
     
             this.ws.onmessage = async (event) => {
+                // Update last message time whenever we receive anything
+                this.lastMessageTime = Date.now();
+                
                 try {
-                    const { data, signature, timestamp } = JSON.parse(event.data);
+                    const message = JSON.parse(event.data);
+                    const { data, signature } = message;
 
-                    const messageData = typeof data === 'string' ? JSON.parse(data) : data;
-
-                    // Verify timestamp is recent
-                    if (Date.now() - timestamp > 5000) {
-                        throw new Error('Message expired');
+                    
+                    // Skip signature verification for heartbeat responses
+                    if (data && data.type === 'heartbeat_response') {
+                        return;
                     }
-
+                    
                     // Verify message signature
                     if (!await this.verifyMessage(data, signature)) {
                         throw new Error('Invalid signature');
                     }
-                    if (messageData.type === 'payment_completed') {
+
+
+                    if (data && data.type === 'payment_completed') {
                         this.goToScreen3(address, this.paymentID);
                         clearInterval(this.countdown);
                         setTimeout(() => {
                             this.emitPaymentEvent('payment_completed', {
-                                address: messageData.address,
+                                address: data.address,
                                 userID: this.config.userID,
-                                timestamp: Date.now()
+                                timestamp: Date.now(),
                             });
-                        }, 3000); // 3000 ms = 3 s
+                        }, 3000);
                     }
-
                 } catch (error) {
                     console.error('Error processing message:', error);
                 }
@@ -362,7 +395,10 @@ class PaymentWidget {
 
     cleanupWebSocket() {
         if (this.ws) {
-            clearInterval(this.pingInterval);
+            if (this.heartbeatInterval) {
+                clearInterval(this.heartbeatInterval);
+                this.heartbeatInterval = null;
+            }
             this.ws.close();
             this.ws = null;
         }

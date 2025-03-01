@@ -533,3 +533,32 @@
     margin-top: 20px;
     font-size: 16px;
 }
+
+/* Add these styles at the end of your CSS file */
+
+/* Loading button styles */
+.button.loading {
+    position: relative;
+    color: transparent !important;
+    cursor: wait !important;
+}
+
+.button.loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: button-spinner 0.8s linear infinite;
+}
+
+@keyframes button-spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
