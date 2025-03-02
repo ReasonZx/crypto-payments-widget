@@ -286,11 +286,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const amount = parseFloat(transaction.amount);
             totalVolume += amount;
             
-            if (transaction.token === 'USDT' && transaction.chain === 'Solana') {
+            if (transaction.token === 'usdt' && transaction.chain === 'solana') {
                 usdtSolanaCount += amount;
-            } else if (transaction.token === 'USDC' && transaction.chain === 'Base') {
+            } else if (transaction.token === 'usdc' && transaction.chain === 'base') {
                 usdcBaseCount += amount;
-            } else if (transaction.token === 'USDC' && transaction.chain === 'Solana') {
+            } else if (transaction.token === 'usdc' && transaction.chain === 'solana') {
                 usdcSolanaCount += amount;
             }
         });
@@ -624,7 +624,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const response = await fetch(`${API_URL}/api/transactions/all?vendorID=${userId}`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `${token}`,
                     'Content-Type': 'application/json'
                 }
             });
@@ -652,8 +652,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Sort by date (newest first)
                 allTransactions.sort((a, b) => b.date - a.date);
                 
+                // Store in a window variable for access across JS files
+                window.sharedTransactionData = allTransactions;
+                
+                // Mark that data is loaded for other components
+                window.transactionsDataLoaded = true;
+                
                 // Process the data for charts
                 processTransactionsForCharts();
+                
+                // Dispatch event to notify other components
+                window.dispatchEvent(new CustomEvent('transactionsLoaded'));
                 
                 return true;
             } else {
@@ -794,15 +803,37 @@ document.addEventListener('DOMContentLoaded', function() {
                     counts = countData.slice(-30);
                     break;
                 case '90d':
-                    labels = dateLabels;
-                    volumes = volumeData;
-                    counts = countData;
+                    labels = dateLabels.slice(-90);
+                    volumes = volumeData.slice(-90);
+                    counts = countData.slice(-90);
                     break;
                 case '1y':
-                    // For demo, we'll just use all data
-                    labels = dateLabels;
-                    volumes = volumeData;
-                    counts = countData;
+                    // Use weekly data points for 1Y view to improve performance
+                    const weeklyLabels = [];
+                    const weeklyVolumes = [];
+                    const weeklyCounts = [];
+                    
+                    // Sample every 7th day (weekly data points)
+                    for (let i = 0; i < dateLabels.length; i += 7) {
+                        weeklyLabels.push(dateLabels[i]);
+                        
+                        // Calculate weekly totals
+                        let weeklyVolume = 0;
+                        let weeklyCount = 0;
+                        
+                        // Sum up to 7 days (or whatever's left)
+                        for (let j = 0; j < 7 && i + j < volumeData.length; j++) {
+                            weeklyVolume += volumeData[i + j];
+                            weeklyCount += countData[i + j];
+                        }
+                        
+                        weeklyVolumes.push(weeklyVolume);
+                        weeklyCounts.push(weeklyCount);
+                    }
+                    
+                    labels = weeklyLabels;
+                    volumes = weeklyVolumes;
+                    counts = weeklyCounts;
                     break;
                 default:
                     labels = dateLabels.slice(-7);
@@ -994,12 +1025,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     //Process the backend transactions data for charts
     function processTransactionsForCharts() {
-        // Generate date ranges for the last 30 days
+        // Generate date ranges for the last 365 days instead of just 30
         const today = new Date();
         const transactionsByDate = {};
         
-        // Initialize the date buckets
-        for (let i = 29; i >= 0; i--) {
+        // Initialize the date buckets for 365 days
+        for (let i = 364; i >= 0; i--) {
             const date = new Date();
             date.setDate(today.getDate() - i);
             const dateString = formatDate(date);
@@ -1015,13 +1046,12 @@ document.addEventListener('DOMContentLoaded', function() {
         allTransactions.forEach(transaction => {
             // Only include completed transactions in chart data
             if (transaction.status === 'completed') {
-                const dateString = formatDate(transaction.date);
+                const txDate = formatDate(transaction.date);
                 
-                // If this transaction falls within our 30-day window
-                if (transactionsByDate[dateString]) {
-                    const amount = parseFloat(transaction.amount);
-                    transactionsByDate[dateString].totalVolume += amount;
-                    transactionsByDate[dateString].transactionCount += 1;
+                // Make sure this date exists in our buckets
+                if (transactionsByDate[txDate]) {
+                    transactionsByDate[txDate].totalVolume += parseFloat(transaction.amount);
+                    transactionsByDate[txDate].transactionCount += 1;
                 }
             }
         });
@@ -1105,17 +1135,40 @@ document.addEventListener('DOMContentLoaded', function() {
     // Display current page of transactions
     function displayTransactions() {
         // Hide loading indicator
-        transactionsLoading.style.display = 'none';
+        if (transactionsLoading) {
+            transactionsLoading.style.display = 'none';
+        }
+        
+        // Clear table body first
+        if (transactionsTableBody) {
+            transactionsTableBody.innerHTML = '';
+        }
         
         // Check if we have any transactions after filtering
-        if (filteredTransactions.length === 0) {
-            transactionsEmpty.classList.remove('hidden');
+        if (!filteredTransactions || filteredTransactions.length === 0) {
+            if (transactionsEmpty) {
+                // Show appropriate empty message based on filter
+                const statusValue = statusFilter ? statusFilter.value : 'all';
+                if (statusValue !== 'all') {
+                    transactionsEmpty.querySelector('h3').textContent = 'No Matching Transactions';
+                    transactionsEmpty.querySelector('p').textContent = 
+                        `No ${capitalizeFirstLetter(statusValue)} transactions found with the current filters.`;
+                } else {
+                    transactionsEmpty.querySelector('h3').textContent = 'No Transactions Found';
+                    transactionsEmpty.querySelector('p').textContent = 
+                        'No transactions match your current filters.';
+                }
+                
+                transactionsEmpty.classList.remove('hidden');
+            }
             updatePagination();
             return;
         }
         
         // Hide empty state
-        transactionsEmpty.classList.add('hidden');
+        if (transactionsEmpty) {
+            transactionsEmpty.classList.add('hidden');
+        }
         
         // Calculate start and end index for current page
         const startIndex = (currentPage - 1) * itemsPerPage;
@@ -1123,9 +1176,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Get current page of transactions
         const currentTransactions = filteredTransactions.slice(startIndex, endIndex);
-        
-        // Clear table body
-        transactionsTableBody.innerHTML = '';
         
         // Add rows for current transactions
         currentTransactions.forEach(transaction => {

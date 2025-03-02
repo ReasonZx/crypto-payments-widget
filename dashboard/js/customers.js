@@ -1,90 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Sample customer data (in a real app, this would come from your API)
-    const sampleCustomers = [
-        {
-            id: 'cust_001',
-            totalPayments: 5,
-            totalAmount: 1250.75,
-            latestPayment: '2025-02-25T14:30:00',
-            status: 'completed',
-            payments: [
-                {
-                    id: 'pay_12345',
-                    amount: 500.00,
-                    date: '2025-02-25T14:30:00',
-                    status: 'completed',
-                    transactionId: '0x1234567890abcdef1234567890abcdef12345678',
-                    chain: 'Solana',
-                    wallet: 'CpFE4cD32xqex3NdZRfYm1mKbKKp1KsDsZZPZnzhe1QS'
-                },
-                {
-                    id: 'pay_12344',
-                    amount: 350.75,
-                    date: '2025-02-20T11:15:00',
-                    status: 'completed',
-                    transactionId: '0xabcdef1234567890abcdef1234567890abcdef12',
-                    chain: 'Base',
-                    wallet: '0x1234567890abcdef1234567890abcdef12345678'
-                },
-                {
-                    id: 'pay_12343',
-                    amount: 400.00,
-                    date: '2025-02-15T09:45:00',
-                    status: 'completed',
-                    transactionId: '0x7890abcdef1234567890abcdef1234567890abcd',
-                    chain: 'Solana',
-                    wallet: 'CpFE4cD32xqex3NdZRfYm1mKbKKp1KsDsZZPZnzhe1QS'
-                }
-            ]
-        },
-        {
-            id: 'cust_002',
-            totalPayments: 2,
-            totalAmount: 750.25,
-            latestPayment: '2025-02-24T10:15:00',
-            status: 'pending',
-            payments: [
-                {
-                    id: 'pay_23456',
-                    amount: 500.25,
-                    date: '2025-02-24T10:15:00',
-                    status: 'pending',
-                    transactionId: 'pending',
-                    chain: 'Solana',
-                    wallet: 'DeFi4cD32xqex3NdZRfYm1mKbKKp1KsDsZZPZnzhe1QS'
-                },
-                {
-                    id: 'pay_23455',
-                    amount: 250.00,
-                    date: '2025-02-18T16:30:00',
-                    status: 'completed',
-                    transactionId: '0xdef1234567890abcdef1234567890abcdef12345',
-                    chain: 'Base',
-                    wallet: '0x7890abcdef1234567890abcdef1234567890abcdef'
-                }
-            ]
-        },
-        {
-            id: 'cust_003',
-            totalPayments: 1,
-            totalAmount: 125.50,
-            latestPayment: '2025-02-22T08:45:00',
-            status: 'failed',
-            payments: [
-                {
-                    id: 'pay_34567',
-                    amount: 125.50,
-                    date: '2025-02-22T08:45:00',
-                    status: 'failed',
-                    transactionId: 'failed',
-                    chain: 'Solana',
-                    wallet: 'SoLFE4cD32xqex3NdZRfYm1mKbKKp1KsDsZZPZnzhe1QS',
-                    failureReason: 'Insufficient wallet balance'
-                }
-            ]
-        }
-    ];
-
     // DOM elements
     const tableBody = document.getElementById('customers-table-body');
     const loading = document.getElementById('loading-indicator');
@@ -92,27 +6,161 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('customer-search');
     const statusFilter = document.getElementById('payment-status-filter');
     const dateFilter = document.getElementById('date-filter');
-
+    
+    // Customer data (will be populated from transactions)
+    let customers = [];
+    
     // Initialize the table
     function initCustomersTable() {
-        // Simulate API loading delay
-        setTimeout(() => {
-            if (sampleCustomers.length === 0) {
-                loading.style.display = 'none';
-                emptyState.classList.remove('hidden');
-            } else {
-                renderCustomers(sampleCustomers);
-                loading.style.display = 'none';
-            }
-        }, 1000);
+        // Check if data is already loaded in home.js
+        if (window.transactionsDataLoaded && window.sharedTransactionData) {
+            processTransactionsIntoCustomers(window.sharedTransactionData);
+        } else {
+            // If data isn't loaded yet, wait for it
+            loading.style.display = 'flex';
+            
+            // Listen for the event from home.js that signals data is loaded
+            window.addEventListener('transactionsLoaded', function() {
+                processTransactionsIntoCustomers(window.sharedTransactionData);
+            });
+            
+            // Fallback timeout in case the event never fires
+            setTimeout(() => {
+                if (!window.transactionsDataLoaded) {
+                    // If data wasn't loaded after 5 seconds, fetch it directly
+                    fetchTransactionsDirectly();
+                }
+            }, 5000);
+        }
 
         // Set up event listeners
         searchInput.addEventListener('input', filterCustomers);
         statusFilter.addEventListener('change', filterCustomers);
         dateFilter.addEventListener('change', filterCustomers);
     }
+    
+    // Process transaction data into customer records
+    function processTransactionsIntoCustomers(transactions) {
+        // Reset customers array
+        customers = [];
+        
+        // Early exit if no transactions
+        if (!transactions || !transactions.length) {
+            loading.style.display = 'none';
+            emptyState.classList.remove('hidden');
+            return;
+        }
+        
+        // Group transactions by customer ID
+        const customerMap = {};
+        
+        transactions.forEach(transaction => {
+            // Get customer ID (use transaction.customer or fallback to a placeholder)
+            const customerId = transaction.customerId || transaction.customer || 'anonymous';
+            
+            // Create customer entry if it doesn't exist
+            if (!customerMap[customerId]) {
+                customerMap[customerId] = {
+                    id: customerId,
+                    totalPayments: 0,
+                    totalAmount: 0,
+                    latestPayment: new Date(0),  // Start with oldest possible date
+                    status: '',
+                    payments: []
+                };
+            }
+            
+            // Add this transaction to the customer's payments
+            customerMap[customerId].payments.push({
+                id: transaction.id,
+                amount: parseFloat(transaction.amount),
+                date: transaction.date,
+                status: transaction.status,
+                transactionId: transaction.transactionId || 'N/A',
+                chain: transaction.chain || 'Unknown',
+                wallet: transaction.wallet || 'N/A',
+                failureReason: transaction.failureReason || ''
+            });
+            
+            // Update customer metrics
+            customerMap[customerId].totalPayments++;
+            customerMap[customerId].totalAmount += parseFloat(transaction.amount);
+            
+            // Update latest payment date if this transaction is newer
+            if (transaction.date > customerMap[customerId].latestPayment) {
+                customerMap[customerId].latestPayment = transaction.date;
+                customerMap[customerId].status = transaction.status;
+            }
+        });
+        
+        // Convert map to array
+        customers = Object.values(customerMap);
+        
+        // Sort customers by latest payment date (newest first)
+        customers.sort((a, b) => b.latestPayment - a.latestPayment);
+        
+        // Sort each customer's payments by date (newest first)
+        customers.forEach(customer => {
+            customer.payments.sort((a, b) => b.date - a.date);
+        });
+        
+        // Render the customer table
+        renderCustomers(customers);
+        loading.style.display = 'none';
+    }
+    
+    // Direct API call if needed (fallback)
+    async function fetchTransactionsDirectly() {
+        try {
+            const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+            const userId = localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData')).id : null;
+            
+            if (!token) {
+                console.error('No authentication token found');
+                loading.style.display = 'none';
+                emptyState.classList.remove('hidden');
+                emptyState.querySelector('h3').textContent = 'Authentication Required';
+                emptyState.querySelector('p').textContent = 'Please log in to view customer data.';
+                return;
+            }
+            
+            // Fetch the data directly
+            const response = await fetch(`${API_URL}/api/transactions/all?vendorID=${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error(`API error: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            if (data && data.transactions && Array.isArray(data.transactions)) {
+                // Convert date strings to Date objects
+                const transactions = data.transactions.map(transaction => ({
+                    ...transaction,
+                    date: new Date(transaction.date)
+                }));
+                
+                // Process into customers
+                processTransactionsIntoCustomers(transactions);
+            } else {
+                throw new Error('Invalid data structure received from API');
+            }
+        } catch (error) {
+            console.error('Error fetching transaction data:', error);
+            loading.style.display = 'none';
+            emptyState.classList.remove('hidden');
+            emptyState.querySelector('h3').textContent = 'Error loading data';
+            emptyState.querySelector('p').textContent = 'Could not connect to the server. Please try again later.';
+        }
+    }
 
-    // Render customers table
+    // Render customers table (keep your existing function)
     function renderCustomers(customers) {
         tableBody.innerHTML = '';
         
@@ -123,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
             row.dataset.customerId = customer.id;
             
             // Format the date
-            const paymentDate = new Date(customer.latestPayment);
+            const paymentDate = customer.latestPayment;
             const formattedDate = paymentDate.toLocaleDateString('en-US', { 
                 month: 'short', day: 'numeric', year: 'numeric' 
             });
@@ -176,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Set up copy functionality
         setupCopyButtons();
     }
-    
+
     // Create HTML for payment items
     function renderPaymentItems(payments) {
         return payments.map(payment => {
@@ -296,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const statusValue = statusFilter.value;
         const dateValue = dateFilter.value;
         
-        let filteredCustomers = [...sampleCustomers];
+        let filteredCustomers = [...customers];
         
         // Apply search filter
         if (searchTerm) {
@@ -354,4 +402,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize the table when the page loads
     initCustomersTable();
+    
+    // Listen for tab activation
+    window.addEventListener('customersTabActive', function() {
+        if (window.sharedTransactionData && !customers.length) {
+            processTransactionsIntoCustomers(window.sharedTransactionData);
+        }
+    });
 });

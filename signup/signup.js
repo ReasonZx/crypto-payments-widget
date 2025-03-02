@@ -94,10 +94,17 @@ async function handleSignup(event) {
 
         // Extract the token and user data
         const { token, user } = data;
+
+        // Decode expiration from JWT (no verification needed)
+        const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+        const expiresAt = tokenPayload.exp * 1000; // Convert to milliseconds
+
         
         // Store token in localStorage for future API calls
         localStorage.setItem('token', token);
         localStorage.setItem('userData', JSON.stringify(user));
+        localStorage.setItem('tokenExpires', expiresAt);
+
 
         window.location.href = '../dashboard/';
       

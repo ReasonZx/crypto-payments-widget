@@ -325,19 +325,6 @@ class PaymentWidget {
                     // type: 'subscribe_payment',
                     address: address
                 }));
-
-                // Add ONLY application-level heartbeat every 30 seconds
-                this.heartbeatInterval = setInterval(() => {
-                    if (this.ws.readyState === WebSocket.OPEN) {
-                        this.ws.send(JSON.stringify({ 
-                            type: 'heartbeat',
-                            timestamp: Date.now()
-                        }));
-                    }
-                }, 30000); // Every 30 seconds
-
-                // Track last received message time
-                this.lastMessageTime = Date.now();
             };
     
             this.ws.onerror = (error) => {
@@ -347,23 +334,25 @@ class PaymentWidget {
             };
     
             this.ws.onclose = () => {
-                if (this.heartbeatInterval) {
-                    clearInterval(this.heartbeatInterval);
-                    this.heartbeatInterval = null;
-                }
+                console.log('WebSocket connection closed');
+                this.cleanupWebSocket();
             };
     
             this.ws.onmessage = async (event) => {
-                // Update last message time whenever we receive anything
-                this.lastMessageTime = Date.now();
                 
                 try {
                     const message = JSON.parse(event.data);
                     const { data, signature } = message;
 
-                    
-                    // Skip signature verification for heartbeat responses
-                    if (data && data.type === 'heartbeat_response') {
+                    console.log('Received message:', message);
+
+                    // Handle heartbeat
+                    if (data && data.type === 'heartbeat') {
+                        this.ws.send(JSON.stringify({
+                            type: 'heartbeat_response',
+                            timestamp: Date.now(),
+                        }));
+                        this.timeLeft = Math.floor((data.expireTime - Date.now()) / 1000);
                         return;
                     }
                     
@@ -378,7 +367,6 @@ class PaymentWidget {
                         clearInterval(this.countdown);
                         setTimeout(() => {
                             this.emitPaymentEvent('payment_completed', {
-                                address: data.address,
                                 userID: this.config.userID,
                                 timestamp: Date.now(),
                             });
@@ -395,10 +383,6 @@ class PaymentWidget {
 
     cleanupWebSocket() {
         if (this.ws) {
-            if (this.heartbeatInterval) {
-                clearInterval(this.heartbeatInterval);
-                this.heartbeatInterval = null;
-            }
             this.ws.close();
             this.ws = null;
         }
@@ -614,21 +598,20 @@ class PaymentWidget {
 
     startTimer() {
         const timerElement = this.shadow.querySelector("#timer");
-        let timeLeft = 10 * 60; // 10 minutes in seconds
+        this.timeLeft = 10 * 60; // 10 minutes in seconds
 
         this.countdown = setInterval(() => {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
+            const minutes = Math.floor(this.timeLeft / 60);
+            const seconds = this.timeLeft % 60;
             timerElement.textContent = `Time Left: ${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
-            timeLeft--;
+            this.timeLeft--;
 
             // Stop timer and go to payment complete screen if time runs out
-            if (timeLeft < 0) {
+            if (this.timeLeft <= 0) {
                 clearInterval(this.countdown);
                 if(!this.shadow.querySelector("#screen2").classList.contains("hidden")) {
                     this.goToScreen4();
                     this.emitPaymentEvent('payment_failed', {
-                        address,
                         userID: this.config.userID,
                         timestamp: Date.now()
                     });
@@ -637,6 +620,7 @@ class PaymentWidget {
             }
         }, 1000);
     }
+
 }
 
 
