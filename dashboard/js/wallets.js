@@ -161,12 +161,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         checkStateChanged();
     });
 
-    chainToggles.forEach(toggle => {
-        toggle.addEventListener('change', (e) => {
-            const chain = e.target.closest('.chain');
-            const walletInput = chain.querySelector('.wallet-input');
+    document.querySelectorAll('.chain-toggle').forEach(toggle => {
+        toggle.addEventListener('change', function() {
+            // Add this check to ensure we're only handling toggles in the Wallets tab
+            if (!this.closest('#wallets')) {
+                return; // Exit if toggle is not inside the Wallets tab
+            }
             
-            if (!e.target.checked) {
+            const walletInput = this.closest('.chain').querySelector('.wallet-input');
+            const chain = this.closest('.chain');
+            
+            if (!this.checked) {
                 walletInput.disabled = true;
                 chain.classList.add('chain-disabled');
             } else {

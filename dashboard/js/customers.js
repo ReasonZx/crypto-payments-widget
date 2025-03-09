@@ -76,7 +76,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 amount: parseFloat(transaction.amount),
                 date: transaction.date,
                 status: transaction.status,
-                transactionId: transaction.transactionId || 'N/A',
                 chain: transaction.chain || 'Unknown',
                 wallet: transaction.wallet || 'N/A',
                 failureReason: transaction.failureReason || ''
@@ -234,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
             let additionalInfo = '';
-            if (payment.status === 'failed' && payment.failureReason) {
+            if (payment.status === 'expired' && payment.failureReason) {
                 additionalInfo = `
                     <div class="payment-info-row">
                         <span class="info-label">Failure Reason:</span>
@@ -262,16 +261,6 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <span class="status-badge status-${payment.status}">
                                     ${capitalizeFirstLetter(payment.status)}
                                 </span>
-                            </span>
-                        </div>
-                        <div class="payment-info-row">
-                            <span class="info-label">Transaction ID:</span>
-                            <span class="info-value">
-                                ${payment.transactionId === 'pending' || payment.transactionId === 'failed' 
-                                    ? payment.transactionId 
-                                    : `${truncateMiddle(payment.transactionId, 8)}
-                                       <i class="fas fa-copy copy-value" data-copy="${payment.transactionId}" title="Copy Transaction ID"></i>`
-                                }
                             </span>
                         </div>
                         <div class="payment-info-row">

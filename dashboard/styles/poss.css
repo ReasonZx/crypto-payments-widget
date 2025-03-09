@@ -576,3 +576,435 @@
         flex-direction: column;
     }
 }
+
+/* Pay by Link styles */
+.links-table-container {
+    max-height: 250px;
+    overflow-y: auto;
+    margin: 20px 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.links-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.links-table th,
+.links-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.links-table th {
+    background-color: #f8fafc;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.links-table tr:hover {
+    background-color: #f8fafc;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.status-active {
+    background-color: #C6F6D5;
+    color: #22543D;
+}
+
+.status-inactive {
+    background-color: #FED7D7;
+    color: #822727;
+}
+
+.copy-link-btn {
+    margin-left: 8px;
+    color: var(--primary-color);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
+copy-link-btn:hover {
+    color: var(--primary-dark);
+}
+
+.create-new-link {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.primary-btn {
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.primary-btn:hover {
+    background-color: var(--primary-dark);
+}
+
+.chains-selection {
+    margin: 20px 0;
+}
+
+.chain-option {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.chain-logo-wrapper {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+}
+
+.chain-logo {
+    max-width: 40px;
+    max-height: 40px;
+}
+
+.chain-details {
+    flex: 1;
+}
+
+.chain-details h5 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+}
+
+.chain-details p {
+    margin: 0;
+    color: #718096;
+    font-size: 0.9rem;
+}
+
+.amount-container {
+    margin: 30px 0;
+}
+
+.amount-input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.currency-symbol {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.payment-amount-input {
+    width: 100%;
+    padding: 15px 15px 15px 35px;
+    font-size: 1.5rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.payment-amount-input:focus {
+    border-color: var(--primary-color);
+}
+
+.common-amounts {
+    margin-top: 20px;
+}
+
+.common-amounts p {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: #718096;
+}
+
+.amount-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.amount-chip {
+    padding: 8px 15px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.amount-chip:hover {
+    background-color: #e2e8f0;
+}
+
+/* Enhanced Confirmation Table Styles */
+.confirmation-details {
+    margin: 30px 0;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    background-color: white;
+}
+
+.confirmation-row {
+    display: flex;
+    padding: 18px 20px;
+    border-bottom: 1px solid #f0f4f8;
+    transition: background-color 0.2s ease;
+}
+
+.confirmation-row:hover {
+    background-color: #f9fafb;
+}
+
+.confirmation-row:last-child {
+    border-bottom: none;
+}
+
+.confirmation-label {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    flex: 0 0 200px;
+    font-weight: 500;
+}
+
+.confirmation-label::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 6px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.confirmation-value {
+    position: relative;
+    color: var(--primary-dark);
+    font-weight: 500;
+}
+
+#confirm-chains, #confirm-amount {
+    color: var(--primary-light);
+    position: relative;
+    font-weight: 600;
+}
+
+/* Add a title bar to the confirmation details */
+.confirmation-details::before {
+    content: 'Summary';
+    display: block;
+    background-color: #f8fafc;
+    padding: 12px 20px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Make the container tighter and more professional */
+.step-panel[data-step="4"] {
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.confirmation-row {
+    display: flex;
+    padding: 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.confirmation-row:last-child {
+    border-bottom: none;
+}
+
+.payment-link-result {
+    margin: 30px 0;
+    text-align: center;
+}
+
+.payment-link-container {
+    display: flex;
+    margin: 20px 0;
+}
+
+.payment-link-input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid #e2e8f0;
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+    outline: none;
+    font-size: 1rem;
+}
+
+.copy-payment-link-btn {
+    padding: 12px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.copy-payment-link-btn:hover {
+    background-color: var(--primary-dark);
+}
+
+/* Add these styles for the links table */
+.links-table-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 15px;
+    background-color: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.links-table td:first-child {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.links-table-header h5 {
+    margin: 0;
+    color: #2d3748;
+    font-size: 1rem;
+}
+
+.refresh-btn {
+    background: none;
+    color: var(--primary-color);
+    border: none;
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 4px;
+}
+
+.refresh-btn:hover {
+    background-color: #edf2f7;
+}
+
+.loading-links, .empty-links, .error-links {
+    text-align: center;
+    padding: 30px 15px;
+    color: #718096;
+}
+
+.loading-links .spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(77, 187, 154, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spin 1s ease-in-out infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.empty-links i, .error-links i {
+    font-size: 24px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.error-links {
+    color: #e53e3e;
+}
+
+.fa-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Add these styles for the step header actions and date tooltips */
+.step-header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.step-header-actions p {
+    margin: 0;
+}
+
+/* Date tooltip styles */
+.links-table td:nth-child(3) {
+    position: relative;
+    cursor: help;
+    text-decoration: underline dotted;
+    color: #4a5568;
+}
+
+.links-table td:nth-child(3):hover::after {
+    content: attr(data-full-date);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #2d3748;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.links-table td:nth-child(3):hover::before {
+    content: '';
+    position: absolute;
+    bottom: 98%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top: 6px solid #2d3748;
+    z-index: 10;
+}
+

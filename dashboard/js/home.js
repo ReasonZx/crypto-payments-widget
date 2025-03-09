@@ -285,6 +285,7 @@ document.addEventListener('DOMContentLoaded', function() {
         filteredTransactions.forEach(transaction => {
             const amount = parseFloat(transaction.amount);
             totalVolume += amount;
+
             
             if (transaction.token === 'usdt' && transaction.chain === 'solana') {
                 usdtSolanaCount += amount;
@@ -1238,7 +1239,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to open transaction details modal
     function openTransactionDetails(transactionId) {
         const transaction = allTransactions.find(t => t.id === transactionId);
-        
         if (!transaction) return;
         
         // Get modal elements
@@ -1259,7 +1259,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="transaction-detail-body">
                 <div class="detail-group">
                     <div class="detail-label">Amount:</div>
-                    <div class="detail-value">$${parseFloat(transaction.amount).toFixed(2)} ${transaction.token}</div>
+                    <div class="detail-value">$${parseFloat(transaction.amount).toFixed(2)}</div>
                 </div>
                 <div class="detail-group">
                     <div class="detail-label">Date & Time:</div>
@@ -1275,26 +1275,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <div class="detail-group">
                     <div class="detail-label">Chain:</div>
-                    <div class="detail-value">${transaction.chain}</div>
+                    <div class="detail-value">${transaction.chain || 'N/A'}</div>
                 </div>
-                <div class="detail-group">
-                    <div class="detail-label">Transaction ID:</div>
-                    <div class="detail-value">
-                        ${truncateMiddle(transaction.transactionId, 8)}
-                        <button class="copy-btn" data-copy="${transaction.transactionId}">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                    </div>
-                </div>
+                ${transaction.wallet ? `
                 <div class="detail-group">
                     <div class="detail-label">Wallet Address:</div>
                     <div class="detail-value">
                         ${truncateMiddle(transaction.wallet, 8)}
-                        <button class="copy-btn" data-copy="${transaction.wallet}">
+                        <button class="copy-btn-wallet" data-copy="${transaction.wallet}">
                             <i class="fas fa-copy"></i>
                         </button>
                     </div>
                 </div>
+                ` : ''}
             </div>
         `;
         
@@ -1302,7 +1295,7 @@ document.addEventListener('DOMContentLoaded', function() {
         modal.classList.remove('hidden');
         
         // Add copy functionality to buttons
-        const copyButtons = modal.querySelectorAll('.copy-btn');
+        const copyButtons = modal.querySelectorAll('.copy-btn-wallet');
         copyButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const textToCopy = this.getAttribute('data-copy');
@@ -1423,6 +1416,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function truncateMiddle(str, visibleChars) {
+        if (!str) return '';
         if (str.length <= visibleChars * 2) return str;
         return `${str.substr(0, visibleChars)}...${str.substr(str.length - visibleChars, visibleChars)}`;
     }

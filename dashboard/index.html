@@ -195,7 +195,7 @@
                                     <option value="all">All Statuses</option>
                                     <option value="completed">Completed</option>
                                     <option value="pending">Pending</option>
-                                    <option value="failed">Failed</option>
+                                    <option value="expired">Expired</option>
                                 </select>
                                 <select id="transaction-source-filter">
                                     <option value="all">All Sources</option>
@@ -240,27 +240,27 @@
                                 <p>No payment transactions match your current filters.</p>
                             </div>
                         </div>
+
+                        <!-- Transaction Details Modal -->
+                        <div id="transaction-details-modal" class="modal-overlay-tx hidden">
+                            <div class="modal-container-tx transaction-modal">
+                                <div class="modal-header">
+                                    <h3>Transaction Details</h3>
+                                    <button class="modal-close-btn">&times;</button>
+                                </div>
+                                
+                                <div class="modal-body">
+                                    <div id="transaction-details-content">
+                                        <!-- Transaction details will be loaded here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         
                         <div class="pagination">
                             <button id="trans-prev-page" disabled><i class="fas fa-chevron-left"></i> Previous</button>
                             <span id="trans-page-indicator">Page 1 of 1</span>
                             <button id="trans-next-page" disabled>Next <i class="fas fa-chevron-right"></i></button>
-                        </div>
-                    </div>
-                    
-                    <!-- Transaction Details Modal -->
-                    <div id="transaction-details-modal" class="modal-overlay hidden">
-                        <div class="modal-container transaction-modal">
-                            <div class="modal-header">
-                                <h3>Transaction Details</h3>
-                                <button class="modal-close-btn">&times;</button>
-                            </div>
-                            
-                            <div class="modal-body">
-                                <div id="transaction-details-content">
-                                    <!-- Transaction details will be loaded here -->
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -379,7 +379,7 @@
                                 <option value="all">All Statuses</option>
                                 <option value="completed">Completed</option>
                                 <option value="pending">Pending</option>
-                                <option value="failed">Failed</option>
+                                <option value="expired">Expired</option>
                             </select>
                             <select id="date-filter">
                                 <option value="all">All Time</option>
@@ -579,9 +579,9 @@
                                             </label>
                                         </div>
                                         <div class="toggle-option">
-                                            <label for="failed-payment-notify">Failed Payments</label>
+                                            <label for="expired-payment-notify">Expired Payments</label>
                                             <label class="toggle-switch">
-                                                <input type="checkbox" id="failed-payment-notify" checked>
+                                                <input type="checkbox" id="expired-payment-notify" checked>
                                                 <span class="toggle-slider"></span>
                                             </label>
                                         </div>
@@ -695,7 +695,7 @@ document.getElementById(<span class="highlight-green">'payment-container'</span>
             console.log(`Payment completed! User: <span class="highlight-green">${data.userID}</span>`);
             break;
             
-        case <span class="highlight-green">'payment_failed'</span>:
+        case <span class="highlight-green">'payment_expired'</span>:
             console.log(`Payment completed! User: <span class="highlight-green">${data.userID}</span>`);
             break;
             
@@ -735,6 +735,170 @@ document.getElementById(<span class="highlight-green">'payment-container'</span>
                         <div class="completion-message">
                             <p>🎉 Congratulations! You've completed the Web Checkout setup guide.</p>
                             <p>You're now ready to start accepting crypto payments on your website!</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="walkthrough-navigation">
+                    <button class="nav-btn prev-btn" disabled>Previous</button>
+                    <button class="nav-btn next-btn">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Walkthrough for Pay by Link -->
+    <div id="paylink-modal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Pay by Link Setup Guide</h3>
+                <button class="modal-close-btn">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="walkthrough-stepper">
+                    <div class="step active" data-step="1">1</div>
+                    <div class="step" data-step="2">2</div>
+                    <div class="step" data-step="3">3</div>
+                    <div class="step" data-step="4">4</div>
+                    <div class="step" data-step="5">5</div>
+                </div>
+                
+                <div class="walkthrough-content">
+                    <!-- Step 1: Existing Links Table -->
+                    <div class="step-panel active" data-step="1">
+                        <h4>Step 1: Manage Payment Links</h4>
+                        <div class="step-header-actions">
+                            <p>Here are your existing payment links:</p>
+                            <button id="refresh-links-btn" class="refresh-btn">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                        
+                        <div class="links-table-container">
+                            <table class="links-table">
+                                <thead>
+                                    <tr>
+                                        <th>Link ID</th>
+                                        <th>Amount</th>
+                                        <th>Created</th>
+                                        <th>Supported Chains</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="payment-links-body">
+                                    <!-- Payment links will be dynamically loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="create-new-link">
+                            <button id="create-new-link-btn" class="primary-btn">
+                                <i class="fas fa-plus"></i> Create New Payment Link
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2: Select Chains -->
+                    <div class="step-panel" data-step="2">
+                        <h4>Step 2: Select Payment Chains</h4>
+                        <p>Choose the blockchain networks you want to accept payments on:</p>
+                        
+                        <div class="chains-selection">
+                            <div class="chain-option">
+                                <div class="chain-logo-wrapper">
+                                    <img src="../assets/icons/sol-logo.png" alt="Solana" class="chain-logo">
+                                </div>
+                                <div class="chain-details">
+                                    <h5>Solana</h5>
+                                    <p>Accept USDC and USDT on Solana blockchain</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" class="chain-toggle" data-chain="solana" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="chain-option">
+                                <div class="chain-logo-wrapper">
+                                    <img src="../assets/icons/base-logo.png" alt="Base" class="chain-logo">
+                                </div>
+                                <div class="chain-details">
+                                    <h5>Base</h5>
+                                    <p>Accept USDC on Base blockchain</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" class="chain-toggle" data-chain="base" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3: Set Amount -->
+                    <div class="step-panel" data-step="3">
+                        <h4>Step 3: Set Payment Amount</h4>
+                        <p>Choose the amount for this payment link:</p>
+                        
+                        <div class="amount-container">
+                            <div class="amount-input-group">
+                                <span class="currency-symbol">$</span>
+                                <input type="number" id="payment-amount" class="payment-amount-input" value="10.00" min="0.01" step="0.01">
+                            </div>
+                            
+                            <div class="common-amounts">
+                                <p>Common amounts:</p>
+                                <div class="amount-chips">
+                                    <button class="amount-chip" data-amount="5">$5</button>
+                                    <button class="amount-chip" data-amount="10">$10</button>
+                                    <button class="amount-chip" data-amount="25">$25</button>
+                                    <button class="amount-chip" data-amount="50">$50</button>
+                                    <button class="amount-chip" data-amount="100">$100</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 4: Confirm Details -->
+                    <div class="step-panel" data-step="4">
+                        <h4>Step 4: Confirm Payment Details</h4>
+                        <p>Please review and confirm the details for your payment link:</p>
+                        
+                        <div class="confirmation-details">
+                            <div class="confirmation-row">
+                                <div class="confirmation-label">Selected Chains:</div>
+                                <div class="confirmation-value" id="confirm-chains">Solana, Base</div>
+                            </div>
+                            <div class="confirmation-row">
+                                <div class="confirmation-label">Payment Amount:</div>
+                                <div class="confirmation-value" id="confirm-amount">$10.00</div>
+                            </div>
+                            <div class="confirmation-row">
+                                <div class="confirmation-label">Transaction Fee:</div>
+                                <div class="confirmation-value">Max. between 0.30$ or 0.5%</div>
+                            </div>
+                            <div class="confirmation-row">
+                                <div class="confirmation-label">Payment Expiration:</div>
+                                <div class="confirmation-value">10 minutes after opening link</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 5: Final Link -->
+                    <div class="step-panel" data-step="5">
+                        <h4>Step 5: Your Payment Link is Ready!</h4>
+                        <p>Your payment link has been created. Share it with anyone you want to receive payment from.</p>
+                        
+                        <div class="payment-link-result">
+                            <div class="payment-link-container">
+                                <input type="text" id="payment-link-url" class="payment-link-input" value="https://pay.stablio.com/link/AB12CD34EF56" readonly>
+                                <button class="copy-payment-link-btn">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="completion-message">
+                                <p>🎉 Success! Your payment link is ready to use.</p>
+                                <p>You can view and manage all your links by going to the 1st step.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
