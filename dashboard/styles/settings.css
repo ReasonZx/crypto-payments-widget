@@ -145,6 +145,10 @@ label {
     position: relative;
 }
 
+.input-with-copy input {
+    padding-right: 40px; /* Make room for the copy button */
+}
+
 .copy-btn {
     position: absolute;
     right: 10px;
@@ -520,4 +524,77 @@ label {
         margin-right: 0;
         margin-bottom: 10px;
     }
+}
+
+.vendor-id-help {
+  margin: 6px 0 0 0;
+  font-size: 13px;
+  color: #718096;
+  font-style: italic;
+}
+
+
+/* Loading and error message styles */
+.settings-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.settings-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(77, 187, 154, 0.2);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spin 1s ease-in-out infinite;
+    margin-bottom: 15px;
+}
+
+.settings-container {
+    position: relative;
+}
+
+.settings-error-message {
+    background-color: #FEF2F2;
+    border-left: 4px solid #DC2626;
+    color: #7F1D1D;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.settings-error-message i {
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+/* Add these styles for the error toast */
+
+.settings-toast.error-toast {
+    background-color: #FEF2F2;
+    border-left: 4px solid #DC2626;
+}
+
+.error-icon {
+    color: #DC2626;
+}
+
+.error-toast .toast-content p {
+    color: #991B1B;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }

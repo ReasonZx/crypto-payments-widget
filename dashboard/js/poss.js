@@ -190,35 +190,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Table link copy buttons
-    const copyTableLinks = paylinkModal.querySelectorAll('.copy-link-btn');
-    copyTableLinks.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const linkText = "https://pay.stablio.com/link/" + this.closest('tr').querySelector('td:first-child').textContent;
-            
-            // Copy to clipboard
-            const textarea = document.createElement('textarea');
-            textarea.value = linkText;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            
-            // Visual feedback
-            const originalText = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-check"></i> Copied!';
-            setTimeout(() => {
-                this.innerHTML = originalText;
-            }, 2000);
-        });
-    });
-    
     // Function to update confirmation details
     function updateConfirmationDetails() {
         // Get selected chains - Use more specific selector to only get toggles in the paylink modal
         const selectedChains = [];
-        const chainToggles = paylinkModal.querySelectorAll('.chain-toggle');
+        const chainToggles = paylinkModal.querySelectorAll('.poss-chain-toggle');
         
         chainToggles.forEach(toggle => {
             if (toggle.checked) {
@@ -248,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Get the payment data
         const amount = parseFloat(document.getElementById('payment-amount').value).toFixed(2);
         const selectedChains = [];
-        const chainToggles = paylinkModal.querySelectorAll('.chain-toggle');
+        const chainToggles = paylinkModal.querySelectorAll('.poss-chain-toggle');
         
         chainToggles.forEach(toggle => {
             if (toggle.checked && toggle.dataset.chain) {
@@ -287,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(data => {
             // Successfully created the payment link
-            const linkURL = `https://pay.stablio.com/link/${data.paymentID}`;
+            const linkURL = `https://pay.stablio.eu/link/${vendorID}/${data.paymentID}`;
             document.getElementById('payment-link-url').value = linkURL;
             
             // Enable button and restore text
@@ -310,16 +286,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Show error message
             showToast('Failed to create payment link. Please try again.', 'error');
         });
-    }
-    
-    // Helper function to generate a random link ID
-    function generateRandomLinkId() {
-        const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        let result = '';
-        for (let i = 0; i < 12; i++) {
-            result += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return result;
     }
     
     // Prevent keyboard navigation from affecting page when modal is open
@@ -383,7 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 linksTableBody.innerHTML = '';
                 
                 // Check if we have any data
-                if (!data || data.length === 0) {
+                if (!data || !data.paymentIDs || data.paymentIDs.length === 0) {
                     linksTableBody.innerHTML = `
                         <tr>
                             <td colspan="5" class="empty-links">
@@ -394,7 +360,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                     return;
                 }
-                // Populate table with data
+                
+                // Sort the links by created_at date (newest first)
+                data.paymentIDs.sort((a, b) => {
+                    return new Date(b.created_at) - new Date(a.created_at);
+                });
+                
+                // Populate table with data - now sorted by newest first
                 data.paymentIDs.forEach(link => {
                     // Format date
                     const date = new Date(link.created_at);
@@ -425,7 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     row.innerHTML = `
                         <td>
                             ${link.payment_id}
-                            <a href="#" class="copy-link-btn" data-link="https://pay.stablio.com/link/${link.payment_id}">
+                            <a href="#" class="copy-link-btn" data-link="https://pay.stablio.eu/link/${userId}/${link.payment_id}">
                                 <i class="fas fa-copy"></i>
                             </a>
                         </td>
@@ -470,7 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Visual feedback
                 const originalText = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                this.innerHTML = '<i class="fas fa-check"></i>';
                 setTimeout(() => {
                     this.innerHTML = originalText;
                 }, 2000);

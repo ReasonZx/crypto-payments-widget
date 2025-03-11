@@ -279,7 +279,7 @@
                                     </div>
                                 </div>
                                 <label class="toggle">
-                                    <input type="checkbox" class="chain-toggle" checked>
+                                    <input type="checkbox" class="wallet-chain-toggle" checked>
                                     <span class="slider"></span>
                                 </label>
                                 <div class="wallet-input-group">
@@ -294,7 +294,7 @@
                                     </div>
                                 </div>
                                 <label class="toggle">
-                                    <input type="checkbox" class="chain-toggle" checked>
+                                    <input type="checkbox" class="wallet-chain-toggle" checked>
                                     <span class="slider"></span>
                                 </label>
                                 <div class="wallet-input-group">
@@ -400,7 +400,7 @@
                                     <th>Total Payments</th>
                                     <th>Total Amount</th>
                                     <th>Latest Payment</th>
-                                    <th>Status</th>
+                                    <th>Last Status</th>
                                 </tr>
                             </thead>
                             <tbody id="customers-table-body">
@@ -441,15 +441,25 @@
                                 <h4>Account Settings</h4>
                             </div>
                             <div class="settings-body">
-                                <div class="form-group">
-                                    <label for="company-name">Company Name</label>
-                                    <input type="text" id="company-name" value="My Company" class="settings-input">
+                                <!-- Move Vendor ID to the top -->
+                                <div class="form-group vendor-id-container">
+                                    <label for="vendor-id">Your Vendor ID</label>
+                                    <div class="input-with-copy">
+                                        <input type="text" id="vendor-id" value="vnd_12345abcde" class="settings-input" readonly>
+                                        <button class="copy-btn" data-clipboard="vnd_12345abcde">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <p class="vendor-id-help">Use this ID when setting up payment integrations</p>
                                 </div>
+
+                                <!-- Email field remains -->
                                 <div class="form-group">
                                     <label for="email">Email Address</label>
                                     <input type="email" id="email" value="user@example.com" class="settings-input">
                                 </div>
-                                <!-- Add this to the Account Settings section, after the email input -->
+
+                                <!-- Password change section remains -->
                                 <div class="form-group">
                                     <label for="change-password-toggle" class="toggle-password-link">
                                         <span class="toggle-password-icon">
@@ -499,22 +509,7 @@
                                             <p>Password must contain:</p>
                                             <ul>
                                                 <li class="req-length"><i class="fas fa-circle"></i> At least 8 characters</li>
-                                                <li class="req-uppercase"><i class="fas fa-circle"></i> At least one uppercase letter</li>
-                                                <li class="req-lowercase"><i class="fas fa-circle"></i> At least one lowercase letter</li>
-                                                <li class="req-number"><i class="fas fa-circle"></i> At least one number</li>
-                                                <li class="req-special"><i class="fas fa-circle"></i> At least one special character</li>
                                             </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="vendor-id">Your Vendor ID</label>
-                                        <div class="input-with-copy">
-                                            <input type="text" id="vendor-id" value="vnd_12345abcde" class="settings-input" readonly>
-                                            <button class="copy-btn" data-clipboard="vnd_12345abcde">
-                                                <i class="fas fa-copy"></i>
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -575,13 +570,6 @@
                                             <label for="new-payment-notify">New Payment Received</label>
                                             <label class="toggle-switch">
                                                 <input type="checkbox" id="new-payment-notify" checked>
-                                                <span class="toggle-slider"></span>
-                                            </label>
-                                        </div>
-                                        <div class="toggle-option">
-                                            <label for="expired-payment-notify">Expired Payments</label>
-                                            <label class="toggle-switch">
-                                                <input type="checkbox" id="expired-payment-notify" checked>
                                                 <span class="toggle-slider"></span>
                                             </label>
                                         </div>
@@ -812,7 +800,7 @@ document.getElementById(<span class="highlight-green">'payment-container'</span>
                                     <p>Accept USDC and USDT on Solana blockchain</p>
                                 </div>
                                 <label class="toggle-switch">
-                                    <input type="checkbox" class="chain-toggle" data-chain="solana" checked>
+                                    <input type="checkbox" class="poss-chain-toggle" data-chain="solana" checked>
                                     <span class="toggle-slider"></span>
                                 </label>
                             </div>
@@ -826,7 +814,7 @@ document.getElementById(<span class="highlight-green">'payment-container'</span>
                                     <p>Accept USDC on Base blockchain</p>
                                 </div>
                                 <label class="toggle-switch">
-                                    <input type="checkbox" class="chain-toggle" data-chain="base" checked>
+                                    <input type="checkbox" class="poss-chain-toggle" data-chain="base" checked>
                                     <span class="toggle-slider"></span>
                                 </label>
                             </div>

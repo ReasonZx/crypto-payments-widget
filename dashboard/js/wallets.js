@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const walletInputs = document.querySelectorAll('.wallet-input');
     const globalDefaultBox = document.querySelector('.global-default');
     const saveButton = document.getElementById('save-wallet-config');
-    const chainToggles = document.querySelectorAll('.chain-toggle');
+    const chainToggles = document.querySelectorAll('.wallet-chain-toggle');
     let isConfigured = false;
 
     // Store initial state
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const token = localStorage.getItem('token');
             const user = JSON.parse(localStorage.getItem('userData'));
             const userId = user ? user.id : null;
-            const response = await fetch(`${API_URL}/api/getVendorConfig`,
+            const response = await fetch(`${API_URL}/api/getVendorWalletConfig`,
                 {
                     method: 'POST',
                     headers: {
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         isConfigured = true;
     }
 
-    await applyConfiguration();
+    // await applyConfiguration();
 
     function checkStateChanged() {
         // Create or get error message element
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             walletInputs: Array.from(walletInputs).map(input => input.value)
         };
 
-        const hasChanges = 
+        const hasChanges =
             initialState.useDefaultAll !== currentState.useDefaultAll ||
             JSON.stringify(initialState.chainToggles) !== JSON.stringify(currentState.chainToggles) ||
             JSON.stringify(initialState.walletInputs) !== JSON.stringify(currentState.walletInputs);
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         checkStateChanged();
     });
 
-    document.querySelectorAll('.chain-toggle').forEach(toggle => {
+    document.querySelectorAll('.wallet-chain-toggle').forEach(toggle => {
         toggle.addEventListener('change', function() {
             // Add this check to ensure we're only handling toggles in the Wallets tab
             if (!this.closest('#wallets')) {
@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             console.log('Saving wallet configuration:', wallets);
             
-            const response = await fetch(`${API_URL}/api/setVendorConfig`,
+            const response = await fetch(`${API_URL}/api/setVendorWalletConfig`,
                 {
                     method: 'POST',
                     headers: {

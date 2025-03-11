@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    document.querySelectorAll('.chain-toggle').forEach(toggle => {
+    document.querySelectorAll('.demo-chain-toggle').forEach(toggle => {
         toggle.addEventListener('change', (e) => {
             const chain = e.target.closest('.chain');
             const walletInput = chain.querySelector('.wallet-input');
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const wallets = [];
         
         document.querySelectorAll('.chain').forEach(chain => {
-            const chainToggle = chain.querySelector('.chain-toggle');
+            const chainToggle = chain.querySelector('.demo-chain-toggle');
             if (chainToggle.checked) {
                 const chainType = chain.querySelector('.chain-logo').alt.toLowerCase();
                 const walletInput = chain.querySelector('.wallet-input');
@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const chains = [];
         
         document.querySelectorAll('.chain').forEach(chain => {
-            const chainToggle = chain.querySelector('.chain-toggle');
+            const chainToggle = chain.querySelector('.demo-chain-toggle');
             if (chainToggle.checked) {
                 const chainType = chain.querySelector('.chain-logo').alt.toLowerCase();
                 chains.push(chainType);
@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let isValid = true;
     
         chains.forEach(chain => {
-            const chainToggle = chain.querySelector('.chain-toggle');
+            const chainToggle = chain.querySelector('.demo-chain-toggle');
             if (chainToggle.checked) {
                 selectedChains++;
                 const walletInput = chain.querySelector('.wallet-input');

@@ -83,7 +83,10 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Update customer metrics
             customerMap[customerId].totalPayments++;
-            customerMap[customerId].totalAmount += parseFloat(transaction.amount);
+            // Only add to totalAmount if the transaction is completed
+            if (transaction.status === 'completed') {
+                customerMap[customerId].totalAmount += parseFloat(transaction.amount);
+            }
             
             // Update latest payment date if this transaction is newer
             if (transaction.date > customerMap[customerId].latestPayment) {

@@ -122,11 +122,11 @@
     border-radius: 50%;
 }
 
-.chain-toggle:checked + .slider {
+.wallet-chain-toggle:checked + .slider {
     background-color: #4dbb9a;
 }
 
-.chain-toggle:checked + .slider:before {
+.wallet-chain-toggle:checked + .slider:before {
     transform: translateX(24px);
 }
 
