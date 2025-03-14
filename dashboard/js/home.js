@@ -615,7 +615,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const token = localStorage.getItem('token') || sessionStorage.getItem('token');
             const userId = localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData')).id : null;
-            if (!token && requiresAuthentication) {
+            if (!token) {
                 console.error('No authentication token found');
                 window.location.href = '../login/';
                 return false;

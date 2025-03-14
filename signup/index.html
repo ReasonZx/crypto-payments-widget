@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../styles/components/auth.css">
     <link rel="stylesheet" href="../styles/components/navbar.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <div id="app">
@@ -27,26 +28,19 @@
             <section class="auth-section">
                 <div class="container">
                     <h1>Sign Up</h1>
-                    <form class="auth-form" novalidate onsubmit="handleSignup(event)">
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" id="username" required>
-                            <span class="validation-message">Please enter a username</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" required>
-                            <span class="validation-message">Please enter a valid email address</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" id="password" required>
-                            <span class="validation-message">Please enter a password</span>
-                        </div>
-                        <div id="error-message" class="error-text"></div>
-                        <button type="submit" class="btn btn-primary">Create Account</button>
-                    </form>
-                    <p>Already have an account? <a href="../login/">Login</a></p>
+                    <div id="signup-form-container">
+                        <form class="auth-form" novalidate onsubmit="handleSignupRequest(event)">
+                            <p class="form-intro">Enter your email address to start the registration process.</p>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" required>
+                                <span class="validation-message">Please enter a valid email address</span>
+                            </div>
+                            <div id="error-message" class="error-text"></div>
+                            <button type="submit" class="btn btn-primary">Request Verification Email</button>
+                        </form>
+                        <p>Already have an account? <a href="../login/">Login</a></p>
+                    </div>
                 </div>
             </section>
         </main>

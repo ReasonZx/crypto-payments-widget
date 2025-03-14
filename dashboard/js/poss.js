@@ -99,12 +99,15 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Update navigation buttons
         prevBtn.disabled = currentStep === 1;
+
+        const isPaylink = nextBtn === paylinkNextBtn;
+
         
         // Set button text based on current step
-        if (currentStep === 4) {
-            nextBtn.textContent = 'Create Link';
-        } else if (currentStep === 5) {
+        if (currentStep === 5) {
             nextBtn.textContent = 'Finish';
+        } else if (currentStep === 4 && isPaylink) {
+            nextBtn.textContent = 'Create Link';
         } else {
             nextBtn.textContent = 'Next';
         }

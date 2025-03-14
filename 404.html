@@ -58,7 +58,7 @@
         // Dynamically determine base path - works for both local and GitHub Pages
         const basePath = window.location.hostname === 'localhost' || 
                         window.location.hostname === '127.0.0.1' ? 
-                        '/' : '/crypto-payments-widget/';
+                        '/' : '/stablio.eu/';
         
         // Use this for redirection
         document.querySelector('meta[http-equiv="refresh"]').content = `5;url=${basePath}`;
@@ -106,7 +106,7 @@
             
             if (seconds <= 0) {
                 clearInterval(intervalId);
-                window.location.href = window.basePathForRedirect || '/crypto-payments-widget/';
+                window.location.href = window.basePathForRedirect || '/stablio.eu/';
             }
         }, 1000);
     </script>

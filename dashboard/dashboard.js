@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Check token at page load
-    if (!checkTokenExpiration() && requiresAuthentication) {
+    if (!checkTokenExpiration()) {
         window.location.href = '../login/?expired=true';
         return;
     }

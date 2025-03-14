@@ -1,15 +1,11 @@
-
-async function handleSignup(event) {
+async function handleSignupRequest(event) {
     event.preventDefault();
 
     const form = event.target;
     form.classList.add('form-submitted'); // Add class on form submission
-
     
-    // Get all form inputs
-    const username = document.getElementById('username');
+    // Get email input
     const email = document.getElementById('email');
-    const password = document.getElementById('password');
     
     // Reset error messages
     document.getElementById('error-message').textContent = '';
@@ -17,20 +13,8 @@ async function handleSignup(event) {
         msg.style.display = 'none';
     });
     
-    // Validate each field
+    // Validate email
     let isValid = true;
-    
-    if (!username.value.trim()) {
-        username.nextElementSibling.classList.add('show-error');
-        username.nextElementSibling.textContent = 'Username is required';
-        username.nextElementSibling.style.display = 'block';
-        isValid = false;
-    } else if (!isValidUsername(username.value)) {
-        username.nextElementSibling.classList.add('show-error');
-        username.nextElementSibling.textContent = 'Username can only contain lowercase letters and numbers';
-        username.nextElementSibling.style.display = 'block';
-        isValid = false;
-    }
     
     if (!email.value.trim()) {
         email.nextElementSibling.classList.add('show-error');
@@ -43,30 +27,23 @@ async function handleSignup(event) {
         isValid = false;
     }
     
-    if (!password.value.trim()) {
-        password.nextElementSibling.classList.add('show-error');
-        password.nextElementSibling.style.display = 'block';
-        isValid = false;
-    } else if (password.value.length < 6) {
-        password.nextElementSibling.classList.add('show-error');
-        password.nextElementSibling.textContent = 'Password must be at least 6 characters';
-        password.nextElementSibling.style.display = 'block';
-        isValid = false;
-    }
-    
     if (!isValid) {
         return;
     }
     
     // If validation passes, proceed with API request
     const formData = {
-        username: username.value.trim(),
-        email: email.value.trim(),
-        password: password.value
+        email: email.value.trim()
     };
+
+    // Show loading state
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
   
     try {
-        const response = await fetch(`${API_URL}/api/signup`, {
+        const response = await fetch(`${API_URL}/api/request-signup-verification`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -79,46 +56,76 @@ async function handleSignup(event) {
                 const responseData = await response.json();
                 if (responseData.error === 'Email already registered') {
                     throw new Error('Email already registered');
+                } else {
+                    throw new Error('Verification request failed. Please try again.');
                 }
-                else if (responseData.error === 'Username already exists') {
-                    throw new Error('Username already exists');
-                }
-                else {
-                    throw new Error('Signup failed. Please try again.');
-                }
+            } else {
+                throw new Error('Verification request failed. Please try again.');
             }
         }
   
-        // Handle successful signup
-        const data = await response.json();
-
-        // Extract the token and user data
-        const { token, user } = data;
-
-        // Decode expiration from JWT (no verification needed)
-        const tokenPayload = JSON.parse(atob(token.split('.')[1]));
-        const expiresAt = tokenPayload.exp * 1000; // Convert to milliseconds
-
+        // Handle successful request
+        const formContainer = document.getElementById('signup-form-container');
+        formContainer.innerHTML = `
+            <div class="verification-message">
+                <div class="verification-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h2>Check Your Email</h2>
+                <p>We've sent a verification email to <strong>${email.value.trim()}</strong>.</p>
+                <p>Click the link in the email to complete your registration.</p>
+                <div class="verification-actions">
+                    <button id="resend-btn" class="btn btn-primary">Resend Email</button>
+                    <a href="../login/" class="btn btn-outline">Back to Login</a>
+                </div>
+            </div>
+        `;
         
-        // Store token in localStorage for future API calls
-        localStorage.setItem('token', token);
-        localStorage.setItem('userData', JSON.stringify(user));
-        localStorage.setItem('tokenExpires', expiresAt);
-
-
-        window.location.href = '../dashboard/';
+        // Add event listener for resend button
+        document.getElementById('resend-btn').addEventListener('click', async () => {
+            try {
+                const resendBtn = document.getElementById('resend-btn');
+                resendBtn.disabled = true;
+                resendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                
+                const response = await fetch(`${API_URL}/api/request-signup-verification`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to resend verification email');
+                }
+                
+                resendBtn.innerHTML = '<i class="fas fa-check"></i> Email Sent';
+                setTimeout(() => {
+                    resendBtn.disabled = false;
+                    resendBtn.textContent = 'Resend Email';
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Resend error:', error);
+                const resendBtn = document.getElementById('resend-btn');
+                resendBtn.disabled = false;
+                resendBtn.textContent = 'Resend Email';
+                alert('Failed to resend verification email. Please try again.');
+            }
+        });
       
     } catch (error) {
         console.error('Signup error:', error);
-        if(error.message === 'Email already in use') {
-            document.getElementById('error-message').textContent = 'Email already registered. Please use another.';
-            return
+        if(error.message === 'Email already registered') {
+            document.getElementById('error-message').textContent = 'Email already registered. Please login instead.';
+        } else {
+            document.getElementById('error-message').textContent = error.message || 'Verification request failed. Please try again.';
         }
-        else if(error.message === 'Username already exists') {
-            document.getElementById('error-message').textContent = 'Username already exists. Please try another one.';
-            return
-        }
-        document.getElementById('error-message').textContent = 'Signup failed. Please try again.';
+        
+        // Reset button state
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
     }
 }
 
@@ -126,12 +133,6 @@ async function handleSignup(event) {
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
-}
-
-function isValidUsername(username) {
-    // Check for lowercase letters and numbers only (no spaces, capitals, or symbols)
-    const usernameRegex = /^[a-z0-9]+$/;
-    return usernameRegex.test(username);
 }
 
 // Add input event listeners to clear validation messages
@@ -143,28 +144,13 @@ document.querySelectorAll('.auth-form input').forEach(input => {
     });
 });
 
-document.getElementById('username').addEventListener('input', function() {
-    const usernameInput = this;
-    const errorElement = usernameInput.nextElementSibling;
-    
-    if (usernameInput.value.trim() === '') {
-        // Don't show error when field is empty during typing
-        errorElement.style.display = 'none';
-        errorElement.classList.remove('show-error');
-    } else if (usernameInput.value.includes(' ')) {
-        errorElement.textContent = 'Username cannot contain spaces';
-        errorElement.style.display = 'block';
-        errorElement.classList.add('show-error');
-    } else if (/[A-Z]/.test(usernameInput.value)) {
-        errorElement.textContent = 'Username cannot contain capital letters';
-        errorElement.style.display = 'block';
-        errorElement.classList.add('show-error');
-    } else if (/[^a-z0-9]/.test(usernameInput.value)) {
-        errorElement.textContent = 'Username can only contain lowercase letters and numbers';
-        errorElement.style.display = 'block';
-        errorElement.classList.add('show-error');
-    } else {
-        errorElement.style.display = 'none';
-        errorElement.classList.remove('show-error');
+document.addEventListener('DOMContentLoaded', () => {
+    const emailInput = document.getElementById('email');
+    if (emailInput) {
+        emailInput.addEventListener('input', () => {
+            emailInput.nextElementSibling.style.display = 'none';
+            emailInput.nextElementSibling.classList.remove('show-error');
+            document.getElementById('error-message').textContent = '';
+        });
     }
 });
