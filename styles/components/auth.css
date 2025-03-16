@@ -207,3 +207,17 @@ input::-ms-reveal {
     animation: spin 1s infinite linear;
     margin-right: 5px;
 }
+
+/* Forgot password link styling */
+.forgot-password-link {
+    display: block;
+    text-align: right;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+}
