@@ -258,4 +258,60 @@ document.addEventListener('DOMContentLoaded', () => {
         step5.querySelector('p').insertAdjacentHTML('afterend', codeBlockHTML);
     }
 
+    // Mobile-specific enhancements
+    // Improve scrolling between steps on mobile
+    function scrollToTopOfGuide() {
+        if (window.innerWidth <= 768) {
+            const guideContainer = document.querySelector('.guide-container');
+            if (guideContainer) {
+                guideContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    }
+    
+    // Attach to navigation buttons
+    document.getElementById('nextBtn').addEventListener('click', scrollToTopOfGuide);
+    document.getElementById('prevBtn').addEventListener('click', scrollToTopOfGuide);
+    
+    // Add active step scrolling for progress bar
+    function scrollActiveStepIntoView() {
+        if (window.innerWidth <= 480) {
+            const activeStep = document.querySelector('.progress-bar .step.active');
+            if (activeStep) {
+                activeStep.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+        }
+    }
+    
+    // Update original updateSteps function to include progress bar scrolling
+    const originalUpdateSteps = updateSteps;
+    window.updateSteps = function() {
+        originalUpdateSteps();
+        setTimeout(scrollActiveStepIntoView, 100);
+    };
+    
+    // Fix input focus issues on mobile
+    const inputs = document.querySelectorAll('input[type="text"], input[type="number"]');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            // Add delay to account for keyboard appearing
+            setTimeout(() => {
+                this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        });
+    });
+    
+    // Adjust final widget container for mobile
+    const resizeWidget = () => {
+        const finalWidget = document.getElementById('final-widget-container');
+        if (finalWidget && window.innerWidth <= 768) {
+            finalWidget.style.top = '50%';
+            finalWidget.style.width = '95%';
+            finalWidget.style.maxHeight = '80vh';
+            finalWidget.style.overflow = 'auto';
+        }
+    };
+    
+    window.addEventListener('resize', resizeWidget);
+
 });

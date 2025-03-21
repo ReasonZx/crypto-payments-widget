@@ -1008,3 +1008,225 @@ copy-link-btn:hover {
     z-index: 10;
 }
 
+/* Add these styles to your poss.css file for better mobile responsiveness */
+
+/* Modal responsiveness for small screens */
+@media (max-width: 768px) {
+    /* Adjust modal size for mobile */
+    .modal-container {
+        max-width: 95%;
+        max-height: 85vh;
+    }
+    
+    /* Fix walkthrough steps display */
+    .walkthrough-stepper {
+        margin-bottom: 20px;
+    }
+    
+    .walkthrough-stepper .step {
+        width: 32px;
+        height: 32px;
+        margin: 0 8px;
+        font-size: 14px;
+    }
+    
+    .walkthrough-stepper .step:not(:last-child)::after {
+        right: -16px;
+        width: 16px;
+    }
+    
+    /* Improve form elements on mobile */
+    .chain-option {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 10px;
+    }
+    
+    .chain-option .toggle-switch {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+    }
+    
+    .chain-logo-wrapper {
+        margin-bottom: 10px;
+    }
+    
+    /* Adjust payment input for mobile */
+    .payment-amount-input {
+        font-size: 1.2rem;
+        padding: 12px 12px 12px 30px;
+    }
+    
+    .currency-symbol {
+        font-size: 1.1rem;
+        left: 12px;
+    }
+    
+    /* Make amount chips wrap better */
+    .amount-chips {
+        gap: 8px;
+    }
+    
+    .amount-chip {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+    
+    /* Improve confirmation details display */
+    .confirmation-row {
+        flex-direction: column;
+        padding: 12px 15px;
+    }
+    
+    .confirmation-label {
+        margin-bottom: 5px;
+        flex: none;
+    }
+    
+    /* Make the payment link input more mobile-friendly */
+    .payment-link-container {
+        flex-direction: column;
+        margin: 20px 0;
+    }
+    
+    .payment-link-input {
+        border-radius: 8px 8px 0 0;
+        border-right: 2px solid #e2e8f0;
+        font-size: 0.9rem;
+        padding: 10px 12px;
+        text-overflow: ellipsis;
+    }
+    
+    .copy-payment-link-btn {
+        border-radius: 0 0 8px 8px;
+        width: 100%;
+    }
+    
+    /* Adjust table for mobile scrolling */
+    .links-table-container {
+        max-height: 200px;
+    }
+    
+    .links-table {
+        min-width: 650px; /* Force horizontal scrolling */
+    }
+    
+    .links-table th, 
+    .links-table td {
+        padding: 10px 8px;
+        font-size: 0.85rem;
+    }
+    
+    /* Adjust walkthrough navigation */
+    .walkthrough-navigation {
+        margin-top: 20px;
+        padding-top: 10px;
+    }
+    
+    .nav-btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+
+    /* Make sure chain-option has position relative for absolute positioning to work */
+    .chain-option {
+        position: relative;
+        padding-right: 60px; /* Add space for the toggle */
+    }
+
+    /* Fix toggle position on mobile */
+    .chain-option .toggle-switch {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        z-index: 5; /* Ensure it's above other elements */
+    }
+
+    /* Ensure the toggle slider has proper dimensions */
+    .toggle-switch .toggle-slider {
+        display: block;
+        width: 50px; /* Make it a bit larger on mobile for easier tapping */
+    }
+    
+    /* Make toggle more visible */
+    .toggle-switch {
+        display: block;
+        min-width: 40px;
+        min-height: 20px;
+        background-color: rgba(255, 255, 255, 0.8); /* Add slight background */
+        border-radius: 20px;
+        padding: 2px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-header h3 {
+        font-size: 1.2rem;
+    }
+    
+    .step-panel h4 {
+        font-size: 1rem;
+    }
+    
+    /* Adjust POSs widgets for very small screens */
+    .pos-widget {
+        padding: 15px;
+    }
+    
+    .pos-widget-image {
+        width: 100%;
+        height: auto;
+        max-height: 250px;
+    }
+    
+    .pos-widget h4 {
+        font-size: 1.2rem;
+    }
+    
+    .pos-widget p {
+        font-size: 0.9rem;
+    }
+    
+    .tag {
+        font-size: 0.7rem;
+        padding: 3px 6px;
+    }
+    
+    /* Make more room for content */
+    .walkthrough-content {
+        font-size: 0.9rem;
+    }
+    
+    /* Center the insights cards for very small screens */
+    .insights-overview {
+        flex-direction: column;
+    }
+    
+    .insight-card {
+        margin-bottom: 15px;
+    }
+    
+    /* Make code blocks more readable on small screens */
+    .code-block {
+        font-size: 0.75rem;
+    }
+    
+    .code-block pre {
+        padding: 10px;
+    }
+
+    /* For even smaller screens */
+    .chain-option {
+        margin-bottom: 20px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    
+    /* Add more visual distinction to the toggle area */
+    .chain-option .toggle-switch {
+        top: 10px;
+        right: 10px;
+    }
+}
+

@@ -23,7 +23,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 200px;
+    padding-top: 100px;
 }
 
 
@@ -547,4 +547,190 @@ button:disabled {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    /* General layout */
+    main {
+        padding-top: 100px;
+        padding-bottom: 40px;
+        align-items: flex-start;
+    }
+    
+    .guide-container {
+        width: 95%;
+        padding: 20px 15px;
+        margin-top: 60px;
+    }
+    
+    /* Progress bar */
+    .progress-bar {
+        /* flex-wrap: wrap; */
+        gap: 5px;
+    }
+    
+    .step {
+        font-size: 13px;
+        padding: 8px 5px;
+        flex: 0 0 calc(33.33% - 10px);
+        margin-bottom: 5px;
+    }
+    
+    /* Content areas */
+    .step-content {
+        padding: 15px 10px;
+    }
+    
+    .step-content h2 {
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+    
+    .step-content p {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+    
+    /* Chain selector area */
+    .chain {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 10px;
+        position: relative;
+    }
+    
+    .chain-logo-container {
+        margin-bottom: 5px;
+    }
+    
+    .toggle {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+    
+    .wallet-input-group {
+        width: 100%;
+        max-width: none;
+        margin-top: 10px;
+    }
+    
+    .wallet-input {
+        font-size: 14px;
+    }
+    
+    /* Amount config */
+    .amount-config {
+        max-width: none;
+        width: 100%;
+    }
+    
+    /* Navigation buttons */
+    .navigation {
+        margin-top: 25px;
+    }
+    
+    button {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+    
+    /* Final widget container */
+    #final-widget-container {
+        width: 95%;
+        max-width: 95%;
+        max-height: 80vh;
+        overflow-y: auto;
+        padding: 15px;
+    }
+    
+    /* Code block adjustments */
+    .code-block {
+        padding: 10px;
+        margin-bottom: 30px;
+    }
+    
+    .code-block pre {
+        font-size: 12px;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+    
+    /* Info box positioning */
+    .info-box {
+        position: static;
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 30px;
+    }
+    
+    #step4 {
+        padding-right: 0;
+    }
+    
+    /* Label positioning */
+    .vendor-label, .payer-label {
+        top: -35px;
+        font-size: 12px;
+        padding: 5px 10px;
+        margin-left: 5px;
+    }
+    
+    /* Global default checkbox */
+    .global-default {
+        font-size: 13px;
+        padding-right: 20px;
+    }
+}
+
+/* Even smaller screens */
+@media (max-width: 480px) {
+    main {
+        padding-top: 50px;
+    }
+    
+    .guide-container {
+        width: 100%;
+        /* border-radius: 10px; */
+        margin-top: 50px;
+    }
+    
+    .progress-bar {
+        display: flex;
+        overflow-x: auto;
+        padding-bottom: 5px;
+        margin-bottom: 15px;
+    }
+    
+    .step {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        min-width: 100px;
+        font-size: 12px;
+        padding: 6px 8px;
+    }
+    
+    /* Fix scrollbars for progress */
+    .progress-bar::-webkit-scrollbar {
+        height: 3px;
+    }
+    
+    .progress-bar::-webkit-scrollbar-thumb {
+        background-color: #4dbb9a;
+        border-radius: 3px;
+    }
+    
+    /* Make custodian checkbox wrap better */
+    .custodian-checkbox {
+        font-size: 12px;
+        flex-wrap: wrap;
+    }
+    
+    /* Better loading overlay */
+    .loading-content {
+        width: 90%;
+        padding: 15px;
+        font-size: 14px;
+    }
 }

@@ -520,4 +520,101 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => document.body.removeChild(toast), 300);
         }, 3000);
     }
+
+    // Mobile specific adjustments
+    function setupMobileEnhancements() {
+        // Adjust modal height on mobile
+        function adjustModalHeight() {
+            const modalContainers = document.querySelectorAll('.modal-container');
+            const windowHeight = window.innerHeight;
+            
+            modalContainers.forEach(container => {
+                // Set max height based on viewport
+                if (window.innerWidth <= 768) {
+                    container.style.maxHeight = `${windowHeight * 0.8}px`;
+                } else {
+                    container.style.maxHeight = '90vh';
+                }
+            });
+        }
+        
+        // Call immediately and on resize
+        adjustModalHeight();
+        window.addEventListener('resize', adjustModalHeight);
+        
+        // Make tables scroll horizontally on mobile
+        const tableContainers = document.querySelectorAll('.links-table-container');
+        tableContainers.forEach(container => {
+            container.addEventListener('touchstart', function(e) {
+                // Only on mobile devices
+                if (window.innerWidth <= 768) {
+                    // Prevent vertical scroll while horizontally scrolling the table
+                    if (this.scrollWidth > this.clientWidth) {
+                        e.stopPropagation();
+                    }
+                }
+            }, { passive: true });
+        });
+        
+        // Add swipe support for walkthrough steps on mobile
+        const modals = [checkoutModal, paylinkModal];
+        
+        modals.forEach(modal => {
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            modal.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+            
+            modal.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe(modal === checkoutModal);
+            }, { passive: true });
+            
+            function handleSwipe(isCheckoutModal) {
+                const swipeThreshold = 50; // Minimum swipe distance
+                const currentStep = isCheckoutModal ? currentCheckoutStep : currentPaylinkStep;
+                const steps = isCheckoutModal ? checkoutSteps : paylinkSteps;
+                const panels = isCheckoutModal ? checkoutPanels : paylinkPanels;
+                const prevBtn = isCheckoutModal ? checkoutPrevBtn : paylinkPrevBtn;
+                const nextBtn = isCheckoutModal ? checkoutNextBtn : paylinkNextBtn;
+                
+                if (touchEndX < touchStartX - swipeThreshold) {
+                    // Swipe left -> Next step
+                    if (currentStep < 5) {
+                        isCheckoutModal ? currentCheckoutStep++ : currentPaylinkStep++;
+                        updateStepUI(steps, panels, prevBtn, nextBtn, isCheckoutModal ? currentCheckoutStep : currentPaylinkStep);
+                        
+                        // Special actions for Pay by Link
+                        if (!isCheckoutModal) {
+                            if (currentPaylinkStep === 4) {
+                                updateConfirmationDetails();
+                            }
+                        }
+                    }
+                } else if (touchEndX > touchStartX + swipeThreshold) {
+                    // Swipe right -> Previous step
+                    if (currentStep > 1) {
+                        isCheckoutModal ? currentCheckoutStep-- : currentPaylinkStep--;
+                        updateStepUI(steps, panels, prevBtn, nextBtn, isCheckoutModal ? currentCheckoutStep : currentPaylinkStep);
+                    }
+                }
+            }
+        });
+        
+        // Improve focus for amount input on mobile
+        const paymentAmount = document.getElementById('payment-amount');
+        if (paymentAmount) {
+            paymentAmount.addEventListener('focus', function() {
+                // Scroll to make sure the input is visible when keyboard appears
+                setTimeout(() => {
+                    this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+            });
+        }
+    }
+
+    // Call the setup function
+    setupMobileEnhancements();
 });

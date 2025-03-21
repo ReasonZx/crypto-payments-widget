@@ -256,5 +256,55 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (walletsTab && walletsTab.classList.contains('active')) {
         await applyConfiguration();
         checkStateChanged();
+        setTimeout(handleMobileWalletView, 50);
     }
+
+    // Mobile-specific adjustments
+    function handleMobileWalletView() {
+        // Rearrange elements for mobile view
+        if (window.innerWidth <= 768) {
+            // Move global default checkbox after chain selector
+            const chainSelector = document.querySelector('.chain-selector');
+            const globalDefault = document.querySelector('.global-default');
+            const walletLayout = document.querySelector('.wallet-layout');
+            
+            if (chainSelector && globalDefault && walletLayout) {
+                // Only rearrange if not already done
+                if (globalDefault.parentElement === walletLayout) {
+                    walletLayout.appendChild(globalDefault);
+                }
+            }
+            
+            // Adjust error message positioning
+            const errorMessage = document.querySelector('.wallet-error-message');
+            if (errorMessage) {
+                errorMessage.style.position = 'fixed';
+                errorMessage.style.bottom = '80px';
+                errorMessage.style.left = '50%';
+                errorMessage.style.transform = 'translateX(-50%)';
+            }
+        } else {
+            // Reset for desktop if needed
+            const errorMessage = document.querySelector('.wallet-error-message');
+            if (errorMessage) {
+                errorMessage.style.position = '';
+                errorMessage.style.bottom = '';
+                errorMessage.style.left = '';
+                errorMessage.style.transform = '';
+            }
+        }
+    }
+
+    // Call on page load and window resize
+    window.addEventListener('resize', handleMobileWalletView);
+
+    // Handle wallets tab activation
+    document.querySelectorAll('.sidebar-item').forEach(item => {
+        item.addEventListener('click', () => {
+            if (item.getAttribute('data-tab') === 'wallets') {
+                // Run after a slight delay to ensure DOM is updated
+                setTimeout(handleMobileWalletView, 50);
+            }
+        });
+    });
 });
