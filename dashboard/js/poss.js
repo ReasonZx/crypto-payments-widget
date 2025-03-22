@@ -556,53 +556,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }, { passive: true });
         });
         
-        // Add swipe support for walkthrough steps on mobile
-        const modals = [checkoutModal, paylinkModal];
-        
-        modals.forEach(modal => {
-            let touchStartX = 0;
-            let touchEndX = 0;
-            
-            modal.addEventListener('touchstart', e => {
-                touchStartX = e.changedTouches[0].screenX;
-            }, { passive: true });
-            
-            modal.addEventListener('touchend', e => {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe(modal === checkoutModal);
-            }, { passive: true });
-            
-            function handleSwipe(isCheckoutModal) {
-                const swipeThreshold = 50; // Minimum swipe distance
-                const currentStep = isCheckoutModal ? currentCheckoutStep : currentPaylinkStep;
-                const steps = isCheckoutModal ? checkoutSteps : paylinkSteps;
-                const panels = isCheckoutModal ? checkoutPanels : paylinkPanels;
-                const prevBtn = isCheckoutModal ? checkoutPrevBtn : paylinkPrevBtn;
-                const nextBtn = isCheckoutModal ? checkoutNextBtn : paylinkNextBtn;
-                
-                if (touchEndX < touchStartX - swipeThreshold) {
-                    // Swipe left -> Next step
-                    if (currentStep < 5) {
-                        isCheckoutModal ? currentCheckoutStep++ : currentPaylinkStep++;
-                        updateStepUI(steps, panels, prevBtn, nextBtn, isCheckoutModal ? currentCheckoutStep : currentPaylinkStep);
-                        
-                        // Special actions for Pay by Link
-                        if (!isCheckoutModal) {
-                            if (currentPaylinkStep === 4) {
-                                updateConfirmationDetails();
-                            }
-                        }
-                    }
-                } else if (touchEndX > touchStartX + swipeThreshold) {
-                    // Swipe right -> Previous step
-                    if (currentStep > 1) {
-                        isCheckoutModal ? currentCheckoutStep-- : currentPaylinkStep--;
-                        updateStepUI(steps, panels, prevBtn, nextBtn, isCheckoutModal ? currentCheckoutStep : currentPaylinkStep);
-                    }
-                }
-            }
-        });
-        
         // Improve focus for amount input on mobile
         const paymentAmount = document.getElementById('payment-amount');
         if (paymentAmount) {

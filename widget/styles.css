@@ -1,6 +1,6 @@
 .widget {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
-    width: 400px !important;
+    width: 320px !important;
     min-height: 400px !important;
     height: calc(200px + (var(--num-options, 2) * 60px)) !important;
     background: #ffffff !important;
@@ -119,8 +119,8 @@
 }
 
 .token-icon {
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
 }
 
 .selected {
@@ -203,7 +203,7 @@
 }
 
 .chain-instructions p {
-    margin-bottom: 15px;
+    margin-bottom: 11px;
     text-align: left;
 }
 
@@ -211,7 +211,7 @@
     font-weight: 500;
     white-space: nowrap;
     color: #666;
-    font-size: 22px;
+    font-size: 20px;
     flex-shrink: 1;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -219,8 +219,8 @@
 }
 
 .inline-token {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
     vertical-align: middle;
     display: inline-block;
     flex-shrink: 0;
@@ -231,8 +231,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
-    width: 205px;
-    height: 25px;
+    width: 150px;
+    height: 20px;
     margin-top: 11px;
     margin-bottom: 25px;
     padding: 5px 15px;
@@ -305,9 +305,10 @@
     grid-column: 1;
     display: flex;
     align-items: top;
-    text-align: left;
+    text-align: center;
+    align-items: center;
     padding: 5px 10px;
-    /* margin-bottom: 1px; */
+    margin-bottom: 7px;
     font-size: 16px;
     color: #666;
     height: 100%;
@@ -317,7 +318,7 @@
     width: 95%;
     padding: 5px 0px;
     font-family: 'Courier New', monospace !important;
-    font-size: 13px;
+    font-size: 11px;
     letter-spacing: 0.01px;
     border: 2px solid #e0e0e0;
     border-radius: 6px;
@@ -349,7 +350,7 @@
 }
 
 .payment-status {
-    margin-top: 65px;
+    margin-top: 45px;
 }
 
 .timer-container {
