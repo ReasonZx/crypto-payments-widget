@@ -20,22 +20,22 @@
 		<div class="dropdown-options">
 			<div class="option" data-value="solana">
 				<div class="option-main">
-					<img src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@1.0.0/dist/img/sol-logo.png" alt="Solana" class="option-icon">
+					<img src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@1.0.1/dist/img/sol-logo.png" alt="Solana" class="option-icon">
 					<span>Solana</span>
 				</div>
 				<div class="option-tokens">
-					<img src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@1.0.0/dist/img/usdc_sol.png" alt="USDC" class="token-icon">
+					<img src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@1.0.1/dist/img/usdc_sol.png" alt="USDC" class="token-icon">
 					<span>or</span>
-					<img src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@1.0.0/dist/img/usdt_sol.png" alt="USDT" class="token-icon">
+					<img src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@1.0.1/dist/img/usdt_sol.png" alt="USDT" class="token-icon">
 				</div>
 			</div>
 			<div class="option" data-value="base">
 				<div class="option-main">
-					<img src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@1.0.0/dist/img/base-logo.png" alt="Base" class="option-icon">
+					<img src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@1.0.1/dist/img/base-logo.png" alt="Base" class="option-icon">
 					<span>Base</span>
 				</div>
 				<div class="option-tokens">
-					<img src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@1.0.0/dist/img/usdc_base.png" alt="USDC" class="token-icon">
+					<img src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@1.0.1/dist/img/usdc_base.png" alt="USDC" class="token-icon">
 				</div>
 			</div>
 		</div>
@@ -55,21 +55,24 @@
 				<p>Please send the amount below to the address indicated on Solana</p>
 				<span class="token-icons">
 					<span class="payment-amount" id="solana-amount">Loading...</span>
-					<img src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@1.0.0/dist/img/usdc_sol.png" alt="USDC" class="inline-token">
-					<img src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@1.0.0/dist/img/usdt_sol.png" alt="USDT" class="inline-token">
+					<img src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@1.0.1/dist/img/usdc_sol.png" alt="USDC" class="inline-token">
+					<img src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@1.0.1/dist/img/usdt_sol.png" alt="USDT" class="inline-token">
 				</span>
 			</div>
 			<div class="chain-instructions base-chain hidden">
 				<p>Please send the amount below to the address indicated on Base</p>
 				<span class="token-icons">
 					<span class="payment-amount" id="base-amount">Loading...</span>
-					<img src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@1.0.0/dist/img/usdc_base.png" alt="USDC" class="inline-token">
+					<img src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@1.0.1/dist/img/usdc_base.png" alt="USDC" class="inline-token">
 				</span>
 			</div>
 			<div class="address-section">
 				<span id="addressContainer">Loading...</span>
 				<div id="walletAddress">Loading...</div>
 			</div>
+		</div>
+		<div id="connection-warning" class="connection-warning hidden">
+			⚠️ Connection to server unstable. Payment may be interrupted...
 		</div>
 		<div class="payment-status">
 			<div class="timer-container">
@@ -104,6 +107,20 @@
 				</svg>
 			</div>
 			<p>Please restart the process</p>
+		</div>
+	</div>
+
+	<!-- Screen 5: Connection Failed -->
+	<div id="screen5" class="hidden">
+		<div class="connection-failed">
+			<h2>Server Connection Failed</h2>
+			<div class="cross-container">
+				<svg class="cross" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+					<circle class="cross-circle" cx="26" cy="26" r="25" fill="none"/>
+					<path class="cross-x" fill="none" d="M16 16 36 36 M36 16 16 36"/>
+				</svg>
+			</div>
+			<p>Please check your internet connection and try again</p>
 		</div>
 	</div>
 </body>

@@ -369,6 +369,31 @@
     animation: fadeIn 1s ease-in-out infinite alternate;
 }
 
+/* Connection warning styles */
+.connection-warning {
+    position: absolute;
+    margin-left: 8px;
+    max-width: 90%;
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 10px;
+    text-align: center;
+    z-index: 10;
+    margin-top: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    animation: pulse 1.5s infinite;
+    white-space: nowrap;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+
 /* Screen 3 */
 
 #screen3 {
@@ -535,8 +560,6 @@
     font-size: 16px;
 }
 
-/* Add these styles at the end of your CSS file */
-
 /* Loading button styles */
 .button.loading {
     position: relative;
@@ -556,6 +579,44 @@
     border-radius: 50%;
     border-top-color: white;
     animation: button-spinner 0.8s linear infinite;
+}
+
+/* Screen5 */
+
+#screen5 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    width: 100%;
+    margin: auto;
+}
+
+.connection-failed {
+    text-align: center;
+    color: #666;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.connection-failed h2 {
+    color: #ff6b6b;
+    margin-bottom: 20px;
+}
+
+.connection-failed p {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+#screen5 .cross-circle {
+    stroke: #ff9800;
+}
+
+#screen5 .cross-x {
+    stroke: #ff9800;
 }
 
 @keyframes button-spinner {

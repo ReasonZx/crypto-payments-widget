@@ -31,6 +31,9 @@ class PaymentWidget {
         this.crypto = window.crypto;
         this.selectedValue = null;
         this.ws = null;
+        this.lastHeartbeatTime = null;
+        this.heartbeatMonitor = null;
+        this.heartbeatWarningShown = false;
 
         switch (this.config.type) {
             case 'defaultPayment':
@@ -276,6 +279,8 @@ class PaymentWidget {
         this.shadow.querySelector("#screen2").classList.add("hidden");
         const screen3 = this.shadow.querySelector("#screen3");
         screen3.classList.remove("hidden");
+        this.stopHeartbeatMonitoring();
+        clearInterval(this.countdown);
         
         // Add payment details below checkmark
         const paymentDetails = document.createElement('div');
@@ -294,8 +299,17 @@ class PaymentWidget {
     }
 
     goToScreen4() {
+        this.stopHeartbeatMonitoring();
+        clearInterval(this.countdown);
+
         this.shadow.querySelector("#screen2").classList.add("hidden");
         this.shadow.querySelector("#screen4").classList.remove("hidden");
+        this.cleanupWebSocket();
+    }
+
+    goToScreen5() {
+        this.shadow.querySelector("#screen2").classList.add("hidden");
+        this.shadow.querySelector("#screen5").classList.remove("hidden");
         this.cleanupWebSocket();
     }
 
@@ -321,8 +335,10 @@ class PaymentWidget {
             this.ws = new WebSocket(wsUrl);
     
             this.ws.onopen = () => {
+                this.lastHeartbeatTime = Date.now();
+                this.startHeartbeatMonitoring();
+                
                 this.ws.send(JSON.stringify({
-                    // type: 'subscribe_payment',
                     address: address
                 }));
             };
@@ -336,6 +352,8 @@ class PaymentWidget {
             this.ws.onclose = () => {
                 console.log('WebSocket connection closed');
                 this.cleanupWebSocket();
+                this.showHeartbeatWarning();
+                this.heartbeatWarningShown = true;
             };
     
             this.ws.onmessage = async (event) => {
@@ -346,8 +364,12 @@ class PaymentWidget {
 
                     console.log('Received message:', message);
 
-                    // Handle heartbeat
+                    // Handle heartbeat and update timestamp
                     if (data && data.type === 'heartbeat') {
+                        this.lastHeartbeatTime = Date.now();
+                        this.heartbeatWarningShown = false;
+                        this.clearHeartbeatWarning();
+                        
                         this.ws.send(JSON.stringify({
                             type: 'heartbeat_response',
                             timestamp: Date.now(),
@@ -386,6 +408,63 @@ class PaymentWidget {
             this.ws.close();
             this.ws = null;
         }
+    }
+
+    startHeartbeatMonitoring() {
+        this.stopHeartbeatMonitoring();
+        
+        this.heartbeatMonitor = setInterval(() => {
+            if (!this.lastHeartbeatTime) return;
+            
+            const timeSinceLastHeartbeat = Date.now() - this.lastHeartbeatTime;
+            
+            if (timeSinceLastHeartbeat > 35000 && !this.heartbeatWarningShown) {
+                this.showHeartbeatWarning();
+                this.heartbeatWarningShown = true;
+            }
+            
+            if (timeSinceLastHeartbeat > 65000) {
+                this.handleServerDisconnection();
+            }
+        }, 5000);
+    }
+
+    stopHeartbeatMonitoring() {
+        if (this.heartbeatMonitor) {
+            clearInterval(this.heartbeatMonitor);
+            this.heartbeatMonitor = null;
+        }
+    }
+
+    showHeartbeatWarning() {
+        const screen2 = this.shadow.querySelector("#screen2");
+        
+        if (!screen2.classList.contains("hidden")) {
+            const warningEl = this.shadow.querySelector("#connection-warning");
+            if (warningEl) {
+                warningEl.classList.remove("hidden");
+            }
+        }
+    }
+
+    clearHeartbeatWarning() {
+        const warningEl = this.shadow.querySelector("#connection-warning");
+        if (warningEl) {
+            warningEl.classList.add("hidden");
+        }
+    }
+
+    handleServerDisconnection() {
+        this.stopHeartbeatMonitoring();
+        clearInterval(this.countdown);
+        
+        this.goToScreen5();
+        
+        this.emitPaymentEvent('payment_failed', {
+            userID: this.config.userID,
+            reason: 'server_timeout',
+            timestamp: Date.now()
+        });
     }
 
     /*** Helper Functions ***/
