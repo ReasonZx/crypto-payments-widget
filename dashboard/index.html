@@ -47,12 +47,32 @@
 
         <div class="dashboard-container">
             <aside class="sidebar">
+                <div class="sidebar-header">
+                    <button id="sidebar-toggle" class="sidebar-toggle">
+                        <i class="fas fa-angle-left"></i>
+                    </button>
+                </div>
                 <ul class="sidebar-menu">
-                    <li class="sidebar-item active" data-tab="home">Home</li>
-                    <li class="sidebar-item" data-tab="wallets">Wallets</li>
-                    <li class="sidebar-item" data-tab="poss">POSs</li>
-                    <li class="sidebar-item" data-tab="customers">Customers</li>
-                    <li class="sidebar-item" data-tab="settings">Settings</li>
+                    <li class="sidebar-item active" data-tab="home">
+                        <i class="fas fa-home"></i>
+                        <span class="sidebar-text">Home</span>
+                    </li>
+                    <li class="sidebar-item" data-tab="wallets">
+                        <i class="fas fa-wallet"></i>
+                        <span class="sidebar-text">Wallets</span>
+                    </li>
+                    <li class="sidebar-item" data-tab="poss">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="sidebar-text">POSs</span>
+                    </li>
+                    <li class="sidebar-item" data-tab="customers">
+                        <i class="fas fa-users"></i>
+                        <span class="sidebar-text">Customers</span>
+                    </li>
+                    <li class="sidebar-item" data-tab="settings">
+                        <i class="fas fa-cog"></i>
+                        <span class="sidebar-text">Settings</span>
+                    </li>
                 </ul>
             </aside>
             <main class="content">
@@ -274,6 +294,12 @@
                 </div>
                 <div id="wallets" class="tab-content">
                     <h2>Wallets configuration</h2>
+                    <div class="custody-balance-container">
+                        <div class="custody-balance">
+                            <div class="balance-label">Custodial Wallet Balance:</div>
+                            <div class="balance-amount">$<span id="custody-amount">0.00</span></div>
+                        </div>
+                    </div>
                     <h3 class="wallet-subtitle">Choose where to redirect your payments</h3>
                     <p class="wallet-description">Select the chains through which you want to be able to receive payments and if you want the payments to be immediately redirected to your own wallet or not.</p>
                     <div class="wallet-layout">
@@ -654,7 +680,7 @@
                         <p>Include our JavaScript SDK in your checkout page:</p>
                         <div class="code-block">
                             <pre><code>&lt;!-- Add this to your HTML head --&gt;
-&lt;script src="<span class="highlight-green">https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v0.4.0/dist/crypto-payments-widget.js</span>"&gt;&lt;/script&gt;</code></pre>
+&lt;script src="<span class="highlight-green">https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@v1.0.0/dist/crypto-payments-widget.js</span>"&gt;&lt;/script&gt;</code></pre>
                         </div>
                     </div>
                     

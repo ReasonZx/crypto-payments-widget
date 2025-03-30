@@ -35,6 +35,39 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // Sidebar toggle functionality
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.querySelector('.sidebar');
+    const content = document.querySelector('.content');
+    
+    // Check if we have a saved state in localStorage
+    const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+    
+    // Apply initial state
+    if (sidebarCollapsed) {
+        sidebar.classList.add('collapsed');
+        content.classList.add('expanded');
+    }
+    
+    // Toggle sidebar on click
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        content.classList.toggle('expanded');
+        
+        // Save state to localStorage
+        localStorage.setItem(
+            'sidebarCollapsed', 
+            sidebar.classList.contains('collapsed')
+        );
+    });
+    
+    // Add tooltip functionality for collapsed sidebar
+    sidebarItems.forEach(item => {
+        // Use the text as tooltip when collapsed
+        const text = item.querySelector('.sidebar-text').textContent;
+        item.setAttribute('title', text);
+    });
 });
 
 

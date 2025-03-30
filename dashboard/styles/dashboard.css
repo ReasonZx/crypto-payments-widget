@@ -9,8 +9,35 @@
     color: var(--white);
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    /* transition: transform 0.3s ease, width 0.3s ease;
-    z-index: 10; */
+    transition: all 0.3s ease;
+    overflow-x: hidden;
+}
+
+.sidebar.collapsed {
+    width: 60px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    padding: 5px;
+}
+
+.sidebar-toggle {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 22px;
+    transition: transform 0.3s;
+    padding: 5px;
+}
+
+.sidebar.collapsed .sidebar-toggle {
+    transform: rotate(180deg);
 }
 
 .sidebar-menu {
@@ -20,9 +47,66 @@
 }
 
 .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
     padding: 15px;
+    margin-bottom: 5px; 
     cursor: pointer;
-    transition: background 0.3s;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Maintain the same vertical spacing when collapsed */
+.sidebar.collapsed .sidebar-item {
+    justify-content: center;
+    padding: 15px 0; 
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 5px; 
+    box-sizing: border-box;
+    height: 52px; 
+}
+
+.sidebar-item i {
+    font-size: 18px;
+    min-width: 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar.collapsed .sidebar-item:hover i {
+    transform: scale(1.2);
+    transition: transform 0.2s;
+}
+
+.sidebar.collapsed .sidebar-item:hover {
+    height: 52px;
+    background: var(--primary-color);
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.sidebar-item.active {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar.collapsed .sidebar-item.active {
+    border-left: none;
+    padding: 15px ;
+    background: var(--primary-color);
+    width: 100%;
+    color: white;
+    height: 52px;
+}
+
+.sidebar.collapsed .sidebar-text {
+    display: none;
 }
 
 .sidebar-item:hover,
@@ -35,7 +119,11 @@
     padding: 30px;
     overflow-y: auto;
     position: relative;
-    transition: padding 0.3s ease;
+    transition: padding 0.3s ease, padding-left 0.3s ease;
+}
+
+.content.expanded {
+    padding-left: 80px;
 }
 
 .tab-content {
@@ -71,6 +159,14 @@
         justify-content: center;
     }
     
+    .sidebar.collapsed {
+        width: 100%; /* Don't collapse width on mobile */
+    }
+    
+    .sidebar-header {
+        display: none; /* Hide toggle button on mobile */
+    }
+    
     .sidebar-menu {
         display: flex;
         overflow-x: auto;
@@ -79,14 +175,23 @@
     }
     
     .sidebar-item {
+        gap: 10px;
         padding: 10px 15px;
         white-space: nowrap;
         border-radius: 20px;
         margin: 0 5px;
     }
+    
+    .sidebar-text {
+        display: block !important; /* Always show text on mobile */
+    }
 
     .content {
         padding: 20px 15px;
+    }
+    
+    .content.expanded {
+        padding-left: 30px; /* Reset padding on mobile */
     }
     
     /* Handle sidebar scrollbar appearance */

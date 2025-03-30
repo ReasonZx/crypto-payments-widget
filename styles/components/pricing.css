@@ -1,0 +1,214 @@
+/* Pricing Section */
+#pricing {
+    /* background-color: var(--background-light); */
+    padding: 80px 0;
+}
+
+.pricing-intro {
+    max-width: 700px;
+    margin: 0 auto 40px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.pricing-structure {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+/* Pricing Card */
+.pricing-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    padding: 30px;
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.pricing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.pricing-header {
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.pricing-header h3 {
+    color: var(--primary-dark);
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.pricing-value {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pricing-amount {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.pricing-period {
+    font-size: 16px;
+    color: #666;
+}
+
+.pricing-features {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.pricing-feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pricing-feature i {
+    color: var(--primary-color);
+}
+
+/* Calculator */
+.pricing-calculator {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    padding: 30px;
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+}
+
+.pricing-calculator h3 {
+    color: var(--primary-dark);
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.calculator-input {
+    margin-bottom: 25px;
+}
+
+.calculator-input label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.calculator-input input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border 0.3s;
+}
+
+.calculator-input input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+.calculator-result {
+    background-color: #f8fafc;
+    border-radius: 6px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.result-label {
+    font-weight: 600;
+}
+
+.result-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+/* Examples */
+.pricing-examples {
+    max-width: 830px;
+    margin: 0 auto;
+}
+
+.pricing-examples h4 {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: var(--primary-dark);
+}
+
+.examples-grid {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.example {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    flex: 1;
+    min-width: 150px;
+    max-width: 250px;
+}
+
+.example-amount {
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.example-fee {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.example-note {
+    font-size: 14px;
+    color: #718096;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .pricing-structure {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .pricing-card, .pricing-calculator {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .examples-grid {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .example {
+        max-width: 100%;
+    }
+}

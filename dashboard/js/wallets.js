@@ -55,6 +55,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             globalDefaultBox.classList.add('active');
         }
 
+        // Display custody amount if available
+        if (config.custodyAmount !== undefined) {
+            const custodyAmountElement = document.getElementById('custody-amount');
+            if (custodyAmountElement) {
+                // Format the amount with 2 decimal places
+                const formattedAmount = parseFloat(config.custodyAmount).toFixed(2);
+                custodyAmountElement.textContent = formattedAmount;
+            }
+        }
+
         // Apply chain toggles and wallet addresses
         chainToggles.forEach((toggle, index) => {
             if (config.chains && config.chains[index]) {
@@ -139,6 +149,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         saveButton.disabled = !hasChanges;
     }
 
+    // Address validation functions
+    function isValidSolanaAddress(address) {
+        // Base58 format, typical length 32-44 chars
+        const base58Regex = /^[1-9A-HJ-NP-Za-km-z]+$/;
+        return base58Regex.test(address) && address.length >= 32 && address.length <= 44;
+    }
+
+    function isValidEthAddress(address) {
+        // Ethereum and other EVM chains use 0x followed by 40 hex chars
+        const ethRegex = /^0x[a-fA-F0-9]{40}$/;
+        return ethRegex.test(address);
+    }
+
     // Initial state setup
     if (useDefaultAll.checked) {
         globalDefaultBox.classList.add('active');
@@ -149,6 +172,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             input.disabled = e.target.checked;
             if (e.target.checked) {
                 input.value = '';
+                const inputGroup = input.closest('.wallet-input-group');
+                if (inputGroup) {
+                    inputGroup.classList.remove('valid-address');
+                }
             }
         });
 
@@ -184,7 +211,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     walletInputs.forEach(input => {
-        input.addEventListener('input', checkStateChanged);
+        input.addEventListener('input', function() {
+            // Add address validation
+            const inputGroup = this.closest('.wallet-input-group');
+            const chainType = this.closest('.chain').querySelector('.chain-logo').alt.toLowerCase();
+            const value = this.value.trim();
+            
+            // Remove validation classes
+            inputGroup.classList.remove('valid-address');
+            
+            // Check for valid address based on chain type
+            if (value) {
+                if (chainType === 'solana' && isValidSolanaAddress(value)) {
+                    inputGroup.classList.add('valid-address');
+                } 
+                else if ((chainType === 'ethereum' || chainType === 'base') && isValidEthAddress(value)) {
+                    inputGroup.classList.add('valid-address');
+                }
+            }
+            
+            // Call your existing state changed function
+            checkStateChanged();
+        });
     });
 
     saveButton.addEventListener('click', async () => {

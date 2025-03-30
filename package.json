@@ -1,7 +1,7 @@
 {
     "name": "@reasonzx/crypto-payments-widget",
-    "version": "0.4.0",
-    "description": "Crypto payments widget for web integration",
+    "version": "1.0.0",
+    "description": "Stablecoin payments widget for web integration",
     "main": "dist/crypto-payments-widget.js",
     "files": [
         "dist"
@@ -11,7 +11,8 @@
         "url": "git+https://github.com/ReasonZx/crypto-payments-widget.git"
     },
     "keywords": [
-        "crypto",
+        "stablecoin",
+        "stablecoins",
         "payments",
         "widget",
         "solana",

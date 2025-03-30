@@ -436,6 +436,7 @@ class PaymentWidget {
                 authToken = responseData.authToken;
                 publicKey = responseData.publicKey;
                 amount = responseData.amount;
+                this.paymentID = this.config.paymentID;
                 break;
             
             case 'standAlonePayment':

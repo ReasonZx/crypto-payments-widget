@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="styles/components/faq.css">
     <link rel="stylesheet" href="styles/components/cta.css">
     <link rel="stylesheet" href="styles/components/navbar.css">
+    <link rel="stylesheet" href="styles/components/pricing.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="index-page">
@@ -45,11 +46,11 @@
                         <a href="dashboard/" class="btn btn-login">Dashboard</a>
                         <button onclick="handleLogout()" class="btn btn-primary">Log out</button>
                     </div>
-                    <button class="burger-menu" aria-label="Menu">
+                    <!-- <button class="burger-menu" aria-label="Menu">
                         <span></span>
                         <span></span>
                         <span></span>
-                    </button>
+                    </button> -->
                 </div>
             </div>
             <div class="burger-content">
@@ -159,6 +160,78 @@
                             <i class="fas fa-chart-line"></i>
                             <h3>Cheapest fees on the market</h3>
                             <p>We only support stablecoins in the fastest and cheapest chains in the world.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="pricing">
+                <div class="container">
+                    <h2>Simple, Transparent Pricing</h2>
+                    <div class="pricing-intro">
+                        <p>We believe in fair, straightforward pricing with no hidden fees.</p>
+                    </div>
+                    
+                    <div class="pricing-structure">
+                        <div class="pricing-card">
+                            <div class="pricing-header">
+                                <h3>One Simple Fee</h3>
+                                <div class="pricing-value">
+                                    <span class="pricing-amount">Max(0.5$, 0.5%)</span>
+                                    <span class="pricing-period">per transaction</span>
+                                </div>
+                            </div>
+                            <div class="pricing-features">
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>0.5$ minimum fee</span>
+                                </div>
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>0.5% for larger payments</span>
+                                </div>
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>No monthly fees</span>
+                                </div>
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>No setup costs</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="pricing-calculator">
+                            <h3>Calculate Your Fee</h3>
+                            <div class="calculator-input">
+                                <label for="payment-amount">Payment Amount ($)</label>
+                                <input type="number" id="payment-amount" min="0" step="0.01" value="10" placeholder="Enter payment amount">
+                            </div>
+                            <div class="calculator-result">
+                                <div class="result-label">Your fee:</div>
+                                <div class="result-value" id="fee-result">$0.50</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pricing-examples">
+                        <h4>Example Fees</h4>
+                        <div class="examples-grid">
+                            <div class="example">
+                                <div class="example-amount">$10 payment</div>
+                                <div class="example-fee">$0.50 fee</div>
+                                <div class="example-note">0.5$ minimum applies</div>
+                            </div>
+                            <div class="example">
+                                <div class="example-amount">$200 payment</div>
+                                <div class="example-fee">$1.00 fee</div>
+                                <div class="example-note">0.5% rate applies</div>
+                            </div>
+                            <div class="example">
+                                <div class="example-amount">$1000 payment</div>
+                                <div class="example-fee">$5.00 fee</div>
+                                <div class="example-note">0.5% rate applies</div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -107,6 +107,32 @@ document.addEventListener('DOMContentLoaded', () => {
         background.style.transform = `scale(${1 + scrollProgress * 0.001})`;
         background.style.backgroundPosition = `${scrollProgress}% ${scrollProgress}%`;
     });
+
+    // Pricing calculator functionality
+    const paymentInput = document.getElementById('payment-amount');
+    const feeResult = document.getElementById('fee-result');
+    
+    function calculateFee() {
+        if (!paymentInput || !feeResult) return;
+        
+        const amount = parseFloat(paymentInput.value);
+        if (isNaN(amount)) {
+            feeResult.textContent = '$0.00';
+            return;
+        }
+        
+        const percentFee = amount * 0.005;
+        const finalFee = Math.max(0.5, percentFee);
+        feeResult.textContent = '$' + finalFee.toFixed(2);
+    }
+    
+    // Calculate on page load
+    calculateFee();
+    
+    // Calculate on input change
+    if (paymentInput) {
+        paymentInput.addEventListener('input', calculateFee);
+    }
 });
 
 
@@ -116,9 +142,20 @@ document.addEventListener('DOMContentLoaded', () => {
 function scrollToSection(sectionId) {
     const section = document.getElementById(sectionId);
     if (section) {
-        section.scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'start'
+        // Get the navbar height to use as offset
+        const navbar = document.querySelector('.navbar');
+        const navbarHeight = navbar ? navbar.offsetHeight : 0;
+        
+        // Add extra padding for visual comfort (20px)
+        const scrollOffset = navbarHeight + 20;
+        
+        // Get the position of the section relative to the top of the page
+        const sectionPosition = section.getBoundingClientRect().top + window.pageYOffset;
+        
+        // Scroll to the section with offset
+        window.scrollTo({
+            top: sectionPosition - scrollOffset,
+            behavior: 'smooth'
         });
     }
 }
