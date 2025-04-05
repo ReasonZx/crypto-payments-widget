@@ -598,3 +598,27 @@ label {
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+
+/* Add at the end of the file */
+
+.support-note {
+    text-align: center;
+    color: #718096;
+    font-size: 0.9rem;
+    margin: 40px auto 20px;
+    padding-top: 20px;
+    border-top: 1px solid #edf2f7;
+    max-width: 800px;
+}
+
+.support-note a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.support-note a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
