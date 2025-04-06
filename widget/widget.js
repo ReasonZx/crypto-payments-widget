@@ -4,12 +4,12 @@ import QRCode from 'qrcode';
 
 
 /**
- * Mandatory fields according to each payment type:
- * - defaultPayment: amount, vendorID (optional - userID, chains)
- * - paymentById: paymentID, vendorID (optional - userID)
- * - standAlonePayment: amount, vendorID, isCustodial, (optional - userID)
- *                      wallets - if isCustodial is false, 
- *                      chains - if isCustodial is True, (optional - defaults to both chains)
+ * Mandatory fields according to each @param {string} config.type - payment type:
+ * @param {string} config.type.defaultPayment:      amount, vendorID (optional - userID, chains)
+ * @param {string} config.type.paymentById:         paymentID, vendorID (optional - userID)
+ * @param {string} config.type.standAlonePayment:   amount, vendorID, isCustodial, (optional - userID)
+ *                                                      wallets - if isCustodial is false, 
+ *                                                      chains - if isCustodial is True, (optional - defaults to both chains)
  */
 class PaymentWidget {
     constructor(config = {}) {
@@ -19,6 +19,7 @@ class PaymentWidget {
             wsUrl: config.wsUrl || 'https://crypto-payments-backend-90e8ca11c89f.herokuapp.com/',
             paymentID: config.paymentID || null,
             amount: config.amount || null,
+            currency: config.currency || 'USD',
             userID: config.userID || null,
             chains: config.chains ? config.chains : ['solana', 'base'],                    // ['solana', 'base'] | ['solana'] | ['base']
             vendorID: config.vendorID,
@@ -126,7 +127,7 @@ class PaymentWidget {
 
     async goToScreen1() {
         try {
-
+            
             const paymentChains = await this.fetchPaymentChains();
 
             // Validate at least one chain
@@ -157,6 +158,15 @@ class PaymentWidget {
                 if (!paymentChains.includes(chainType)) {
                     option.remove();
                 }
+            });
+            
+            // Handle currency-specific token icons
+            const currencyLower = this.config.currency.toLowerCase();
+            tempContainer.querySelectorAll(`.currency-usd, .currency-eur`).forEach(el => {
+                el.classList.add('hidden');
+            });
+            tempContainer.querySelectorAll(`.currency-${currencyLower}`).forEach(el => {
+                el.classList.remove('hidden');
             });
         
             // Update widget height variable based on remaining options
@@ -242,6 +252,11 @@ class PaymentWidget {
             } else if (this.selectedValue === 'base') {
                 baseElements.forEach(el => el.classList.remove('hidden'));
             }
+
+            // Ensure only currency-relevant token images are visible
+            const currencyLower = this.config.currency.toLowerCase();
+            const currencyElements = this.shadow.querySelectorAll(`.currency-${currencyLower}`);
+            currencyElements.forEach(el => el.classList.remove('hidden'));
 
             const formattedAmount = this.formatAmount(amount);
             solanaAmount.textContent = `$\u00A0${formattedAmount}`;
@@ -404,6 +419,7 @@ class PaymentWidget {
     }
 
     cleanupWebSocket() {
+        
         if (this.ws) {
             this.ws.close();
             this.ws = null;
@@ -484,6 +500,7 @@ class PaymentWidget {
                     body: JSON.stringify({
                         chain: this.selectedValue,
                         amount: this.config.amount,
+                        currency: this.config.currency,
                         userID: this.config.userID,
                         vendorID: this.config.vendorID,
                     })
@@ -528,6 +545,7 @@ class PaymentWidget {
                     },
                     body: JSON.stringify({
                         amount: this.config.amount,
+                        currency: this.config.currency,
                         chainWallet: chainWallet,
                         vendorID: this.config.vendorID,
                         userID: this.config.userID,
