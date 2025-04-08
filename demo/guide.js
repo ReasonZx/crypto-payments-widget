@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const payerLabel = document.querySelector('.payer-label');    
         const useDefaultAll = document.getElementById('use-default-all');
         const amount = getAmount();
+        const currency = getSelectedCurrency();
         const wallets = getWalletsConfig();
         const isUsingDefaultWallet = useDefaultAll.checked;
     
@@ -67,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let widgetConfig = {
                     type: 'standAlonePayment',
                     amount: amount,
+                    currency: currency,
                     vendorID: 'demo_vendor_123',
                     isCustodial: isUsingDefaultWallet,
                     container: widgetContainer,
@@ -205,6 +207,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return parseFloat(document.querySelector('.amount-config input[type="number"]').value);
     }
 
+    function getSelectedCurrency() {
+        return document.getElementById('currency-value').value;
+    }
+
     function validateAmount() {
         const amountInput = document.querySelector('.amount-config input[type="number"]');
         const amount = parseFloat(amountInput.value);
@@ -221,6 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateCodeBlock() {
         const amount = getAmount();
+        const currency = getSelectedCurrency();
         const wallets = getWalletsConfig();
         const chains = getChainsConfig();
         const userID = 'demo-user-123';
@@ -231,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const codeBlockHTML = `
         <div class="code-block">
             <pre><code>&lt;head&gt;
-    &lt;script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@2.0.0/dist/crypto-payments-widget.js"&gt;&lt;/script&gt;
+    &lt;script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@2.0.1/dist/crypto-payments-widget.js"&gt;&lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
     &lt;div id="payment-container"&gt;&lt;/div&gt;
@@ -240,6 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
             type: 'standAlonePayment',
             vendorID: 'demo_vendor_123',
             amount: <span class="highlight" id="codeAmount">${amount}</span>,
+            currency: <span class="highlight" id="codeCurrency">'${currency}'</span>,
             isCustodial: <span class="highlight" id="codeCustodial">${isCustodial}</span>,
             ${!isCustodial ? 
                 `wallets: <span class="highlight" id="codeWallets">${JSON.stringify(wallets)}</span>,\n            ` : 
@@ -313,5 +321,50 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     window.addEventListener('resize', resizeWidget);
+
+    // Add event listeners for currency selection
+    document.querySelectorAll('input[name="currency"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+            if (currentStep === 5) {
+                updateCodeBlock();
+            }
+        });
+    });
+
+    // Add currency dropdown functionality
+    const currencyDropdown = document.querySelector('.currency-dropdown');
+    const selectedCurrency = document.getElementById('selected-currency');
+    const currencyOptions = document.querySelectorAll('.currency-option');
+    const currencyValue = document.getElementById('currency-value');
+    
+    if (currencyDropdown) {
+        // Toggle dropdown
+        currencyDropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('active');
+        });
+        
+        // Select currency option
+        currencyOptions.forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                const value = this.getAttribute('data-value');
+                selectedCurrency.textContent = value;
+                currencyValue.value = value;
+                currencyDropdown.classList.remove('active');
+                
+                // If you're on step 5, update the code block
+                if (currentStep === 5) {
+                    updateCodeBlock();
+                }
+            });
+        });
+        
+        // Close dropdown when clicking elsewhere
+        document.addEventListener('click', function() {
+            currencyDropdown.classList.remove('active');
+        });
+    }
 
 });

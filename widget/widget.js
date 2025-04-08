@@ -21,7 +21,7 @@ class PaymentWidget {
             amount: config.amount || null,
             currency: config.currency || 'USD',
             userID: config.userID || null,
-            chains: config.chains ? config.chains : ['solana', 'base'],                    // ['solana', 'base'] | ['solana'] | ['base']
+            chains: config.chains,                          // ['solana', 'base'] | ['solana'] | ['base']
             vendorID: config.vendorID,
             isCustodial: config.isCustodial === undefined ? true : config.isCustodial,
             wallets: config.wallets || [],                 // [{chain: 'solana', chainAddress: 'address'}, {chain: 'base', chainAddress: 'address'}]
@@ -53,9 +53,14 @@ class PaymentWidget {
                 }
                 if(!this.config.isCustodial) {
                     if(this.config.wallets.length === 0){
-                        throw new Error('Wallets are required for non-custodial payment');
+                        throw new Error('"Wallets" field is required for non-custodial payment');
                     }
                     this.config.chains = this.config.wallets.map(w => w.chain);
+                }
+                else {
+                    if(this.config.chains.length === 0){
+                        throw new Error('"Chains" field is required for custodial payment');
+                    }
                 }
                 break;
             default:
@@ -575,11 +580,30 @@ class PaymentWidget {
         switch (this.config.type) {
 
             case 'defaultPayment':
-                paymentChains = this.config.chains;
+                if(!this.config.chains) {
+                    const response = await fetch(`${this.config.serverUrl}api/getPaymentDetails`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            vendorID: this.config.vendorID,
+                        })
+                    });
+    
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch available chains');
+                    }
+    
+                    ({ paymentChains } = await response.json());
+                }
+                else {
+                    paymentChains = this.config.chains;
+                }
                 break;
 
             case 'paymentById':
-                const response = await fetch(`${this.config.serverUrl}api/getPaymentChains`, {
+                const response = await fetch(`${this.config.serverUrl}api/getPaymentDetails`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -594,7 +618,12 @@ class PaymentWidget {
                     throw new Error('Failed to fetch available chains');
                 }
 
-                ({ paymentChains } = await response.json());
+                const responseData = await response.json();
+                paymentChains = responseData.paymentChains;
+                
+                if (responseData.paymentCurrency) {
+                    this.config.currency = responseData.paymentCurrency;
+                }
                 break;
 
             case 'standAlonePayment':

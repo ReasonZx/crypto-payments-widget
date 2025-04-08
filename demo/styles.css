@@ -328,16 +328,16 @@ main {
 
 .amount-config {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    flex-direction: column;
     background: #f8f9fa;
     padding: 20px;
     border-radius: 8px;
-    max-width: 200px;
+    max-width: 240px;
+    gap: 15px;
 }
 
 .amount-config input[type="number"] {
-    width: 100px;
+    width: 100%;
     padding: 5px 12px;
     border: 2px solid #e2e8f0;
     border-radius: 6px;
@@ -372,6 +372,88 @@ main {
 
 .amount-config input[type="number"] {
     -moz-appearance: textfield;
+}
+
+/* Amount with Currency */
+.amount-with-currency {
+    display: flex;
+    width: 100%;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+}
+
+.amount-with-currency input[type="number"] {
+    flex: 1;
+    border: none;
+    border-radius: 0;
+    padding: 10px 12px;
+    font-size: 18px;
+}
+
+.amount-with-currency input[type="number"]:focus {
+    border: none;
+    box-shadow: none;
+}
+
+/* Currency Dropdown */
+.currency-dropdown {
+    position: relative;
+    width: 80px;
+    border-left: 2px solid #e2e8f0;
+    background: #f8fafc;
+    cursor: pointer;
+}
+
+.currency-dropdown.active {
+    background: #edf2f7;
+}
+
+.currency-dropdown.active .currency-options {
+    display: block;
+}
+
+.selected-currency {
+    padding: 10px 16px;
+    text-align: left;
+    font-weight: 500;
+    color: #4a5568;
+    position: relative;
+}
+
+.selected-currency:after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 45%;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #4a5568;
+}
+
+.currency-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 100; 
+    display: none;
+}
+
+
+.currency-option {
+    padding: 8px 12px;
+    text-align: center;
+    transition: background 0.2s ease;
+}
+
+.currency-option:hover {
+    background: #f7fafc;
+    color: #4dbb9a;
 }
 
 /*** Client ID screen ***/

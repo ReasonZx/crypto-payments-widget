@@ -195,25 +195,37 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Function to update confirmation details
     function updateConfirmationDetails() {
-        // Get selected chains - Use more specific selector to only get toggles in the paylink modal
+        // Get selected chains
         const selectedChains = [];
         const chainToggles = paylinkModal.querySelectorAll('.poss-chain-toggle');
         
         chainToggles.forEach(toggle => {
-            if (toggle.checked) {
-                // Add null check to prevent errors
-                if (toggle.dataset.chain) {
-                    selectedChains.push(toggle.dataset.chain.charAt(0).toUpperCase() + toggle.dataset.chain.slice(1));
-                }
+            if (toggle.checked && toggle.dataset.chain) {
+                selectedChains.push(toggle.dataset.chain.charAt(0).toUpperCase() + toggle.dataset.chain.slice(1));
             }
         });
         
-        // Get amount
-        const amount = parseFloat(document.getElementById('payment-amount').value).toFixed(2);
+        // Get amount and currency
+        const amount = parseFloat(document.getElementById('payment-amount').value);
+        const currencyDropdown = document.getElementById('currency-dropdown');
+        const currency = currencyDropdown.getAttribute('data-selected-currency') || 'USD';
+        const currencySymbol = currency === 'EUR' ? '€' : '$';
+        
+        // Calculate transaction fee (max of 0.30 or 0.5% of amount)
+        const percentageFee = amount * 0.005;
+        const fixedFee = 0.50;
+        const actualFee = Math.max(percentageFee, fixedFee);
+        const formattedFee = actualFee.toFixed(2);
         
         // Update confirmation panel
         document.getElementById('confirm-chains').textContent = selectedChains.join(', ');
-        document.getElementById('confirm-amount').textContent = `$${amount}`;
+        document.getElementById('confirm-amount').textContent = `${currencySymbol}${amount.toFixed(2)}`;
+        
+        // Update the fee display with calculated value
+        const feeElement = paylinkModal.querySelector('.confirmation-row:nth-child(3) .confirmation-value');
+        if (feeElement) {
+            feeElement.textContent = `${currencySymbol}${formattedFee} (${percentageFee > fixedFee ? '0.5%' : 'fixed fee'})`;
+        }
     }
     
     // Function to generate payment link
@@ -226,6 +238,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Get the payment data
         const amount = parseFloat(document.getElementById('payment-amount').value).toFixed(2);
+        const currencyDropdown = document.getElementById('currency-dropdown');
+        const currency = currencyDropdown.getAttribute('data-selected-currency') || 'USD';
         const selectedChains = [];
         const chainToggles = paylinkModal.querySelectorAll('.poss-chain-toggle');
         
@@ -244,6 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const payload = {
             vendorID: vendorID,
             amount: parseFloat(amount),
+            currency: currency,
             chains: selectedChains,
             userID: null
         };
@@ -404,7 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <i class="fas fa-copy"></i>
                             </a>
                         </td>
-                        <td>$${parseFloat(link.amount).toFixed(2)}</td>
+                        <td>${link.currency === 'EUR' ? '€' : '$'}${parseFloat(link.amount).toFixed(2)}</td>
                         <td data-full-date="${fullDate}">${formattedDate}</td>
                         <td>${supportedChains}</td>
                     `;
@@ -570,4 +585,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Call the setup function
     setupMobileEnhancements();
+
+    // Initialize currency dropdown
+    function initializeCurrencyDropdown() {
+        const currencyDropdown = document.getElementById('currency-dropdown');
+        const currencySymbol = document.getElementById('currency-symbol');
+        const currencyOptions = document.querySelectorAll('.currency-option');
+        
+        if (currencyDropdown) {
+            // Toggle dropdown
+            currencyDropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.toggle('active');
+            });
+            
+            // Select currency option
+            currencyOptions.forEach(option => {
+                option.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const currency = this.getAttribute('data-currency');
+                    currencySymbol.textContent = currency === 'EUR' ? '€' : '$';
+                    
+                    // Update amount chips
+                    const amountChips = paylinkModal.querySelectorAll('.amount-chip');
+                    amountChips.forEach(chip => {
+                        chip.setAttribute('data-currency', currency);
+                        const amount = chip.getAttribute('data-amount');
+                        chip.textContent = currency === 'EUR' ? `€${amount}` : `$${amount}`;
+                    });
+                    
+                    // Close dropdown
+                    currencyDropdown.classList.remove('active');
+                    
+                    // Store selected currency for later use in confirmation and API calls
+                    currencyDropdown.setAttribute('data-selected-currency', currency);
+                });
+            });
+            
+            // Close dropdown when clicking elsewhere
+            document.addEventListener('click', function() {
+                currencyDropdown.classList.remove('active');
+            });
+        }
+    }
+
+    // Call the initializeCurrencyDropdown function
+    initializeCurrencyDropdown();
 });

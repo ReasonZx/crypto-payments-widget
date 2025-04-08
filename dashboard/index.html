@@ -684,7 +684,7 @@
                         <p>Include our JavaScript SDK in your checkout page:</p>
                         <div class="code-block">
                             <pre><code>&lt;!-- Add this to your HTML head --&gt;
-&lt;script src="<span class="highlight-green">https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@2.0.0/dist/crypto-payments-widget.js</span>"&gt;&lt;/script&gt;</code></pre>
+&lt;script src="<span class="highlight-green">https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@2.0.1/dist/crypto-payments-widget.js</span>"&gt;&lt;/script&gt;</code></pre>
                         </div>
                     </div>
                     
@@ -835,7 +835,7 @@ document.getElementById(<span class="highlight-green">'payment-container'</span>
                                 </div>
                                 <div class="chain-details">
                                     <h5>Solana</h5>
-                                    <p>Accept USDC and USDT on Solana blockchain</p>
+                                    <p>Accept stablecoins on Solana blockchain</p>
                                 </div>
                                 <label class="toggle-switch">
                                     <input type="checkbox" class="poss-chain-toggle" data-chain="solana" checked>
@@ -849,7 +849,7 @@ document.getElementById(<span class="highlight-green">'payment-container'</span>
                                 </div>
                                 <div class="chain-details">
                                     <h5>Base</h5>
-                                    <p>Accept USDC on Base blockchain</p>
+                                    <p>Accept stablecoins on Base blockchain</p>
                                 </div>
                                 <label class="toggle-switch">
                                     <input type="checkbox" class="poss-chain-toggle" data-chain="base" checked>
@@ -866,7 +866,24 @@ document.getElementById(<span class="highlight-green">'payment-container'</span>
                         
                         <div class="amount-container">
                             <div class="amount-input-group">
-                                <span class="currency-symbol">$</span>
+                                <div class="currency-dropdown" id="currency-dropdown">
+                                    <span class="currency-symbol" id="currency-symbol">$</span>
+                                    <div class="currency-options">
+                                        <div class="currency-option" data-currency="USD">
+                                            <div class="currency-option-icons">
+                                                <img src="../../assets/icons/usdc-logo.png" alt="USDC" class="currency-icon">
+                                                <img src="../../assets/icons/usdt-logo.png" alt="USDT" class="currency-icon">
+                                            </div>
+                                            <span>USD</span>
+                                        </div>
+                                        <div class="currency-option" data-currency="EUR">
+                                            <div class="currency-option-icons">
+                                                <img src="../../assets/icons/eurc-logo.png" alt="EURC" class="currency-icon">
+                                            </div>
+                                            <span>EUR</span>
+                                        </div>
+                                    </div>
+                                </div>
                                 <input type="number" id="payment-amount" class="payment-amount-input" value="10.00" min="0.01" step="0.01">
                             </div>
                             
@@ -899,7 +916,7 @@ document.getElementById(<span class="highlight-green">'payment-container'</span>
                             </div>
                             <div class="confirmation-row">
                                 <div class="confirmation-label">Transaction Fee:</div>
-                                <div class="confirmation-value">Max. between 0.30$ or 0.5%</div>
+                                <div class="confirmation-value">Max. between 0.50$ or 0.5%</div>
                             </div>
                             <div class="confirmation-row">
                                 <div class="confirmation-label">Payment Expiration:</div>

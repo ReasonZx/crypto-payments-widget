@@ -382,7 +382,6 @@
     }
 }
 
-/* Add these styles to your poss.css file */
 .input-checklist {
     margin: 25px 0;
 }
@@ -430,7 +429,6 @@
     font-size: 0.9rem;
 }
 
-/* Add to your poss.css file */
 .code-block {
     background-color: #1e1e1e;
     border-left: 4px solid #4dbb9a;
@@ -577,7 +575,8 @@
     }
 }
 
-/* Pay by Link styles */
+/* Links table step */
+
 .links-table-container {
     max-height: 250px;
     overflow-y: auto;
@@ -664,6 +663,8 @@ copy-link-btn:hover {
     background-color: var(--primary-dark);
 }
 
+/* Chains step */
+
 .chains-selection {
     margin: 20px 0;
 }
@@ -706,37 +707,123 @@ copy-link-btn:hover {
     font-size: 0.9rem;
 }
 
+/* Amount step */
+
 .amount-container {
     margin: 30px 0;
 }
 
+/* Currency dropdown inside amount input group */
 .amount-input-group {
     position: relative;
     margin-bottom: 20px;
-}
-
-.currency-symbol {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #4a5568;
+    display: flex;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: visible;
 }
 
 .payment-amount-input {
-    width: 100%;
-    padding: 15px 15px 15px 35px;
+    flex: 1;
+    padding: 15px 15px 15px 10px;
     font-size: 1.5rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 8px;
+    border: none;
     outline: none;
     transition: border-color 0.3s;
 }
 
-.payment-amount-input:focus {
-    border-color: var(--primary-color);
+.currency-dropdown {
+    position: relative;
+    min-width: 45px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-right: 2px solid #e2e8f0;
+    background-color: #f8fafc;
+    z-index: 10;
+}
+
+.currency-symbol {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #4a5568;
+    position: relative;
+}
+
+.currency-symbol:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -12px;
+    transform: translateY(-50%);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid #4a5568;
+}
+
+.currency-options {
+    position: absolute;
+    top: 100%;
+    left: -2px; /* Align with parent border */
+    width: auto;
+    min-width: 120px;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    display: none;
+}
+
+.currency-dropdown.active .currency-options {
+    display: block;
+}
+
+.currency-option {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+}
+
+.currency-option:hover {
+    background-color: #f7fafc;
+}
+
+.currency-option-icons {
+    display: flex;
+    margin-right: 10px;
+    align-items: center;
+}
+
+.currency-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 2px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .amount-input-group {
+        display: flex;
+    }
+    
+    .payment-amount-input {
+        padding: 12px 10px 12px 5px;
+        font-size: 1.2rem;
+    }
+    
+    .currency-dropdown {
+        padding: 12px 10px;
+    }
+    
+    .currency-symbol {
+        font-size: 1rem;
+    }
 }
 
 .common-amounts {
@@ -769,7 +856,9 @@ copy-link-btn:hover {
     background-color: #e2e8f0;
 }
 
-/* Enhanced Confirmation Table Styles */
+
+/* Confirmation step */
+
 .confirmation-details {
     margin: 30px 0;
     border: none;
@@ -824,7 +913,6 @@ copy-link-btn:hover {
     font-weight: 600;
 }
 
-/* Add a title bar to the confirmation details */
 .confirmation-details::before {
     content: 'Summary';
     display: block;
@@ -838,7 +926,6 @@ copy-link-btn:hover {
     letter-spacing: 0.5px;
 }
 
-/* Make the container tighter and more professional */
 .step-panel[data-step="4"] {
     max-width: 650px;
     margin: 0 auto;
@@ -961,7 +1048,6 @@ copy-link-btn:hover {
     animation: spin 1s linear infinite;
 }
 
-/* Add these styles for the step header actions and date tooltips */
 .step-header-actions {
     display: flex;
     justify-content: space-between;

@@ -116,12 +116,21 @@
                         <div class="step-content" id="step3">
                             <h2>Set Payment Amount</h2>
                             <p>
-                                Currently we only accept USD pegged stablecoins as the payment currency.<br>
-                                Please enter the amount you want to receive in USD.
+                                We accept both USD and EUR pegged stablecoins as payment currencies.<br>
+                                Please enter the amount and select your preferred currency.
                             </p>
                             <div class="amount-config">
-                                <input type="number" value="5" min="0" step="0.01"/>
-                                <span>USD</span>
+                                <div class="amount-with-currency">
+                                    <input type="number" value="5" min="0" step="0.01"/>
+                                    <div class="currency-dropdown">
+                                        <div class="selected-currency" id="selected-currency">USD</div>
+                                        <div class="currency-options">
+                                            <div class="currency-option" data-value="USD">USD</div>
+                                            <div class="currency-option" data-value="EUR">EUR</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="currency" id="currency-value" value="USD">
                             </div>
                         </div>
                         <!-- Step 4 : Client ID -->
@@ -162,7 +171,7 @@
             </div>
         </main>
     </div>
-    <script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@2.0.0/dist/crypto-payments-widget.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@2.0.1/dist/crypto-payments-widget.js"></script>
     <script src="guide.js"></script>
     <script src="../js/auth.js"></script>
 </body>
