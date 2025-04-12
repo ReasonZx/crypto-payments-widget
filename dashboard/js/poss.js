@@ -604,7 +604,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.addEventListener('click', function(e) {
                     e.stopPropagation();
                     const currency = this.getAttribute('data-currency');
-                    currencySymbol.textContent = currency === 'EUR' ? '€' : '$';
+                    currencySymbol.textContent = currency;
                     
                     // Update amount chips
                     const amountChips = paylinkModal.querySelectorAll('.amount-chip');

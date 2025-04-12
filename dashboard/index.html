@@ -307,10 +307,11 @@
                             <div class="chain">
                                 <div class="chain-logo-container">
                                     <img src="../assets/icons/sol-logo.png" alt="solana" class="chain-logo"/>
-                                    <div class="token-logos">
-                                        <img src="../assets/icons/usdt-logo.png" alt="USDT"/>
+                                    <!-- <div class="token-logos">
                                         <img src="../assets/icons/usdc-logo.png" alt="USDC"/>
-                                    </div>
+                                        <img src="../assets/icons/usdt-logo.png" alt="USDT"/>
+                                        <img src="../assets/icons/eurc-logo.png" alt="EURC"/>
+                                    </div> -->
                                 </div>
                                 <label class="toggle">
                                     <input type="checkbox" class="wallet-chain-toggle" checked>
@@ -324,7 +325,8 @@
                                 <div class="chain-logo-container">
                                     <img src="../assets/icons/base-logo.png" alt="base" class="chain-logo"/>
                                     <div class="token-logos">
-                                        <img src="../assets/icons/usdc-logo.png" alt="USDC"/>
+                                        <!-- <img src="../assets/icons/usdc-logo.png" alt="USDC"/>
+                                        <img src="../assets/icons/eurc-logo.png" alt="EURC"/> -->
                                     </div>
                                 </div>
                                 <label class="toggle">
@@ -700,6 +702,7 @@
         type: <span class="highlight-green">'defaultPayment'</span>,
         vendorID: <span class="highlight-orange">'your_vendor_id'</span>,   <span class="highlight-white">//must be a string</span>
         amount: <span class="highlight-orange">your_amount</span>,          <span class="highlight-white">//must be a number</span>
+        currency: <span class="highlight-orange">'your_currency'</span>,    <span class="highlight-white">//must be 'EUR' or 'USD'</span>
         userID: <span class="highlight-orange">'your_customer_id'</span>,   <span class="highlight-white">//must be a string</span>
     });
 &lt;/script&gt;
@@ -867,7 +870,7 @@ document.getElementById(<span class="highlight-green">'payment-container'</span>
                         <div class="amount-container">
                             <div class="amount-input-group">
                                 <div class="currency-dropdown" id="currency-dropdown">
-                                    <span class="currency-symbol" id="currency-symbol">$</span>
+                                    <span class="currency-symbol" id="currency-symbol">USD</span>
                                     <div class="currency-options">
                                         <div class="currency-option" data-currency="USD">
                                             <div class="currency-option-icons">
