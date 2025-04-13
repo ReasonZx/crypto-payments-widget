@@ -38,6 +38,12 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+
+/*******************************/
+/**** Central configuration ****/
+/*******************************/
+
+
 .chain-selector {
     flex: 1;
     display: flex;
@@ -87,7 +93,6 @@
 }
 
 
-/* Custom Toggle Switch */
 .toggle {
     position: relative;
     display: inline-block;
@@ -174,16 +179,11 @@
     pointer-events: none;
 }
 
-
-
-
 .global-default.active {
     background-color: rgb(230, 255, 250);
     width: calc(100% - 160px);
     border: 2px solid #4dbb9a;
 }
-
-
 
 .custodian-checkbox input[type="checkbox"] {
     -webkit-appearance: none;
@@ -334,7 +334,7 @@
     position: fixed;
     display: none;
     bottom: 15vh;
-    width: 70%;
+    width: 88%;
     color: var(--error);
     font-size: 14px;
     padding: 8px 16px;
@@ -345,6 +345,11 @@
     display: none;
     z-index: 100;
 }
+
+
+/*******************************/
+/****** Custody balance ********/
+/*******************************/
 
 .custody-balance-container {
     position: absolute;
@@ -358,7 +363,6 @@
     border-right: 3px solid var(--primary-color);
     border-radius: 10px;
     padding: 12px 20px;
-    text-align: right;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -374,18 +378,26 @@
 .balance-label {
     font-size: 0.9rem;
     color: #718096;
-    margin-bottom: 4px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     gap: 6px;
+    width: 100%;
 }
 
 .balance-label::before {
-    content: '\f555'; /* Wallet icon */
+    content: '\f555';
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     color: var(--primary-color);
     font-size: 0.95rem;
+}
+
+.balance-display {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
 }
 
 .balance-amount {
@@ -393,9 +405,841 @@
     font-weight: 700;
     color: var(--primary-dark);
     letter-spacing: -0.5px;
+    text-align: right;
 }
 
-/* Media queries for mobile devices */
+.currency-selector {
+    position: relative;
+    margin: 0;
+    min-width: 80px;
+}
+
+.currency-selector .custom-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 6px 30px 8px 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--primary-dark);
+    background-color: #00000005;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    outline: none;
+    display: flex;
+    align-items: center;
+    user-select: none;
+}
+
+.currency-selector .custom-select::after {
+    content: '\f107';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary-color);
+    pointer-events: none;
+}
+
+.currency-selector .custom-select:hover {
+    border-color: var(--primary-color);
+    background-color: #e8f5f0;
+}
+
+.currency-selector .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    width: 100%;
+    min-width: 80px;
+    padding: 5px 0;
+    margin-top: 2px;
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.currency-selector .dropdown-menu.show {
+    display: block;
+}
+
+.currency-selector .dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--primary-dark);
+    text-align: left;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.currency-selector .dropdown-item:hover,
+.currency-selector .dropdown-item:focus {
+    background-color: #f0f7f4;
+    color: var(--primary-color);
+}
+
+.currency-selector .dropdown-item.active {
+    background-color: #e8f5f0;
+    font-weight: 600;
+}
+
+#custody-amount {
+    position: relative;
+}
+
+#custody-amount::before {
+    content: attr(data-currency);
+    margin-right: 3px;
+    font-weight: 600;
+}
+
+
+/************************/
+/**** Redeem Modal ******/
+/************************/
+
+.balance-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+    width: 100%;
+}
+
+.redeem-button {
+    padding: 8px 15px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.redeem-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+#redemption-modal.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+#redemption-modal.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.redemption-modal {
+    max-width: 500px;
+    width: 90%;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--primary-dark);
+}
+
+.modal-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #64748b;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.redemption-stepper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.redemption-stepper .step {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e2e8f0;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-weight: 600;
+    margin: 0 15px;
+}
+
+.redemption-stepper .step.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.redemption-stepper .step.active::before {
+    background-color: var(--primary-color); /* Color the line before the active step */
+}
+
+.redemption-stepper .step::before,
+.redemption-stepper .step::after {
+    content: '';
+    position: absolute;
+    height: 2px;
+    background-color: #e2e8f0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+}
+
+.redemption-stepper .step::before {
+    right: 100%;
+}
+
+.redemption-stepper .step::after {
+    left: 100%;
+}
+
+.redemption-stepper .step:first-child::before,
+.redemption-stepper .step:last-child::after {
+    display: none;
+}
+
+.redemption-stepper .step.active::after {
+    background-color: var(--primary-color);
+}
+
+.redemption-stepper .step.completed {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.redemption-stepper .step.completed::before,
+.redemption-stepper .step.completed::after {
+    background-color: var(--primary-color);
+}
+
+.redemption-stepper .step.completed + .step::before {
+    background-color: var(--primary-color);
+}
+
+.redeem-step-panel {
+    display: none;
+    padding: 15px 0;
+}
+
+.redeem-step-panel.active {
+    display: block;
+}
+
+.redeem-step-panel h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--primary-dark);
+    font-size: 1.2rem;
+}
+
+.redemption-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.nav-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.prev-btn {
+    background-color: #e2e8f0;
+    color: #64748b;
+}
+
+.next-btn, .withdraw-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.nav-btn:not(:disabled):hover {
+    transform: translateY(-1px);
+}
+
+/* Currency Options */
+.redeem-currency-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.redeem-currency-option {
+    position: relative;
+}
+
+.redeem-currency-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+
+.redeem-currency-option label {
+    display: block;
+    padding: 15px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.redeem-currency-option input[type="radio"]:checked + label {
+    border-color: var(--primary-color);
+    background-color: #e8f5f0;
+}
+
+.redeem-currency-option-content {
+    display: flex;
+    align-items: center;
+}
+
+.redeem-currency-symbol {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #f0f7f4;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+}
+
+.redeem-currency-details {
+    flex: 1;
+}
+
+.redeem-currency-name {
+    font-weight: 600;
+    color: var(--primary-dark);
+    font-size: 1.1rem;
+}
+
+.redeem-currency-balance {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-top: 2px;
+}
+
+/* Withdrawal Methods */
+.withdrawal-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.withdrawal-method {
+    position: relative;
+}
+
+.withdrawal-method input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+
+.withdrawal-method label {
+    display: block;
+    padding: 15px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.withdrawal-method input[type="radio"]:checked + label {
+    border-color: var(--primary-color);
+    background-color: #e8f5f0;
+}
+
+.withdrawal-method.disabled label {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #f8f9fa;
+}
+
+.withdrawal-method-content {
+    display: flex;
+    align-items: center;
+}
+
+.withdrawal-method-content .chain-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    margin-right: 15px;
+}
+
+.method-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #f0f7f4;
+    color: #64748b;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+}
+
+.withdrawal-details {
+    flex: 1;
+}
+
+.method-name {
+    font-weight: 600;
+    color: var(--primary-dark);
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+}
+
+.coming-soon-tag {
+    font-size: 0.7rem;
+    background-color: #f97316;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+    font-weight: 500;
+}
+
+.method-info {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-top: 2px;
+}
+
+/* Amount Selection */
+.amount-selection {
+    margin-top: 20px;
+}
+
+.amount-input-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.amount-prefix {
+    position: absolute;
+    left: 15px;
+    font-size: 1.2rem;
+    color: var(--primary-dark);
+    font-weight: 600;
+}
+
+.withdrawal-amount-input {
+    width: 100%;
+    padding: 15px 15px 15px 35px;
+    font-size: 1.2rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.withdrawal-amount-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(77, 187, 154, 0.15);
+    outline: none;
+}
+
+.available-balance {
+    text-align: right;
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 15px;
+}
+
+.quick-amounts {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.quick-amount-btn {
+    flex: 1;
+    padding: 8px 0;
+    background-color: #f0f7f4;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    color: var(--primary-dark);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quick-amount-btn:hover {
+    background-color: #e8f5f0;
+    border-color: var(--primary-color);
+}
+
+.withdrawal-wallet-input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.withdrawal-wallet-input:disabled {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+}
+
+.withdrawal-wallet-input::placeholder {
+    color: #a0aec0;
+    font-family: 'Poppins', sans-serif;
+    font-style: italic;
+}
+
+.withdrawal-wallet-input.error {
+    border-color: #e53e3e;
+    box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+}
+
+.withdrawal-wallet-input.error::placeholder {
+    color: #e53e3e;
+}
+
+.withdrawal-address {
+    margin-bottom: 20px;
+}
+
+.withdrawal-address p {
+    margin-bottom: 8px;
+    color: var(--primary-dark);
+}
+
+.withdrawal-note {
+    font-size: 0.85rem;
+    color: #64748b;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    border-left: 3px solid var(--primary-color);
+}
+
+/* Withdrawal address validation */
+#withdrawal-address-container.valid-address .withdrawal-wallet-input {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(77, 187, 154, 0.15);
+    padding-right: 35px; /* Make space for the icon */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="%234dbb9a" d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 48c110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200-110.532 0-200-89.451-200-200 0-110.532 89.451-200 200-200m140.204 130.267l-22.536-22.718c-4.667-4.705-12.265-4.736-16.97-.068L215.346 303.697l-59.792-60.277c-4.667-4.705-12.265-4.736-16.97-.069l-22.719 22.536c-4.705 4.667-4.736 12.265-.068 16.971l90.781 91.516c-4.667 4.705-12.265 4.736-16.97.068l172.589-171.204c4.704-4.668 4.734-12.266.067-16.971z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 18px;
+}
+
+#withdrawal-address-container.invalid-address .withdrawal-wallet-input {
+    border-color: #e53e3e;
+    box-shadow: 0 0 0 2px rgba(229, 62, 62, 0.1);
+    padding-right: 35px; /* Make space for the icon */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="%23e53e3e" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm101.8-262.2L295.6 256l62.2 62.2c4.7 4.7 4.7 12.3 0 17l-22.6 22.6c-4.7 4.7-12.3 4.7-17 0L256 295.6l-62.2 62.2c-4.7 4.7-12.3 4.7-17 0l-22.6-22.6c-4.7-4.7-4.7-12.3 0-17l62.2-62.2-62.2-62.2c-4.7-4.7-4.7-12.3 0-17l22.6-22.6c4.7-4.7 12.3-4.7 17 0l62.2 62.2 62.2-62.2c4.7-4.7 12.3-4.7 17 0l22.6 22.6c4.7 4.7 4.7 12.3 0 17z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 18px;
+}
+
+/* Remove padding since we're now using background image approach */
+#withdrawal-address-container.valid-address .withdrawal-wallet-input,
+#withdrawal-address-container.invalid-address .withdrawal-wallet-input {
+    padding-right: 35px;
+}
+
+.withdrawal-address-error,
+.withdrawal-error {
+    color: #e53e3e;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    display: block;
+}
+
+/* Make sure the container is positioned relatively for the absolute positioning of the icons */
+#withdrawal-address-container {
+    position: relative;
+}
+
+/* Adjust container padding to prevent icon overlap with text */
+#withdrawal-address-container.valid-address .withdrawal-wallet-input,
+#withdrawal-address-container.invalid-address .withdrawal-wallet-input {
+    padding-right: 35px;
+}
+
+/* Update address container styling when errors are present */
+#withdrawal-address-container.invalid-address {
+    margin-bottom: 30px;
+}
+
+/* Add styles for the withdrawal amount errors */
+.amount-input-container {
+    position: relative;
+}
+
+.amount-input-container .withdrawal-error {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    margin-top: 5px;
+}
+
+/* Success Step Styles */
+.success-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.success-icon {
+    font-size: 4rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.success-message {
+    font-size: 1.1rem;
+    color: var(--primary-dark);
+    margin-bottom: 30px;
+}
+
+.transaction-details {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    width: 100%;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.transaction-row {
+    display: flex;
+    padding: 8px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.transaction-row:last-child {
+    border-bottom: none;
+}
+
+.transaction-label {
+    flex: 1;
+    font-weight: 500;
+    color: #64748b;
+}
+
+.transaction-value {
+    flex: 2;
+    color: var(--primary-dark);
+    word-break: break-all;
+}
+
+.done-btn {
+    padding: 10px 40px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.done-btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+
+/* Toast Notifications */
+.toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 350px;
+}
+
+.toast {
+    background-color: #fff;
+    border-radius: 6px;
+    padding: 12px 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    animation: toast-slide-in 0.3s ease forwards;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    border-left: 4px solid;
+}
+
+.toast.error {
+    border-left-color: #e53e3e;
+}
+
+.toast.success {
+    border-left-color: var(--primary-color);
+}
+
+.toast-icon {
+    margin-right: 12px;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.toast.error .toast-icon {
+    color: #e53e3e;
+}
+
+.toast.success .toast-icon {
+    color: var(--primary-color);
+}
+
+.toast-message {
+    color: var(--primary-dark);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.toast-close {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: #a0aec0;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 4px;
+}
+
+.toast-close:hover {
+    color: #718096;
+}
+
+.toast.removing {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+@keyframes toast-slide-in {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Withdraw Button Loading State */
+.withdraw-btn.loading {
+    position: relative;
+    color: transparent;
+    pointer-events: none;
+}
+
+.withdraw-btn.loading .spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: withdraw-spinner 0.8s ease infinite;
+    position: absolute;
+    left: calc(50% - 16px);
+    top: calc(50% - 8px);
+}
+
+.withdraw-btn.loading::after {
+    content: "Processing...";
+    position: absolute;
+    color: white;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+@keyframes withdraw-spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+
+
+
+
+/*******************************/
+/******** Media Queries ********/
+/*******************************/
+
+
 @media (max-width: 768px) {
     #wallets h2 {
         margin-bottom: 20px; 
@@ -547,10 +1391,71 @@
         width: 100%;
     }
     
+    .currency-selector select {
+        font-size: 0.85rem;
+        padding: 6px 28px 6px 10px;
+    }
+    
     .custody-balance {
         width: 100%;
         text-align: center;
         align-items: center;
+    }
+
+    .redemption-modal {
+        width: 95%;
+    }
+    
+    .redemption-stepper .step {
+        width: 25px;
+        height: 25px;
+        margin: 0 10px;
+        font-size: 0.9rem;
+    }
+    
+    .redemption-stepper .step::before,
+    .redemption-stepper .step::after {
+        width: 20px;
+    }
+    
+    .redeem-currency-option label,
+    .withdrawal-method label {
+        padding: 12px;
+    }
+    
+    .redeem-currency-symbol,
+    .method-icon,
+    .withdrawal-method-content .chain-logo {
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+        margin-right: 10px;
+    }
+    
+    .redeem-currency-name,
+    .method-name {
+        font-size: 1rem;
+    }
+    
+    .nav-btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+
+    .transaction-row {
+        flex-direction: column;
+        padding: 10px 0;
+    }
+    
+    .transaction-label {
+        margin-bottom: 4px;
+    }
+
+    .toast-container {
+        bottom: 70px;
+        right: 10px;
+        left: 10px;
+        max-width: calc(100% - 20px);
     }
 }
 
@@ -586,3 +1491,6 @@
         padding: 12px 8px;
     }
 }
+
+
+
