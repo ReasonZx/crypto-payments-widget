@@ -1,5 +1,5 @@
 #wallets h2 {
-    margin-bottom: 80px; 
+    margin-bottom: 130px; 
     color: var(--primary-light);
     font-weight: 1000;
     position: relative;
@@ -294,9 +294,9 @@
 }
 
 .save-button-container {
-    position: fixed;
+    position: absolute;
     bottom: 5vh;
-    left: 250px;
+    left: 0;
     right: 0;
     padding: 20px;
     display: flex;
@@ -617,7 +617,7 @@
 }
 
 .redemption-stepper .step.active::before {
-    background-color: var(--primary-color); /* Color the line before the active step */
+    background-color: var(--primary-color);
 }
 
 .redemption-stepper .step::before,
@@ -984,7 +984,7 @@
 #withdrawal-address-container.valid-address .withdrawal-wallet-input {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 2px rgba(77, 187, 154, 0.15);
-    padding-right: 35px; /* Make space for the icon */
+    padding-right: 35px; 
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="%234dbb9a" d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 48c110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200-110.532 0-200-89.451-200-200 0-110.532 89.451-200 200-200m140.204 130.267l-22.536-22.718c-4.667-4.705-12.265-4.736-16.97-.068L215.346 303.697l-59.792-60.277c-4.667-4.705-12.265-4.736-16.97-.069l-22.719 22.536c-4.705 4.667-4.736 12.265-.068 16.971l90.781 91.516c-4.667 4.705-12.265 4.736-16.97.068l172.589-171.204c4.704-4.668 4.734-12.266.067-16.971z"/></svg>');
     background-repeat: no-repeat;
     background-position: right 10px center;
@@ -994,14 +994,13 @@
 #withdrawal-address-container.invalid-address .withdrawal-wallet-input {
     border-color: #e53e3e;
     box-shadow: 0 0 0 2px rgba(229, 62, 62, 0.1);
-    padding-right: 35px; /* Make space for the icon */
+    padding-right: 35px; 
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="%23e53e3e" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm101.8-262.2L295.6 256l62.2 62.2c4.7 4.7 4.7 12.3 0 17l-22.6 22.6c-4.7 4.7-12.3 4.7-17 0L256 295.6l-62.2 62.2c-4.7 4.7-12.3 4.7-17 0l-22.6-22.6c-4.7-4.7-4.7-12.3 0-17l62.2-62.2-62.2-62.2c-4.7-4.7-4.7-12.3 0-17l22.6-22.6c4.7-4.7 12.3-4.7 17 0l62.2 62.2 62.2-62.2c4.7-4.7 12.3-4.7 17 0l22.6 22.6c4.7 4.7 4.7 12.3 0 17z"/></svg>');
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 18px;
 }
 
-/* Remove padding since we're now using background image approach */
 #withdrawal-address-container.valid-address .withdrawal-wallet-input,
 #withdrawal-address-container.invalid-address .withdrawal-wallet-input {
     padding-right: 35px;
@@ -1015,23 +1014,19 @@
     display: block;
 }
 
-/* Make sure the container is positioned relatively for the absolute positioning of the icons */
 #withdrawal-address-container {
     position: relative;
 }
 
-/* Adjust container padding to prevent icon overlap with text */
 #withdrawal-address-container.valid-address .withdrawal-wallet-input,
 #withdrawal-address-container.invalid-address .withdrawal-wallet-input {
     padding-right: 35px;
 }
 
-/* Update address container styling when errors are present */
 #withdrawal-address-container.invalid-address {
     margin-bottom: 30px;
 }
 
-/* Add styles for the withdrawal amount errors */
 .amount-input-container {
     position: relative;
 }
@@ -1065,7 +1060,7 @@
     margin-bottom: 30px;
 }
 
-.transaction-details {
+.withdraw-transaction-details {
     background-color: #f8f9fa;
     border-radius: 8px;
     padding: 15px;
@@ -1074,13 +1069,13 @@
     text-align: left;
 }
 
-.transaction-row {
+.withdraw-transaction-row {
     display: flex;
     padding: 8px 0;
     border-bottom: 1px solid #e2e8f0;
 }
 
-.transaction-row:last-child {
+.withdraw-transaction-row:last-child {
     border-bottom: none;
 }
 
@@ -1390,6 +1385,10 @@
         margin: 10px 0 20px 0;
         width: 100%;
     }
+
+    .currency-selector {
+        width: 25%;
+    }
     
     .currency-selector select {
         font-size: 0.85rem;
@@ -1417,6 +1416,10 @@
     .redemption-stepper .step::after {
         width: 20px;
     }
+
+    .redeem-button {
+        width: 100% ;
+    }
     
     .redeem-currency-option label,
     .withdrawal-method label {
@@ -1442,7 +1445,7 @@
         font-size: 0.9rem;
     }
 
-    .transaction-row {
+    .withdraw-transaction-row {
         flex-direction: column;
         padding: 10px 0;
     }
