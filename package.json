@@ -1,6 +1,6 @@
 {
     "name": "@reasonzx/crypto-payments-widget",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "description": "Stablecoin payments widget for web integration",
     "main": "dist/crypto-payments-widget.js",
     "files": [

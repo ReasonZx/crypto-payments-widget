@@ -369,11 +369,11 @@
     animation: fadeIn 1s ease-in-out infinite alternate;
 }
 
-/* Connection warning styles */
 .connection-warning {
     position: absolute;
-    margin-left: 8px;
-    max-width: 90%;
+    left: 43%;
+    transform: translateX(-50%);
+    max-width: 95%;
     background-color: #fff3cd;
     color: #856404;
     border: 1px solid #ffeeba;
@@ -386,6 +386,7 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     animation: pulse 1.5s infinite;
     white-space: nowrap;
+    display: block;
 }
 
 @keyframes pulse {
@@ -624,3 +625,4 @@
         transform: rotate(360deg);
     }
 }
+
