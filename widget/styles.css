@@ -371,9 +371,8 @@
 
 .connection-warning {
     position: absolute;
-    left: 43%;
+    left: 51.2%;
     transform: translateX(-50%);
-    max-width: 95%;
     background-color: #fff3cd;
     color: #856404;
     border: 1px solid #ffeeba;
@@ -387,6 +386,10 @@
     animation: pulse 1.5s infinite;
     white-space: nowrap;
     display: block;
+}
+
+#screen2 {
+    position: relative;
 }
 
 @keyframes pulse {

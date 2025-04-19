@@ -21,6 +21,7 @@ class PaymentWidget {
             amount: config.amount || null,
             currency: config.currency || 'USD',
             userID: config.userID || null,
+            webhook: config.webhook || null,
             chains: config.chains,                          // ['solana', 'base'] | ['solana'] | ['base']
             vendorID: config.vendorID,
             isCustodial: config.isCustodial === undefined ? true : config.isCustodial,
@@ -508,6 +509,7 @@ class PaymentWidget {
                         currency: this.config.currency,
                         userID: this.config.userID,
                         vendorID: this.config.vendorID,
+                        webhook: this.config.webhook,
                     })
                 });
                 if (!response.ok) throw new Error('Payment request failed');

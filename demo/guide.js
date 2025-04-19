@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const codeBlockHTML = `
         <div class="code-block">
             <pre><code>&lt;head&gt;
-    &lt;script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@2.0.2/dist/crypto-payments-widget.js"&gt;&lt;/script&gt;
+    &lt;script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@2.1.0/dist/crypto-payments-widget.js"&gt;&lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
     &lt;div id="payment-container"&gt;&lt;/div&gt;

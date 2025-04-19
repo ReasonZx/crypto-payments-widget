@@ -6,7 +6,7 @@ Simple integration for stablecoin crypto payments.
 
 ```html
 <head>
-    <script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@2.0.2/dist/crypto-payments-widget.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@2.1.0/dist/crypto-payments-widget.js"></script>
 </head>
 <body>
     <div id="payment-container"></div>
