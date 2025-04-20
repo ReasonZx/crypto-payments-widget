@@ -62,11 +62,10 @@
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    transition: transform 0.3s ease; /* Add subtle animation */
-    padding: 10px; /* Add some padding inside the border */
+    transition: transform 0.3s ease; 
+    padding: 10px; 
 }
 
-/* Optional: Add a subtle zoom effect on hover */
 .pos-widget:hover .pos-widget-image img {
     transform: scale(1.2);
 }
@@ -283,6 +282,100 @@
     margin-bottom: 15px;
 }
 
+/* Additional Details Step Styles */
+.additional-details-container {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.webhook-section,
+.customer-id-section {
+    background-color: #f8fafc;
+    border-radius: 8px;
+    padding: 20px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.webhook-section h5,
+.customer-id-section h5 {
+    font-size: 1.1rem;
+    color: var(--primary-dark);
+    margin: 0 0 10px 0;
+}
+
+.webhook-input-group {
+    margin-top: 15px;
+}
+
+.webhook-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: border-color 0.3s;
+}
+
+.webhook-input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+.webhook-help-text {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: #718096;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.confirmation-row.webhook-row {
+    display: none; /* Hidden by default, shown if webhook URL exists */
+}
+
+@media (max-width: 768px) {
+    .webhook-input {
+        font-size: 0.9rem;
+        padding: 10px 12px;
+    }
+    
+    .customer-id-section .code-block {
+        font-size: 0.8rem;
+    }
+}
+
+/* Customer ID Example Styles */
+.url-example {
+    margin: 15px 0;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.9rem;
+}
+
+.base-url {
+    background-color: #f1f5f9;
+    padding: 10px 15px;
+    border-radius: 6px 6px 0 0;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+}
+
+.modified-url {
+    background-color: #f8fafc;
+    padding: 10px 15px;
+    border-radius: 0 0 6px 6px;
+    border: 1px solid #e2e8f0;
+    border-top: none;
+    color: #334155;
+}
+
+.highlight-param {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
 .code-block {
     background-color: #1a202c;
     border-radius: 6px;
@@ -389,8 +482,8 @@
 .input-item {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
     border-bottom: 1px solid #e2e8f0;
 }
 
@@ -448,7 +541,6 @@
     line-height: 1.5;
 }
 
-/* Add a nice title to code blocks */
 .code-block {
     position: relative;
 }
@@ -467,14 +559,12 @@
     font-family: sans-serif;
 }
 
-/* For different types of code blocks */
 .code-block.js::before {
     content: "JavaScript";
     background: #f7df1e;
     color: #000;
 }
 
-/* Add these highlight classes to your poss.css file */
 .code-block code .highlight {
     color: #4dbb9a;
     font-weight: bold;
@@ -505,7 +595,6 @@
     font-weight: bold;
 }
 
-/* Add these styles for the insights section */
 .insights-overview {
     display: flex;
     gap: 20px;
@@ -563,12 +652,10 @@
     color: #744210;
 }
 
-/* Make sure completion message in step 5 looks good */
 .step-panel[data-step="5"] .completion-message {
     margin-top: 30px;
 }
 
-/* Responsive adjustments for insights cards */
 @media (max-width: 768px) {
     .insights-overview {
         flex-direction: column;
@@ -806,7 +893,6 @@ copy-link-btn:hover {
     margin-right: 2px;
 }
 
-/* Mobile adjustments */
 @media (max-width: 768px) {
     .amount-input-group {
         display: flex;
@@ -866,6 +952,8 @@ copy-link-btn:hover {
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     background-color: white;
+    max-width: 750px;
+    margin: 30px auto;
 }
 
 .confirmation-row {
@@ -905,6 +993,13 @@ copy-link-btn:hover {
     position: relative;
     color: var(--primary-dark);
     font-weight: 500;
+}
+
+.webhook-value {
+    max-width: 500px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #confirm-chains, #confirm-amount {
@@ -1094,17 +1189,13 @@ copy-link-btn:hover {
     z-index: 10;
 }
 
-/* Add these styles to your poss.css file for better mobile responsiveness */
 
-/* Modal responsiveness for small screens */
 @media (max-width: 768px) {
-    /* Adjust modal size for mobile */
     .modal-container {
         max-width: 95%;
         max-height: 85vh;
     }
     
-    /* Fix walkthrough steps display */
     .walkthrough-stepper {
         margin-bottom: 20px;
     }
@@ -1121,7 +1212,6 @@ copy-link-btn:hover {
         width: 16px;
     }
     
-    /* Improve form elements on mobile */
     .chain-option {
         flex-direction: column;
         align-items: flex-start;
@@ -1138,7 +1228,6 @@ copy-link-btn:hover {
         margin-bottom: 10px;
     }
     
-    /* Adjust payment input for mobile */
     .payment-amount-input {
         font-size: 1.2rem;
         padding: 12px 12px 12px 30px;
@@ -1149,7 +1238,6 @@ copy-link-btn:hover {
         left: 12px;
     }
     
-    /* Make amount chips wrap better */
     .amount-chips {
         gap: 8px;
     }
@@ -1159,7 +1247,6 @@ copy-link-btn:hover {
         font-size: 0.85rem;
     }
     
-    /* Improve confirmation details display */
     .confirmation-row {
         flex-direction: column;
         padding: 12px 15px;
@@ -1169,8 +1256,11 @@ copy-link-btn:hover {
         margin-bottom: 5px;
         flex: none;
     }
+
+    .webhook-value {
+        max-width: 100%;
+    }
     
-    /* Make the payment link input more mobile-friendly */
     .payment-link-container {
         flex-direction: column;
         margin: 20px 0;

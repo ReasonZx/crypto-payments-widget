@@ -309,19 +309,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Adjust final widget container for mobile
-    const resizeWidget = () => {
-        const finalWidget = document.getElementById('final-widget-container');
-        if (finalWidget && window.innerWidth <= 768) {
-            finalWidget.style.top = '50%';
-            finalWidget.style.width = '95%';
-            finalWidget.style.maxHeight = '80vh';
-            finalWidget.style.overflow = 'auto';
-        }
-    };
-    
-    window.addEventListener('resize', resizeWidget);
-
     // Add event listeners for currency selection
     document.querySelectorAll('input[name="currency"]').forEach(radio => {
         radio.addEventListener('change', () => {

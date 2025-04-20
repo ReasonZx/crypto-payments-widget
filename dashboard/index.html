@@ -493,7 +493,7 @@
                                 <h4>Account Settings</h4>
                             </div>
                             <div class="settings-body">
-                                <!-- Move Vendor ID to the top -->
+                                <!-- Vendor ID  -->
                                 <div class="form-group vendor-id-container">
                                     <label for="vendor-id">Your Vendor ID</label>
                                     <div class="input-with-copy">
@@ -505,13 +505,38 @@
                                     <p class="vendor-id-help">Use this ID when setting up payment integrations</p>
                                 </div>
 
-                                <!-- Email field remains -->
+                                <!-- New webhook secret container -->
+                                <div class="form-group webhook-secret-container">
+                                    <label>Webhook Secret</label>
+                                    
+                                    <div class="webhook-generate-section">
+                                        <button id="generate-webhook-secret" class="webhook-generate-btn">
+                                            <i class="fas fa-key"></i> Generate New Webhook Secret
+                                        </button>
+                                    </div>
+                                    <p class="webhook-secret-help">Generate a new secret key to secure your webhook notifications</p>
+                                    
+                                    <div id="webhook-secret-display" class="webhook-secret-display hidden">
+                                        <div class="webhook-secret-warning">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                            <span>Copy this secret now. It will be shown only once for security reasons.</span>
+                                        </div>
+                                        <div class="input-with-copy">
+                                            <input type="text" id="webhook-secret" class="settings-input" readonly>
+                                            <button class="copy-btn" data-clipboard="" id="copy-webhook-secret">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Email field  -->
                                 <div class="form-group">
                                     <label for="email">Email Address</label>
                                     <input type="email" id="email" value="user@example.com" class="settings-input">
                                 </div>
 
-                                <!-- Password change section remains -->
+                                <!-- Password change section  -->
                                 <div class="form-group">
                                     <label for="change-password-toggle" class="toggle-password-link">
                                         <span class="toggle-password-icon">
@@ -691,7 +716,15 @@
                                 <div class="check-circle">✓</div>
                                 <div class="input-details">
                                     <h5>Customer's userID (optional)</h5>
-                                    <p>For tracking who's making the payment. You can leave this null if not needed.</p>
+                                    <p>To track who's making the payment. You can ommit this parameter if not needed.</p>
+                                </div>
+                            </div>
+
+                            <div class="input-item">
+                                <div class="check-circle">✓</div>
+                                <div class="input-details">
+                                    <h5>Webhook (optional)</h5>
+                                    <p>URL to receive real-time payment status updates via POST requests</p>
                                 </div>
                             </div>
                         </div>
@@ -718,8 +751,9 @@
         type: <span class="highlight-green">'defaultPayment'</span>,
         vendorID: <span class="highlight-orange">'your_vendor_id'</span>,   <span class="highlight-white">//must be a string</span>
         amount: <span class="highlight-orange">your_amount</span>,          <span class="highlight-white">//must be a number</span>
-        currency: <span class="highlight-orange">'your_currency'</span>,    <span class="highlight-white">//must be 'EUR' or 'USD'</span>
-        userID: <span class="highlight-orange">'your_customer_id'</span>,   <span class="highlight-white">//must be a string</span>
+        currency: <span class="highlight-orange">'your_currency'</span>,    <span class="highlight-white">//[optional] must be 'EUR' or 'USD'</span>
+        userID: <span class="highlight-orange">'your_customer_id'</span>,   <span class="highlight-white">//[optional] must be a string</span>
+        webhook: <span class="highlight-orange">'your_webhook'</span>,      <span class="highlight-white">//[optional] must be a string</span>
     });
 &lt;/script&gt;
 &lt;/body&gt;</code></pre>
@@ -806,6 +840,7 @@ document.getElementById(<span class="highlight-green">'payment-container'</span>
                     <div class="step" data-step="3">3</div>
                     <div class="step" data-step="4">4</div>
                     <div class="step" data-step="5">5</div>
+                    <div class="step" data-step="6">6</div>
                 </div>
                 
                 <div class="walkthrough-content">
@@ -918,10 +953,39 @@ document.getElementById(<span class="highlight-green">'payment-container'</span>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Step 4: Confirm Details -->
+
+                    <!-- Step 4: Additional Details -->
                     <div class="step-panel" data-step="4">
-                        <h4>Step 4: Confirm Payment Details</h4>
+                        <h4>Step 4: Additional Details</h4>
+                        <p>Set up optional webhook notifications and customer identification:</p>
+                        
+                        <div class="additional-details-container">
+                            <div class="webhook-section">
+                                <h5>Webhook Notifications</h5>
+                                <p>Get real-time payment updates sent to your server:</p>
+                                <div class="webhook-input-group">
+                                    <input type="url" id="webhook-url" class="webhook-input" placeholder="https://your-server.com/webhook">
+                                    <div class="webhook-help-text">
+                                        <i class="fas fa-info-circle"></i>
+                                        We'll send POST requests with payment status updates to this URL
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="customer-id-section">
+                                <h5>Customer Identification</h5>
+                                <p>Track payments by simply adding a customer ID to your payment link:</p>
+                                <div class="url-example">
+                                    <div class="base-url">https://pay.stablio.eu/link/vendorID/paymentID</div>
+                                    <div class="modified-url">https://pay.stablio.eu/link/vendorID/paymentID<span class="highlight-param">?userID=customer123</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 5: Confirm Details -->
+                    <div class="step-panel" data-step="5">
+                        <h4>Step 5: Confirm Payment Details</h4>
                         <p>Please review and confirm the details for your payment link:</p>
                         
                         <div class="confirmation-details">
@@ -944,9 +1008,9 @@ document.getElementById(<span class="highlight-green">'payment-container'</span>
                         </div>
                     </div>
                     
-                    <!-- Step 5: Final Link -->
-                    <div class="step-panel" data-step="5">
-                        <h4>Step 5: Your Payment Link is Ready!</h4>
+                    <!-- Step 6: Final Link -->
+                    <div class="step-panel" data-step="6">
+                        <h4>Step 6: Your Payment Link is Ready!</h4>
                         <p>Your payment link has been created. Share it with anyone you want to receive payment from.</p>
                         
                         <div class="payment-link-result">

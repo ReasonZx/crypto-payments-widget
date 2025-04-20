@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         const percentFee = amount * 0.005;
-        const finalFee = Math.max(0.5, percentFee);
+        const finalFee = Math.max(0.3, percentFee);
         feeResult.textContent = '$' + finalFee.toFixed(2);
     }
     

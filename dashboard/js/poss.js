@@ -104,9 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         
         // Set button text based on current step
-        if (currentStep === 5) {
+        if (currentStep === 6) {
             nextBtn.textContent = 'Finish';
-        } else if (currentStep === 4 && isPaylink) {
+        } else if (currentStep === 5 && isPaylink) { 
             nextBtn.textContent = 'Create Link';
         } else {
             nextBtn.textContent = 'Next';
@@ -133,15 +133,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Pay by Link Next button click
     paylinkNextBtn.addEventListener('click', async () => {
-        if (currentPaylinkStep < 5) {
+        if (currentPaylinkStep < 6) { 
             currentPaylinkStep++;
             
-            // If moving to step 4, update confirmation details
-            if (currentPaylinkStep === 4) {
+            if (currentPaylinkStep === 5) { 
                 updateConfirmationDetails();
             }
-            // If moving to step 5, generate payment link
-            else if (currentPaylinkStep === 5) {
+            else if (currentPaylinkStep === 6) { 
                 await generatePaymentLink();
             }
             
@@ -211,20 +209,47 @@ document.addEventListener('DOMContentLoaded', () => {
         const currency = currencyDropdown.getAttribute('data-selected-currency') || 'USD';
         const currencySymbol = currency === 'EUR' ? '€' : '$';
         
-        // Calculate transaction fee (max of 0.30 or 0.5% of amount)
-        const percentageFee = amount * 0.005;
-        const fixedFee = 0.50;
-        const actualFee = Math.max(percentageFee, fixedFee);
-        const formattedFee = actualFee.toFixed(2);
+        // Get webhook URL if provided
+        const webhookUrl = document.getElementById('webhook-url') ? 
+                           document.getElementById('webhook-url').value.trim() : '';
         
         // Update confirmation panel
         document.getElementById('confirm-chains').textContent = selectedChains.join(', ');
         document.getElementById('confirm-amount').textContent = `${currencySymbol}${amount.toFixed(2)}`;
         
+        // Add webhook information to confirmation if provided
+        const confirmationDetails = document.querySelector('.confirmation-details');
+        
+        // Check if webhook row already exists
+        let webhookRow = confirmationDetails.querySelector('.webhook-row');
+        if (!webhookRow && webhookUrl) {
+            // Create webhook row if it doesn't exist
+            webhookRow = document.createElement('div');
+            webhookRow.className = 'confirmation-row webhook-row';
+            webhookRow.innerHTML = `
+                <div class="confirmation-label">Webhook URL:</div>
+                <div class="confirmation-value webhook-value">${webhookUrl}</div>
+            `;
+            confirmationDetails.appendChild(webhookRow);
+        } else if (webhookRow) {
+            if (webhookUrl) {
+                webhookRow.style.display = 'flex';
+                webhookRow.querySelector('.webhook-value').textContent = webhookUrl;
+            } else {
+                webhookRow.style.display = 'none';
+            }
+        }
+        
+        // Calculate transaction fee (max of 0.30 or 0.5% of amount)
+        const percentageFee = amount * 0.005;
+        const fixedFee = 0.30;
+        const actualFee = Math.max(percentageFee, fixedFee);
+        const formattedFee = actualFee.toFixed(2);
+        
         // Update the fee display with calculated value
         const feeElement = paylinkModal.querySelector('.confirmation-row:nth-child(3) .confirmation-value');
         if (feeElement) {
-            feeElement.textContent = `${currencySymbol}${formattedFee} (${percentageFee > fixedFee ? '0.5%' : 'fixed fee'})`;
+            feeElement.textContent = `${currencySymbol}${formattedFee}`;
         }
     }
     
@@ -249,6 +274,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
+        // Get webhook URL if provided
+        const webhookUrl = document.getElementById('webhook-url') ? 
+                           document.getElementById('webhook-url').value.trim() : '';
+        
         // Get token from local storage (set during login)
         const token = localStorage.getItem('token') || sessionStorage.getItem('token');
         const userData = JSON.parse(localStorage.getItem('userData') || '{}');
@@ -260,10 +289,9 @@ document.addEventListener('DOMContentLoaded', () => {
             amount: parseFloat(amount),
             currency: currency,
             chains: selectedChains,
-            userID: null
+            webhook: webhookUrl || null 
         };
         
-
         // Make the API call
         await fetch(`${API_URL}/api/setupPaymentID`, {
             method: 'POST',
@@ -321,8 +349,11 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (paylinkModal.classList.contains('active')) {
             if (e.key === 'Escape') {
                 closeModal(paylinkModal);
-            } else if (e.key === 'ArrowRight' && currentPaylinkStep < 5) {
+            } else if (e.key === 'ArrowRight' && currentPaylinkStep < 6) {
                 currentPaylinkStep++;
+                if (currentPaylinkStep === 5) {
+                    updateConfirmationDetails();
+                }
                 updateStepUI(paylinkSteps, paylinkPanels, paylinkPrevBtn, paylinkNextBtn, currentPaylinkStep);
             } else if (e.key === 'ArrowLeft' && currentPaylinkStep > 1) {
                 currentPaylinkStep--;

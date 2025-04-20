@@ -751,4 +751,69 @@ document.addEventListener('DOMContentLoaded', () => {
         if (lengthReq) lengthReq.classList.remove('valid');
     }
 
+    // Webhook secret generation functionality
+    const generateWebhookSecretBtn = document.getElementById('generate-webhook-secret');
+    const webhookSecretDisplay = document.getElementById('webhook-secret-display');
+    const webhookSecretInput = document.getElementById('webhook-secret');
+    const copyWebhookSecretBtn = document.getElementById('copy-webhook-secret');
+
+    if (generateWebhookSecretBtn) {
+        generateWebhookSecretBtn.addEventListener('click', generateWebhookSecret);
+    }
+
+    function generateWebhookSecret() {
+        // Get auth token
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        
+        // Show loading state
+        generateWebhookSecretBtn.disabled = true;
+        generateWebhookSecretBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+        
+        // Make API call to generate webhook secret
+        fetch(`${API_URL}/api/generateWebhookSecret`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+            body: JSON.stringify({ vendorID })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to generate webhook secret');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Reset button state
+            generateWebhookSecretBtn.disabled = false;
+            generateWebhookSecretBtn.innerHTML = '<i class="fas fa-key"></i> Generate New Webhook Secret';
+            
+            // Display the secret
+            if (data.webhookSecret) {
+                webhookSecretInput.value = data.webhookSecret;
+                copyWebhookSecretBtn.setAttribute('data-clipboard', data.webhookSecret);
+                webhookSecretDisplay.classList.remove('hidden');
+                
+                // Focus on the input to draw attention
+                webhookSecretInput.focus();
+                webhookSecretInput.select();
+                
+                // Auto-hide the secret after 1 minute
+                setTimeout(() => {
+                    if (!webhookSecretDisplay.classList.contains('hidden')) {
+                        webhookSecretDisplay.classList.add('hidden');
+                        webhookSecretInput.value = '';
+                        showSaveSuccess('Webhook secret hidden for security reasons');
+                    }
+                }, 1 * 60 * 1000);
+            }
+        })
+        .catch(error => {
+            console.error('Error generating webhook secret:', error);
+            generateWebhookSecretBtn.disabled = false;
+            generateWebhookSecretBtn.innerHTML = '<i class="fas fa-key"></i> Generate New Webhook Secret';
+            showSaveError('Failed to generate webhook secret');
+        });
+    }
 });
