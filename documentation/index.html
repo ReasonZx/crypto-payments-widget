@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - Stablio</title>
+    
+    <link rel="icon" href="../assets/icons/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/icons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/icons/apple-touch-icon.png">
+    
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/variables.css">
+    <link rel="stylesheet" href="../styles/components/navbar.css">
+    <link rel="stylesheet" href="styles/documentation.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <a href="../">
+                        <img src="../assets/images/logoSmall.png" alt="Stablio Logo">
+                        <span>Stablecoin Payments</span>
+                    </a>
+                </div>
+                <div class="nav-buttons">
+                    <a href="../login/" class="btn btn-login">Login</a>
+                    <a href="../signup/" class="btn btn-primary">Sign Up</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="docs-container">
+            <div class="docs-sidebar">
+                <div class="docs-nav">
+                    <h3>Documentation</h3>
+                    <ul>
+                        <li class="active"><a href="./">Overview</a></li>
+                        <li><a href="getting-started/" class="disabled">Getting Started</a></li>
+                        <li class="expandable">
+                            <a href="#" class="has-children">Integration Methods</a>
+                            <ul class="submenu">
+                                <li><a href="integration/web-checkout/" class="disabled">Web Checkout</a></li>
+                                <li><a href="integration/payment-links/" class="disabled">Payment Links</a></li>
+                                <li><a href="integration/custom-ui/" class="disabled">Custom UI</a></li>
+                                <li><a href="integration/subscriptions/" class="disabled">Subscritpions</a></li>
+                            </ul>
+                        </li>
+                        <li class="expandable">
+                            <a href="#" class="has-children">API Reference</a>
+                            <ul class="submenu">
+                                <li><a href="api-reference/api-endpoints/" class="disabled">API Endpoints</a></li>
+                                <li><a href="api-reference/webhooks/">Webhook Integration</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="examples/" class="disabled">Examples</a></li>
+                        <li><a href="troubleshooting/" class="disabled">Troubleshooting</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="docs-content">
+                <h1>Stablio Documentation</h1>
+                <p class="intro-text">Welcome to the Stablio documentation. Here you'll find comprehensive guides and documentation to help you start working with Stablio as quickly as possible.</p>
+                
+                <div class="docs-cards">
+                    <!-- <div class="docs-card">
+                        <div class="card-icon"><i class="fas fa-rocket"></i></div>
+                        <h2>Getting Started</h2>
+                        <p>Start integrating Stablio payments in minutes</p>
+                        <a href="getting-started/" class="card-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    
+                    <div class="docs-card">
+                        <div class="card-icon"><i class="fas fa-code"></i></div>
+                        <h2>Web Checkout</h2>
+                        <p>Integrate our payment widget into your website</p>
+                        <a href="integration/web-checkout.html" class="card-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    
+                    <div class="docs-card">
+                        <div class="card-icon"><i class="fas fa-link"></i></div>
+                        <h2>Payment Links</h2>
+                        <p>Create shareable payment links with no code</p>
+                        <a href="integration/payment-links.html" class="card-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    
+                    <div class="docs-card">
+                        <div class="card-icon"><i class="fas fa-book"></i></div>
+                        <h2>API Reference</h2>
+                        <p>Detailed API endpoint documentation</p>
+                        <a href="api-reference/" class="card-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                    </div> -->
+                    <div class="docs-card">
+                        <div class="card-icon"><i class="fas fa-bell"></i></div>
+                        <h2>Webhooks</h2>
+                        <p>Receive real-time payment notifications on your server</p>
+                        <a href="api-reference/webhooks/" class="card-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <h2>Core Concepts</h2>
+                <p>Before diving into specific integrations, it's helpful to understand some key concepts:</p>
+                
+                <div class="concept-container">
+                    <div class="concept">
+                        <h3>Vendor ID</h3>
+                        <p>Your unique identifier that connects payments to your account. Find this in your dashboard settings.</p>
+                    </div>
+                    
+                    <div class="concept">
+                        <h3>Supported Chains</h3>
+                        <p>Stablio supports multiple blockchains including Solana and Base to ensure fast and cheap transactions.</p>
+                    </div>
+                    
+                    <div class="concept">
+                        <h3>Custodial Wallet</h3>
+                        <p>Stablio can manage wallets for you or forward payments directly to your own wallets.</p>
+                    </div>
+                    
+                    <div class="concept">
+                        <h3>Webhooks</h3>
+                        <p>Receive real-time notifications about payment status changes to your server.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="docs-footer">
+            <div class="container">
+                <p>&copy; 2025 Stablio. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="../">Home</a>
+                    <a href="../#pricing">Pricing</a>
+                    <a href="../demo/">Demo</a>
+                    <a href="mailto:support@stablio.eu">Contact Support</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../config/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="js/documentation.js"></script>
+</body>
+</html>
