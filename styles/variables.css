@@ -11,6 +11,18 @@
     --warning: #ecc94b;
     --scroll-color-1: #4dbb9ace;
     --scroll-color-2: #c2e4d9;
+
+    /* Wave colors */
+    --wave-green-light: #8eedc7;     /* Light mint green */
+    --wave-green-mint: #20c997;      /* Teal mint */
+    --wave-green-medium: #38a169;    /* Medium green */
+    --wave-green-forest: #2f855a;    /* Forest green */
+    --wave-green-dark: #276749;      /* Dark green */
+    --wave-green-emerald: #00c9a7;   /* Emerald */
+    --wave-green-lime: #9be368;      /* Lime green */
+    --wave-green-olive: #6b8a47;     /* Olive green */
+    --wave-green-sage: #74c69d;      /* Sage green */
+
     
     /* Typography */
     --font-family: 'Poppins', sans-serif;

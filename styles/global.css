@@ -9,13 +9,7 @@ body {
     font-family: 'Poppins', sans-serif;
     color: var(--text-color);
     line-height: 1.6;
-    background: linear-gradient(
-        135deg,
-        var(--background-light) 0%,
-        var(--white) 100%
-    );
     position: relative;
-    /* overflow-x: hidden; */
 }
 
 body.menu-open {
@@ -23,21 +17,68 @@ body.menu-open {
     position: relative;
 }
 
-.scroll-background {
+.wave-background {
     position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0.7;
     z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.wave {
+    position: absolute;
+    width: 200%;
+    height: 100%;
+    bottom: -50%;
+    left: -50%;
+    border-radius: 40%;
     background: linear-gradient(
         45deg,
-        var(--scroll-color-1),
-        var(--scroll-color-2),
-        var(--scroll-color-1)
+        rgba(50, 201, 151, 0.5),
+        var(--wave-green-mint)
     );
-    transform-origin: center;
-    transition: transform 0.3s ease;
+    animation: wave 100s infinite linear;
+}
+
+.wave:nth-child(2) {
+    background: linear-gradient(
+        135deg,
+        var(--wave-green-emerald),  
+        var(--wave-green-sage)  
+    );
+    opacity: 0.5;
+    animation: wave 65s infinite linear;
+    animation-delay: -5s;
+}
+
+.wave:nth-child(3) {
+    background: linear-gradient(
+        225deg,
+        var(--wave-green-medium), 
+        var(--wave-green-lime) 
+    );
+    opacity: 0.4;
+    animation: wave 210s infinite linear;
+    animation-delay: -2s;
+}
+
+.wave:nth-child(4) {
+    background: linear-gradient(
+        315deg,
+        var(--wave-green-forest),
+        var(--wave-green-light)  
+    );
+    width: 250%;
+    height: 250%;
+    bottom: -70%;
+    left: -70%;
+    opacity: 0.3;
+    animation: wave 180s infinite linear;
+    animation-delay: -15s;
 }
 
 .container {
@@ -154,6 +195,14 @@ section h2 {
     }
 }
 
+@keyframes wave {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
 /* Mobile feature grids */
 @media (max-width: 768px) {

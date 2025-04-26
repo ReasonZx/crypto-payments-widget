@@ -6,11 +6,6 @@
     padding: var(--spacing-xl) 0;
 }
 
-.hero h1 {
-    font-size: 48px;
-    margin-bottom: 20px;
-}
-
 .hero p {
     font-size: 20px;
     margin-bottom: 40px;
@@ -31,8 +26,9 @@
 
 .hero-header h1 {
     color: var(--text-color);
-    font-size: 2.8rem;
+    font-size: 52px;
     line-height: 1.2;
+    color: rgba(0, 0, 0, 0.712);
 }
 
 .hero-grid {
