@@ -63,7 +63,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 customerMap[customerId] = {
                     id: customerId,
                     totalPayments: 0,
-                    totalAmount: 0,
+                    totalAmountEUR: 0,
+                    totalAmountUSD: 0,
                     latestPayment: new Date(0),  // Start with oldest possible date
                     status: '',
                     payments: []
@@ -74,6 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
             customerMap[customerId].payments.push({
                 id: transaction.id,
                 amount: parseFloat(transaction.amount),
+                token: transaction.token || 'usdt',
                 date: transaction.date,
                 status: transaction.status,
                 chain: transaction.chain || 'Unknown',
@@ -85,7 +87,11 @@ document.addEventListener('DOMContentLoaded', function() {
             customerMap[customerId].totalPayments++;
             // Only add to totalAmount if the transaction is completed
             if (transaction.status === 'completed') {
-                customerMap[customerId].totalAmount += parseFloat(transaction.amount);
+                if (transaction.token && transaction.token.toLowerCase() === 'eurc') {
+                    customerMap[customerId].totalAmountEUR += parseFloat(transaction.amount);
+                } else {
+                    customerMap[customerId].totalAmountUSD += parseFloat(transaction.amount);
+                }
             }
             
             // Update latest payment date if this transaction is newer
@@ -186,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </td>
                 <td>${customer.id}</td>
                 <td>${customer.totalPayments}</td>
-                <td>$${customer.totalAmount.toFixed(2)}</td>
+                <td>${formatCustomerAmount(customer)}</td>
                 <td>${formattedDate}</td>
                 <td>
                     <span class="status-badge status-${customer.status}">
@@ -248,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return `
                 <li class="payment-item">
                     <div class="payment-header">
-                        <span class="payment-amount">$${payment.amount.toFixed(2)}</span>
+                        <span class="payment-amount">${getCurrencySymbol(payment.token)}${payment.amount.toFixed(2)}</span>
                         <span class="payment-date">${formattedDate}</span>
                     </div>
                     <div class="payment-info">
@@ -381,16 +387,6 @@ document.addEventListener('DOMContentLoaded', function() {
             renderCustomers(filteredCustomers);
         }
     }
-    
-    // Helper functions
-    function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
-    
-    function truncateMiddle(str, visibleChars) {
-        if (str.length <= visibleChars * 2) return str;
-        return `${str.substr(0, visibleChars)}...${str.substr(str.length - visibleChars, visibleChars)}`;
-    }
 
     // Initialize the table when the page loads
     initCustomersTable();
@@ -401,4 +397,36 @@ document.addEventListener('DOMContentLoaded', function() {
             processTransactionsIntoCustomers(window.sharedTransactionData);
         }
     });
+    
+
+    //***************************/
+    //**** Helper functions ****//
+    //***************************/
+
+
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    
+    function truncateMiddle(str, visibleChars) {
+        if (str.length <= visibleChars * 2) return str;
+        return `${str.substr(0, visibleChars)}...${str.substr(str.length - visibleChars, visibleChars)}`;
+    }
+
+    function getCurrencySymbol(token) {
+        return (token && token.toLowerCase() === 'eurc') ? '€' : '$';
+    }
+
+    function formatCustomerAmount(customer) {
+        if (customer.totalAmountUSD > 0 && customer.totalAmountEUR > 0) {
+            return `$${customer.totalAmountUSD.toFixed(2)} & €${customer.totalAmountEUR.toFixed(2)}`;
+        } else if (customer.totalAmountUSD > 0) {
+            return `$${customer.totalAmountUSD.toFixed(2)}`;
+        } else if (customer.totalAmountEUR > 0) {
+            return `€${customer.totalAmountEUR.toFixed(2)}`;
+        } else {
+            return `$0.00`; // Default case if both are zero
+        }
+    }
+    
 });

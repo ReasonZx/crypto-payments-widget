@@ -1078,6 +1078,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
     // Filter transactions based on search and filters
     function filterTransactions() {
+        console.log('Filtering transactions...');
         const searchTerm = transactionSearch.value.toLowerCase();
         const statusValue = statusFilter.value;
         const sourceValue = sourceFilter.value;
@@ -1088,7 +1089,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Search filter
             const matchesSearch = 
                 transaction.id.toLowerCase().includes(searchTerm) ||
-                transaction.customer.toLowerCase().includes(searchTerm) ||
+                transaction.customer?.toLowerCase().includes(searchTerm) ||
                 transaction.amount.toString().includes(searchTerm);
             
             // Status filter
@@ -1190,7 +1191,7 @@ document.addEventListener('DOMContentLoaded', function() {
             row.innerHTML = `
                 <td><a href="#" class="transaction-link">${transaction.id}</a></td>
                 <td>${formattedDate}</td>
-                <td>$${parseFloat(transaction.amount).toFixed(2)}</td>
+                <td>${getCurrencySymbol(transaction.token)}${parseFloat(transaction.amount).toFixed(2)}</td>
                 <td>${transaction.customer}</td>
                 <td>${sourceDisplay}</td>
                 <td><span class="status-badge status-${transaction.status}">${capitalizeFirstLetter(transaction.status)}</span></td>
@@ -1259,7 +1260,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="transaction-detail-body">
                 <div class="detail-group">
                     <div class="detail-label">Amount:</div>
-                    <div class="detail-value">$${parseFloat(transaction.amount).toFixed(2)}</div>
+                    <div class="detail-value">${getCurrencySymbol(transaction.token)}${parseFloat(transaction.amount).toFixed(2)}</div>
                 </div>
                 <div class="detail-group">
                     <div class="detail-label">Date & Time:</div>
@@ -1391,6 +1392,15 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 300);
         }, 3000);
     }
+
+    // Initialize the dashboard
+    initializeDashboard();
+
+    // Add this to your event listeners
+    const refreshBtn = document.getElementById('refresh-data-btn');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', refreshDashboardData);
+    }
     
 
     //***************************/
@@ -1446,13 +1456,9 @@ document.addEventListener('DOMContentLoaded', function() {
             trendEl.setAttribute('title', 'No change from previous period');
         }
     }
-    
-    // Initialize the dashboard
-    initializeDashboard();
 
-    // Add this to your event listeners
-    const refreshBtn = document.getElementById('refresh-data-btn');
-    if (refreshBtn) {
-        refreshBtn.addEventListener('click', refreshDashboardData);
+    function getCurrencySymbol(token) {
+        return (token && token.toLowerCase() === 'eurc') ? '€' : '$';
     }
+    
 });
