@@ -50,7 +50,6 @@ body.menu-open {
 .btn {
     padding: 10px 20px;
     border-radius: 5px;
-    border: none;
     cursor: pointer;
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
@@ -61,21 +60,39 @@ body.menu-open {
     background: var(--primary-color);
     color: var(--white);
     text-decoration: none;
+    border: 2px solid var(--primary-color);
 }
 
 .btn-primary:hover {
     background: var(--primary-dark);
+    border: 2px solid var(--primary-dark);
+
 }
 
 .btn-secondary {
-    background: #ffffff;
+    background: white;
     color: var(--primary-color);
     text-decoration: none;
+    border: 2px solid white;
 }
 
 .btn-secondary:hover {
     background: var(--background-light);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: 2px solid var(--background-light);;
+}
+
+.btn-documentation {
+    background: var(--primary-light);
+    color: white;
+    text-decoration: none;
+    border: 2px solid var(--primary-light);
+}
+
+.btn-documentation:hover {
+    background: var(--background-light);
+    color: var(--primary-light);
+    border: 2px solid var(--background-light);;
 }
 
 .btn-login {
@@ -84,17 +101,12 @@ body.menu-open {
     border: 2px solid var(--primary-color);
     margin-right: 10px;
     text-decoration: none;
-    padding: 8px 26px;
+    padding: 10px 20px;
 }
 
 .btn-login:hover {
     background: rgba(var(--primary-color), 0.1);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.btn-large {
-    padding: 15px 40px;
-    font-size: 18px;
 }
 
 .btn-large {

@@ -332,8 +332,20 @@
     gap: 6px;
 }
 
+.primary-link {
+    color: var(--primary-color);
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.primary-link:hover {
+    text-decoration: underline;
+    opacity: 0.85;
+}
+
 .confirmation-row.webhook-row {
-    display: none; /* Hidden by default, shown if webhook URL exists */
+    display: none;
 }
 
 @media (max-width: 768px) {

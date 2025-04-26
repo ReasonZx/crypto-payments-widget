@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webhook Integration - Stablio Documentation</title>
+    
+    <link rel="icon" href="../../../assets/icons/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../../../assets/icons/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../assets/icons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/icons/apple-touch-icon.png">
+    
+    <link rel="stylesheet" href="../../../styles/global.css">
+    <link rel="stylesheet" href="../../../styles/variables.css">
+    <link rel="stylesheet" href="../../../styles/components/navbar.css">
+    <link rel="stylesheet" href="../../styles/documentation.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <a href="../../../">
+                        <img src="../../../assets/images/logoSmall.png" alt="Stablio Logo">
+                        <span>Stablecoin Payments</span>
+                    </a>
+                </div>
+                <div class="nav-buttons">
+                    <a href="../../../login/" class="btn btn-login">Login</a>
+                    <a href="../../../signup/" class="btn btn-primary">Sign Up</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="docs-container">
+            <div class="docs-sidebar">
+                <div class="docs-nav">
+                    <h3>Documentation</h3>
+                    <ul>
+                        <li><a href="../../">Overview</a></li>
+                        <li><a href="../../getting-started/" class="disabled">Getting Started</a></li>
+                        <li class="expandable">
+                            <a href="#" class="has-children">Integration Methods</a>
+                            <ul class="submenu">
+                                <li><a href="../../integration/web-checkout/" class="disabled">Web Checkout</a></li>
+                                <li><a href="../../integration/payment-links/" class="disabled">Payment Links</a></li>
+                                <li><a href="../../integration/custom-ui/" class="disabled">Custom UI</a></li>
+                                <li><a href="../../integration/subscriptions/" class="disabled">Subscriptions</a></li>
+                            </ul>
+                        </li>
+                        <li class="expandable expanded">
+                            <a href="#" class="has-children">API Reference</a>
+                            <ul class="submenu">
+                                <li><a href="../api-endpoints/" class="disabled">API Endpoints</a></li>
+                                <li class="active"><a href="./">Webhook Integration</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="../../examples/" class="disabled">Examples</a></li>
+                        <li><a href="../../troubleshooting/" class="disabled">Troubleshooting</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="docs-content">
+                <h1>Webhook Integration</h1>
+                <p class="intro-text">Receive real-time notifications when payments are completed. Webhooks allow your application to be notified automatically when payment events occur.</p>
+                
+                <div class="content-section">
+                    <h2>Introduction to Webhooks</h2>
+                    <p>Webhooks are HTTP callbacks that notify your application a payment is successful. Instead of continuously polling our API to check if a payment has been completed, webhooks push this information to your server as soon as it happens.</p>
+                    
+                    <div class="concept">
+                        <h3>Key Benefits</h3>
+                        <ul>
+                            <li>Receive real-time payment notifications</li>
+                            <li>Reduce API calls and improve response time</li>
+                            <li>Automatically update order status in your systems</li>
+                            <li>Trigger fulfillment processes immediately after payment</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <h2>Setting Up Webhooks</h2>
+                    
+                    <h3>Step 1: Create a Webhook Endpoint</h3>
+                    <p>Create an HTTP endpoint on your server that can receive POST requests. This endpoint will process the webhook data sent by Stablio.</p>
+                    
+                    <h3>Step 2: Generate a Webhook Secret</h3>
+                    <p>In your Stablio dashboard, navigate to <strong>Settings → Webhook Secret</strong> and generate a new secret key. This key will be used to verify the authenticity of webhooks.</p>
+                    
+                    <div class="tip-box">
+                        <div class="tip-icon"><i class="fas fa-lightbulb"></i></div>
+                        <div class="tip-content">
+                            <h5>Security Best Practice</h5>
+                            <p>Store your webhook secret as an environment variable...</p>
+                        </div>
+                    </div>
+                    
+                    <h3>Step 3: Configure Webhook URL</h3>
+                    <p>If you are configuring a <strong>Pay by Link</strong> payment then your webhook is added on the Stablio dashboard during the configuration.</p>
+                    <p>If, instead, you are configuring a <strong>Web Checkout</strong> payment, include your webhook URL in the PaymentWidget call:</p>
+                    
+                    <div class="code-block js">
+                        <pre><code>const widget = new PaymentWidget({
+    type: 'defaultPayment',
+    vendorID: 'your_vendor_id',
+    amount: 49.99,
+    currency: 'USD',
+    userID: 'customer123',
+    <span class="highlight-green">webhook: 'https://your-server.com/webhook'</span>
+});</code></pre>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <h2>Standard HTTP Webhooks</h2>
+                    <p>Standard webhooks are sent as HTTP POST requests to the URL you specify. They include a signature header to verify authenticity.</p>
+                    
+                    <h3>Webhook Payload</h3>
+                    <p>The webhook payload contains information about the payment:</p>
+                    
+                    <div class="code-block json">
+                        <pre><code>{
+  "paymentID": "f116faae-bb86-456e-a393-cd6a0628d5fa",
+  "userID": "customer123",
+  "amount": 49.99,
+  "currency": "USD",
+  "timestamp": "2025-04-24T14:30:45.123Z",
+}</code></pre>
+                    </div>
+                    
+                    <h3>Webhook Headers</h3>
+                    <p>Each webhook request includes the following headers:</p>
+                    
+                    <table class="docs-table">
+                        <thead>
+                            <tr>
+                                <th>Header</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>x-signature</code></td>
+                                <td>HMAC SHA-256 signature of the request payload</td>
+                            </tr>
+                            <tr>
+                                <td><code>Content-Type</code></td>
+                                <td>Application/json</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h3>Verifying Webhook Signatures</h3>
+                    <p>To ensure webhooks are genuinely from Stablio, you should verify the signature using your <strong>Stablio webhook Secret</strong>. Here's an example using Express.js:</p>
+                    
+                    <div class="code-block js">
+                        <pre><code>const express = require('express');
+const crypto = require('crypto');
+const app = express();
+
+// Parse JSON bodies
+app.use(express.json());
+
+app.post('/webhook', async (req, res) => {
+    const receivedSignature = req.headers['x-signature'];
+            
+    const data = req.body;
+    const payload = {
+        paymentID: data.paymentID,
+        userID: data.userID,
+        amount: data.amount,
+        currency: data.currency,
+        timestamp: data.timestamp,
+    };
+    
+    const stringPayload = JSON.stringify(payload);
+    const hmac = crypto.createHmac('sha256', YOUR_STABLIO_WEBHOOK_SECRET);
+    hmac.update(stringPayload);
+    const calculatedSignature = hmac.digest('hex');
+    
+    if (calculatedSignature === receivedSignature) {
+        console.log('Webhook signature is valid! ✅');
+    }
+    else {
+        console.log('Webhook signature is invalid! ❌');
+    }
+});</code></pre>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <h2>Discord Webhooks</h2>
+                    <p>Stablio also supports sending webhook notifications directly to Discord channels, allowing you to monitor payments without building a custom webhook endpoint.</p>
+                    
+                    <h3>Setting Up Discord Webhooks</h3>
+                    <ol>
+                        <li>In your Discord server, go to <strong>Server Settings → Integrations → Webhooks</strong></li>
+                        <li>Click <strong>New Webhook</strong>, give it a name and select the channel</li>
+                        <li>Copy the webhook URL</li>
+                        <li>If you are setting up a <strong>Pay by Link</strong> then paste it on the dashboard setup. If its a <strong>Web Checkout</strong> then add it as a parameter on the PaymentWidget call</li>
+                        <li>In your Stablio dashboard, go to <strong>Settings → Webhook Secret</strong> and get your unique Webhook secret to verify the payments call come from Stablio</li>
+                    </ol>
+                    
+                    <h3>Discord Webhook Messages</h3>
+                    <p>Payment notifications will be sent as rich embeds in your Discord channel, containing all relevant payment details.</p>
+                    
+                    <h3>Verification Using a Discord Bot</h3>
+                    <p>If you need to process Discord webhook notifications programmatically, you can set up a Discord bot to verify and handle these notifications:</p>
+                    
+                    <div class="code-block js">
+                        <pre><code>const Discord = require('discord.js');
+const crypto = require('crypto');
+const client = new Discord.Client();
+
+client.login('YOUR_DISCORD_BOT_TOKEN');
+
+client.on('message', async (msg) => { 
+
+    if(msg.channel.id == 'YOUR_WEBHOOK_CHANNEL_ID') {
+
+        const embed = msg.embeds[0];
+        const fields = embed.fields;
+
+        // Extract all data from the embed
+        const paymentID = fields.find(f => f.name === "Payment ID")?.value;
+        const amount = fields.find(f => f.name === "Amount")?.value;
+        const userID = fields.find(f => f.name === "User ID")?.value;
+        const receivedSignature = fields.find(f => f.name === "Signature")?.value;
+        const timestamp = new Date(embed.timestamp).toISOString();
+
+        const secretKey = YOUR_STABLIO_WEBHOOK_SECRET;
+  
+        const payload = {
+          paymentID,
+          userID,
+          amount: Number(amount),
+          timestamp
+        };
+        
+        const stringPayload = JSON.stringify(payload);
+        const hmac = crypto.createHmac('sha256', secretKey);
+        hmac.update(stringPayload);
+        const calculatedSignature = hmac.digest('hex');
+        
+        if (calculatedSignature === receivedSignature) {
+             console.log('Webhook signature is valid! ✅');
+        }
+        else {
+             console.log('Webhook signature is invalid! ❌');
+        }
+    
+    }
+})</code></pre>
+                    </div>
+                </div>
+
+                
+                <div class="content-section">
+                    <h2>Troubleshooting</h2>
+                    
+                    <h3>Common Issues</h3>
+                    
+                    <div class="troubleshooting-item">
+                        <h4>Not Receiving Webhooks</h4>
+                        <ul>
+                            <li>Verify your server is publicly accessible</li>
+                            <li>Check firewall settings aren't blocking incoming requests</li>
+                            <li>Ensure you're using the correct webhook URL format</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="troubleshooting-item">
+                        <h4>Signature Verification Fails</h4>
+                        <ul>
+                            <li>Confirm you're using the correct webhook secret</li>
+                            <li>Ensure you're parsing the JSON correctly before verification</li>
+                            <li>Check the payload structure matches exactly what's expected</li>
+                            <li>Verify you're using SHA-256 for HMAC generation</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <div class="next-steps-links">
+                        <a href="../api-endpoints/" class="next-link disabled">
+                            <i class="fas fa-arrow-left"></i>
+                            <span>API Endpoints</span>
+                        </a>
+                        <a href="../../examples/" class="next-link disabled">
+                            <span>Examples</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="docs-footer">
+            <div class="container">
+                <p>&copy; 2025 Stablio. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="../../../">Home</a>
+                    <a href="../../../#pricing">Pricing</a>
+                    <a href="../../../demo/">Demo</a>
+                    <a href="mailto:support@stablio.eu">Contact Support</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../../../config/config.js"></script>
+    <script src="../../../js/auth.js"></script>
+    <script src="../../js/documentation.js"></script>
+</body>
+</html>

@@ -29,7 +29,7 @@
         }
     </style>
 </head>
-<body class="loading">
+<body class="loading dashboard">
     <div id="app" class="logged-in">
         <nav class="navbar">
             <div class="container">
@@ -40,8 +40,8 @@
                     </a>
                 </div>
                 <div class="nav-buttons">
-                    <button onclick="handleLogout()" class="btn btn-primary">Log out</button>
-                </div>
+                    <a href="../documentation/" class="btn btn-primary">Documentation</a>
+                    <a href="#" onclick="handleLogout(); return false;" class="btn btn-primary">Log out</a>                </div>
             </div>
         </nav>
 
@@ -762,11 +762,10 @@
                     
                     <div class="step-panel" data-step="4">
                         <h4>Step 4: Listen for status changes</h4>
-                        <p>The widget will emit events when there is an update in the payment process.</p>
+                        <p>The widget will emit events and Stablio will send <a href="../documentation/api-reference/webhooks/" class="primary-link">POST requests to your webhook</a> when there is an update in the payment process.</p>
                         <p>You can use these events to know when the user has finished the payment and update your website accordingly.</p>
                         <div class="code-block">
-                            <pre><code><span class="highlight-white">// Listen for payment events</span>
-document.getElementById(<span class="highlight-green">'payment-container'</span>).addEventListener(<span class="highlight-green">'payment_status'</span>, (event) => {
+                            <pre><code>document.getElementById(<span class="highlight-green">'payment-container'</span>).addEventListener(<span class="highlight-green">'payment_status'</span>, (event) => {
     const {<span class="highlight-green">status</span>, <span class="highlight-green">data</span> } = event.detail;
     
     switch(<span class="highlight-green">status</span>) {
@@ -813,7 +812,7 @@ document.getElementById(<span class="highlight-green">'payment-container'</span>
                         
                         <div class="completion-message">
                             <p>🎉 Congratulations! You've completed the Web Checkout setup guide.</p>
-                            <p>You're now ready to start accepting crypto payments on your website!</p>
+                            <p>You're now ready to start accepting Stablecoin payments on your website!</p>
                         </div>
                     </div>
                 </div>
@@ -967,7 +966,7 @@ document.getElementById(<span class="highlight-green">'payment-container'</span>
                                     <input type="url" id="webhook-url" class="webhook-input" placeholder="https://your-server.com/webhook">
                                     <div class="webhook-help-text">
                                         <i class="fas fa-info-circle"></i>
-                                        We'll send POST requests with payment status updates to this URL
+                                        We'll send POST requests with payment status updates to this URL. More info <a href="../documentation/api-reference/webhooks/" class="primary-link">here</a>. 
                                     </div>
                                 </div>
                             </div>

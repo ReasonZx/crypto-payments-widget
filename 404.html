@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Not Found - Stablio</title>
     
+    <!-- Add this base tag before any other resource links -->
+    <script>
+        // Calculate base path immediately
+        const basePath = window.location.hostname === 'localhost' || 
+                        window.location.hostname === '127.0.0.1' ? 
+                        '/' : 'https://stablio.eu/';
+        document.write(`<base href="${basePath}">`);
+    </script>
+    
     <link rel="icon" href="assets/icons/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="assets/icons/favicon.ico" type="image/x-icon">
 
@@ -63,11 +72,6 @@
 </head>
 <body>
     <script>
-        // Dynamically determine base path - works for both local and GitHub Pages
-        const basePath = window.location.hostname === 'localhost' || 
-                        window.location.hostname === '127.0.0.1' ? 
-                        '/' : 'https://stablio.eu/';
-        
         // Use this for redirection
         document.querySelector('meta[http-equiv="refresh"]').content = `5;url=${basePath}`;
         
