@@ -1,0 +1,18 @@
+.feature {
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .feature i.fas.fa-check-circle {
+    margin-top: 4px; /* Adjust this value as needed to align with h4 */
+    margin-right: 12px;
+  }
+  
+  .feature h4 {
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+  
+  .feature p {
+    margin-top: 0;
+  }

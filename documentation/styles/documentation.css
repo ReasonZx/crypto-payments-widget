@@ -389,6 +389,27 @@ body {
     font-weight: bold;
 }
 
+.highlight-orange {
+    color: #CE9178;
+    font-weight: bold;
+}
+
+.highlight-white {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.primary-link {
+    color: var(--primary-color);
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.primary-link:hover {
+    text-decoration: underline;
+    opacity: 0.85;
+}
 
 
 /* Table styles */

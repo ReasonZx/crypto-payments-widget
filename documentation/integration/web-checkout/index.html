@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Checkout Integration - Stablio Documentation</title>
+    
+    <link rel="icon" href="../../../assets/icons/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../../../assets/icons/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../assets/icons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/icons/apple-touch-icon.png">
+    
+    <link rel="stylesheet" href="../../../styles/global.css">
+    
+    <link rel="stylesheet" href="../../../styles/variables.css">
+    <link rel="stylesheet" href="../../../styles/components/navbar.css">
+    <link rel="stylesheet" href="../../styles/documentation.css">
+    <link rel="stylesheet" href="../../styles/webcheckout.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <a href="../../../">
+                        <img src="../../../assets/images/logoSmall.png" alt="Stablio Logo">
+                        <span>Stablecoin Payments</span>
+                    </a>
+                </div>
+                <div class="nav-buttons">
+                    <a href="../../../login/" class="btn btn-login">Login</a>
+                    <a href="../../../signup/" class="btn btn-primary">Sign Up</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="docs-container">
+            <div class="docs-sidebar">
+                <div class="docs-nav">
+                    <h3>Documentation</h3>
+                    <ul>
+                        <li><a href="../../">Overview</a></li>
+                        <li><a href="../../getting-started/" class="disabled">Getting Started</a></li>
+                        <li class="expandable expanded">
+                            <a href="#" class="has-children">Integration Methods</a>
+                            <ul class="submenu">
+                                <li class="active"><a href="../../integration/web-checkout/">Web Checkout</a></li>
+                                <li><a href="../../integration/payment-links/" class="disabled">Payment Links</a></li>
+                                <li><a href="../../integration/custom-ui/" class="disabled">Custom UI</a></li>
+                                <li><a href="../../integration/subscriptions/" class="disabled">Subscriptions</a></li>
+                            </ul>
+                        </li>
+                        <li class="expandable">
+                            <a href="#" class="has-children">API Reference</a>
+                            <ul class="submenu">
+                                <li><a href="../../api-reference/api-endpoints/" class="disabled">API Endpoints</a></li>
+                                <li><a href="../../api-reference/webhooks/">Webhook Integration</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="../../examples/" class="disabled">Examples</a></li>
+                        <li><a href="../../troubleshooting/" class="disabled">Troubleshooting</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="docs-content">
+                <h1>Web Checkout Integration</h1>
+                <p class="intro-text">Integrate Stablio's crypto payment widget into your website checkout flow in just a few minutes. This guide walks you through the complete integration process.</p>
+                
+                <div class="content-section">
+                    <h2>Overview</h2>
+                    <p>The Web Checkout integration allows you to embed our payment widget directly into your website, providing a seamless payment experience for your customers without leaving your site.</p>
+                    
+                    <div class="feature-list">
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <h4>No wallet connection required</h4>
+                                <p>Customers don't need to connect their wallet and put their funds at risk.</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <h4>Real-time payment status</h4>
+                                <p>Receive instant payment confirmations via events and webhooks</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <h4>Responsive design</h4>
+                                <p>Works seamlessly on all devices including mobile</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <h2>Integration Steps</h2>
+                    
+                    <h3>Step 1: Add the JavaScript SDK</h3>
+                    <p>First, include our JavaScript SDK in your checkout page by adding this script tag to your HTML head:</p>
+                    
+                    <div class="code-block">
+                        <pre><code>&lt;!-- Add this to your HTML head --&gt;
+&lt;script src="https://cdn.jsdelivr.net/gh/ReasonZx/crypto-payments-widget@2.1.0/dist/crypto-payments-widget.js"&gt;&lt;/script&gt;</code></pre>
+                    </div>
+                    
+                    <h3>Step 2: Create a container element</h3>
+                    <p>Add a div with id 'payment-container' where you want the payment widget to appear. This container should have at least 400px by 400px of space:</p>
+                    
+                    <div class="code-block">
+                        <pre><code>&lt;div id="payment-container"&gt;&lt;/div&gt;</code></pre>
+                    </div>
+                    
+                    <h3>Step 3: Initialize the widget</h3>
+                    <p>Initialize the payment widget with your vendor ID and payment details:</p>
+                    
+                    <div class="code-block js">
+                        <pre><code>const widget = new <span class="highlight-green">PaymentWidget</span>({
+    <span class="highlight-green">type</span>: 'defaultPayment',
+    <span class="highlight-green">vendorID</span>: 'your_vendor_id',                // Your Stablio vendor ID (string)
+    <span class="highlight-green">amount</span>: 49.99,                             // Payment amount (number)
+    <span class="highlight-green">currency</span>: 'USD',                           // Currency: 'USD' or 'EUR'             <span class="highlight-white">[optional] string defaults to 'USD'</span>
+    <span class="highlight-green">userID</span>: 'customer123',                     // Customer identifier                  <span class="highlight-white">[optional] string</span>
+    <span class="highlight-green">webhook</span>: 'https://your-site.com/webhook',  // Webhook URL for server notifications <span class="highlight-white">[optional] string</span>
+});</code></pre>
+                    </div>
+                    
+                    <h3>Step 4: Listen for status changes</h3>
+                    <p>Set up event listeners to track payment status changes and update your UI accordingly or receive notifications via <a href="../../api-reference/webhooks/" class="primary-link">webhooks</a> :</p>
+                    
+                    <div class="code-block">
+                        <pre><code>document.getElementById('payment-container').addEventListener('payment_status', (event) => {
+    const { <span class="highlight-green">status, data</span> } = event.detail;
+    
+    switch(<span class="highlight-green">status</span>) {
+        case <span class="highlight-orange">'payment_completed'</span>:
+            console.log(`Payment completed! User: ${data.userID}`);
+            break;
+            
+        case <span class="highlight-orange">'payment_expired'</span>:
+            console.log(`Payment expired! User: ${data.userID}`);
+            break;
+            
+        case <span class="highlight-orange">'payment_pending'</span>:
+            console.log(`Payment pending! Address: ${data.address}`);
+            break;
+    }
+});</code></pre>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <h2>Configuration Options</h2>
+                    <p>The PaymentWidget constructor accepts the following options:</p>
+                    
+                    <table class="docs-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="highlight-green">type</span></td>
+                                <td>string</td>
+                                <td><span class="highlight-green">Yes</span></td>
+                                <td>Set to 'defaultPayment' for web checkout</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight-green">vendorID</span></td>
+                                <td>string</td>
+                                <td><span class="highlight-green">Yes</span></td>
+                                <td>Your unique vendor identifier from the dashboard</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight-green">amount</span></td>
+                                <td>number</td>
+                                <td><span class="highlight-green">Yes</span></td>
+                                <td>The payment amount</td>
+                            </tr>
+                            <tr>
+                                <td>currency</td>
+                                <td>string</td>
+                                <td>No</td>
+                                <td>Currency code: 'USD' or 'EUR' (defaults to 'USD')</td>
+                            </tr>
+                            <tr>
+                                <td>userID</td>
+                                <td>string</td>
+                                <td>No</td>
+                                <td>Customer identifier for tracking payments</td>
+                            </tr>
+                            <tr>
+                                <td>webhook</td>
+                                <td>string</td>
+                                <td>No</td>
+                                <td>URL to receive server-side payment notifications</td>
+                            </tr>
+                            <tr>
+                                <td>container</td>
+                                <td>element</td>
+                                <td>No</td>
+                                <td>HTML element or element ID to render the widget (defaults to element with ID 'payment-container')</td>
+                            </tr>
+                            <tr>
+                                <td>chains</td>
+                                <td>string[]</td>
+                                <td>No</td>
+                                <td>Array of supported blockchains: ['solana', 'base'] | ['solana'] | ['base']. (defaults to the chains selected in Stablio's dashboard)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="content-section">
+                    <h2>Event Types</h2>
+                    <p>The payment widget emits the following event types:</p>
+                    
+                    <table class="docs-table">
+                        <thead>
+                            <tr>
+                                <th>Event Status</th>
+                                <th>Description</th>
+                                <th>Data Payload</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>payment_completed</td>
+                                <td>Payment has been successfully completed</td>
+                                <td>{userID, timestamp}</td>
+                            </tr>
+                            <tr>
+                                <td>payment_pending</td>
+                                <td>Payment has been initiated but not yet confirmed</td>
+                                <td>{userID, address, timestamp}</td>
+                            </tr>
+                            <tr>
+                                <td>payment_expired</td>
+                                <td>Payment time window has expired</td>
+                                <td>{address}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="content-section">
+                    <div class="next-steps-links">
+                        <a href="../../getting-started/" class="next-link disabled">
+                            <i class="fas fa-arrow-left"></i>
+                            <span>Getting Started</span>
+                        </a>
+                        <a href="../payment-links/" class="next-link disabled">
+                            <span>Payment Links</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="docs-footer">
+            <div class="container">
+                <p>&copy; 2025 Stablio. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="../../../">Home</a>
+                    <a href="../../#pricing">Pricing</a>
+                    <a href="../../../demo/">Demo</a>
+                    <a href="mailto:support@stablio.eu">Contact Support</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../../../config/config.js"></script>
+    <script src="../../../js/auth.js"></script>
+    <script src="../../js/documentation.js"></script>
+</body>
+</html>

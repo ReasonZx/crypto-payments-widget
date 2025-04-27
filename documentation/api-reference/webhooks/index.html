@@ -45,7 +45,7 @@
                         <li class="expandable">
                             <a href="#" class="has-children">Integration Methods</a>
                             <ul class="submenu">
-                                <li><a href="../../integration/web-checkout/" class="disabled">Web Checkout</a></li>
+                                <li><a href="../../integration/web-checkout/">Web Checkout</a></li>
                                 <li><a href="../../integration/payment-links/" class="disabled">Payment Links</a></li>
                                 <li><a href="../../integration/custom-ui/" class="disabled">Custom UI</a></li>
                                 <li><a href="../../integration/subscriptions/" class="disabled">Subscriptions</a></li>
@@ -229,6 +229,7 @@ client.on('message', async (msg) => {
         // Extract all data from the embed
         const paymentID = fields.find(f => f.name === "Payment ID")?.value;
         const amount = fields.find(f => f.name === "Amount")?.value;
+        const currency = fields.find(f => f.name === "Currency")?.value;
         const userID = fields.find(f => f.name === "User ID")?.value;
         const receivedSignature = fields.find(f => f.name === "Signature")?.value;
         const timestamp = new Date(embed.timestamp).toISOString();
@@ -239,6 +240,7 @@ client.on('message', async (msg) => {
           paymentID,
           userID,
           amount: Number(amount),
+          currency,
           timestamp
         };
         
