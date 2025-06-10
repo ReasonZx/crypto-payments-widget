@@ -191,11 +191,6 @@ body {
     border: 1px solid #e2e8f0;
 }
 
-.docs-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-}
-
 .card-icon {
     color: var(--primary-color);
     font-size: 2rem;

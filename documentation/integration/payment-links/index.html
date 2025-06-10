@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Links Integration - Stablio Documentation</title>
+    
+    <link rel="icon" href="../../../assets/icons/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../../../assets/icons/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../assets/icons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/icons/apple-touch-icon.png">
+    
+    <link rel="stylesheet" href="../../../styles/global.css">
+    
+    <link rel="stylesheet" href="../../../styles/variables.css">
+    <link rel="stylesheet" href="../../../styles/components/navbar.css">
+    <link rel="stylesheet" href="../../styles/documentation.css">
+    <link rel="stylesheet" href="../../styles/webcheckout.css">
+    <link rel="stylesheet" href="../../styles/payment-links.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BP9V6XNG54"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-BP9V6XNG54');
+    </script>
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <a href="../../../">
+                        <img src="../../../assets/images/logoSmall.png" alt="Stablio Logo">
+                        <span>Stablecoin Payments</span>
+                    </a>
+                </div>
+                <div class="nav-buttons">
+                    <a href="../../../login/" class="btn btn-login">Login</a>
+                    <a href="../../../signup/" class="btn btn-primary">Sign Up</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="docs-container">
+            <div class="docs-sidebar">
+                <div class="docs-nav">
+                    <h3>Documentation</h3>
+                    <ul>
+                        <li><a href="../../">Overview</a></li>
+                        <li><a href="../../getting-started/" class="disabled">Getting Started</a></li>
+                        <li class="expandable expanded">
+                            <a href="#" class="has-children">Integration Methods</a>
+                            <ul class="submenu">
+                                <li><a href="../../integration/web-checkout/">Web Checkout</a></li>
+                                <li class="active"><a href="../../integration/payment-links/">Payment Links</a></li>
+                                <li><a href="../../integration/custom-ui/" class="disabled">Custom UI</a></li>
+                                <li><a href="../../integration/subscriptions/" class="disabled">Subscriptions</a></li>
+                            </ul>
+                        </li>
+                        <li class="expandable">
+                            <a href="#" class="has-children">API Reference</a>
+                            <ul class="submenu">
+                                <li><a href="../../api-reference/api-endpoints/" class="disabled">API Endpoints</a></li>
+                                <li><a href="../../api-reference/webhooks/">Webhook Integration</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="../../examples/" class="disabled">Examples</a></li>
+                        <li><a href="../../troubleshooting/" class="disabled">Troubleshooting</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="docs-content">
+                <h1>Payment Links Integration</h1>
+                <p class="intro-text">Create shareable payment links that can be used anywhere - in emails, social media, QR codes, or any other medium. No coding required!</p>
+                
+                <div class="content-section">
+                    <h2>Overview</h2>
+                    <p>Payment Links allow you to create pre-configured payment URLs that customers can use to make payments. Perfect for invoicing, selling products, or collecting donations without any technical integration.</p>
+                    
+                    <div class="feature-list">
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <h4>No coding required</h4>
+                                <p>Create payment links directly from your dashboard with just a few clicks.</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <h4>Share anywhere</h4>
+                                <p>Use links in emails, SMS, social media, QR codes, or printed materials</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <h2>Creating Payment Links</h2>
+                    
+                    <h3>Method 1: Using the Dashboard (Recommended)</h3>
+                    <p>The easiest way to create payment links is through your Stablio dashboard:</p>
+                    
+                    <div class="step-list">
+                        <div class="step-item">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Navigate to POSs</h4>
+                                <p>Go to the "POSs" tab in your dashboard and click "Setup Pay by Link".</p>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Configure Payment Details</h4>
+                                <p>Select supported blockchains, set the payment amount, currency, and optional webhook URL.</p>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Generate and Share</h4>
+                                <p>Click "Create Link" to generate your payment URL and share it with customers.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3>Method 2: Using the API</h3>
+                    <p>For programmatic creation of payment links, use the Setup Payment ID API endpoint:</p>
+                    
+                    <div class="code-block">
+                        <pre><code>POST /api/setupPaymentID
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+{
+    "vendorID": "<span class="highlight-green">your_vendor_id</span>",
+    "amount": <span class="highlight-green">49.99</span>,
+    "currency": "<span class="highlight-green">USD</span>",              <span class="highlight-white">// 'USD' or 'EUR' [optional]</span>
+    "chains": ["<span class="highlight-green">solana</span>", "<span class="highlight-green">base</span>"],    <span class="highlight-white">// Supported blockchains</span>
+    "webhook": "<span class="highlight-green">https://your-site.com/webhook</span>"   <span class="highlight-white">// [optional]</span>
+}</code></pre>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="highlight-white">// Response</span>
+{
+    "paymentID": "<span class="highlight-green">abc123def456</span>"
+}</code></pre>
+                    </div>
+                    
+                    <p>The payment link URL format is:</p>
+                    <div class="code-block">
+                        <pre><code>https://pay.stablio.eu/link/<span class="highlight-green">{vendorID}</span>/<span class="highlight-green">{paymentID}</span></code></pre>
+                    </div>
+                    
+                    <p>Optionally, add a customer ID for tracking:</p>
+                    <div class="code-block">
+                        <pre><code>https://pay.stablio.eu/link/<span class="highlight-green">{vendorID}</span>/<span class="highlight-green">{paymentID}</span>?userID=<span class="highlight-orange">{customerID}</span></code></pre>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <h2>Payment Link Features</h2>
+                    
+                    <h3>Customer Identification (Optional)</h3>
+                    <p>You can optionally add a customer ID to track payments by appending it to your payment link. This parameter is completely optional and the payment link will work without it:</p>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="highlight-white">// Basic payment link (works without userID)</span>
+https://pay.stablio.eu/link/your_vendor/abc123
+
+<span class="highlight-white">// With optional customer tracking</span>
+https://pay.stablio.eu/link/your_vendor/abc123?userID=<span class="highlight-green">customer_123</span></code></pre>
+                    </div>
+                    
+                    <h3>Webhook Notifications</h3>
+                    <p>Receive real-time payment updates by providing a webhook URL when creating the payment link. See our <a href="../../api-reference/webhooks/" class="primary-link">webhook documentation</a> for implementation details.</p>
+
+                </div>
+                
+                <div class="content-section">
+                    <h2>API Reference</h2>
+                    
+                    <h3>Setup Payment ID</h3>
+                    <table class="docs-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="highlight-green">vendorID</span></td>
+                                <td>string</td>
+                                <td><span class="highlight-green">Yes</span></td>
+                                <td>Your unique vendor identifier</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight-green">amount</span></td>
+                                <td>number</td>
+                                <td><span class="highlight-green">Yes</span></td>
+                                <td>Payment amount</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight-green">chains</span></td>
+                                <td>string[]</td>
+                                <td><span class="highlight-green">Yes</span></td>
+                                <td>Supported blockchains: ['solana', 'base']</td>
+                            </tr>
+                            <tr>
+                                <td>currency</td>
+                                <td>string</td>
+                                <td><span class="highlight-orange">Optional</span></td>
+                                <td>'USD' or 'EUR' (defaults to 'USD')</td>
+                            </tr>
+                            <tr>
+                                <td>webhook</td>
+                                <td>string</td>
+                                <td><span class="highlight-orange">Optional</span></td>
+                                <td>URL to receive payment notifications</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h3>Get Payment Links</h3>
+                    <p>Retrieve all your created payment links:</p>
+                    
+                    <div class="code-block">
+                        <pre><code>POST /api/getPaymentByLinkIDs
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+{
+    "vendorID": "<span class="highlight-green">your_vendor_id</span>"
+}</code></pre>
+                    </div>
+                    
+                    <h3>Payment Link URL Structure</h3>
+                    <table class="docs-table">
+                        <thead>
+                            <tr>
+                                <th>Component</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Base URL</td>
+                                <td><span class="highlight-green">Yes</span></td>
+                                <td>Stablio payment domain</td>
+                                <td>https://pay.stablio.eu/link/</td>
+                            </tr>
+                            <tr>
+                                <td>Vendor ID</td>
+                                <td><span class="highlight-green">Yes</span></td>
+                                <td>Your unique vendor identifier</td>
+                                <td>your_vendor_123</td>
+                            </tr>
+                            <tr>
+                                <td>Payment ID</td>
+                                <td><span class="highlight-green">Yes</span></td>
+                                <td>Unique payment identifier</td>
+                                <td>abc123def456</td>
+                            </tr>
+                            <tr>
+                                <td>User ID</td>
+                                <td><span class="highlight-orange">Optional</span></td>
+                                <td>Customer identifier query parameter</td>
+                                <td>?userID=customer_123</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="content-section">
+                    <h2>Use Cases</h2>
+                    
+                    <div class="use-case-list">
+                        <div class="use-case">
+                            <h4><i class="fas fa-envelope"></i> Email Invoicing</h4>
+                            <p>Include payment links in email invoices for immediate payment collection.</p>
+                        </div>
+                        <div class="use-case">
+                            <h4><i class="fas fa-qrcode"></i> QR Code Payments</h4>
+                            <p>Generate QR codes from payment links for in-person transactions.</p>
+                        </div>
+                        <div class="use-case">
+                            <h4><i class="fas fa-share-alt"></i> Social Media</h4>
+                            <p>Share links on social platforms for donations.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <h2>Best Practices</h2>
+                    
+                    <div class="best-practices">
+                        <div class="practice">
+                            <h4>🔗 Keep Links Organized</h4>
+                            <p>Use meaningful customer IDs in your payment links to track transactions effectively.</p>
+                        </div>
+                        <div class="practice">
+                            <h4>🔔 Set Up Webhooks</h4>
+                            <p>Configure webhook notifications to receive real-time payment confirmations.</p>
+                        </div>
+                        <div class="practice">
+                            <h4>💰 Consider Currency</h4>
+                            <p>Choose the appropriate currency (USD/EUR) based on your target audience.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <div class="next-steps-links">
+                        <a href="../web-checkout/" class="next-link">
+                            <i class="fas fa-arrow-left"></i>
+                            <span>Web Checkout</span>
+                        </a>
+                        <a href="../custom-ui/" class="next-link disabled">
+                            <span>Custom UI</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="docs-footer">
+            <div class="container">
+                <p>&copy; 2025 Stablio. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="../../../">Home</a>
+                    <a href="../../#pricing">Pricing</a>
+                    <a href="../../../demo/">Demo</a>
+                    <a href="mailto:support@stablio.eu">Contact Support</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../../../config/config.js"></script>
+    <script src="../../../js/auth.js"></script>
+    <script src="../../js/documentation.js"></script>
+</body>
+</html>

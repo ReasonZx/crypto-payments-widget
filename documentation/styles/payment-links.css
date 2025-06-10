@@ -1,0 +1,153 @@
+/* Enhanced Step List Styling */
+.step-list {
+    margin: 2rem 0;
+    padding: 0;
+    position: relative;
+}
+
+.step-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    position: relative;
+    padding-left: 1.3rem;
+}
+
+.step-item::before {
+    content: '';
+    position: absolute;
+    left: 47px;
+    top: 50px;
+    width: 3px;
+    height: calc(100% + 1rem);
+    background: var(--primary-color);
+    z-index: 1;
+}
+
+.step-item:last-child::before {
+    display: none;
+}
+
+.step-number {
+    top: 24px;
+    min-width: 54px;
+    height: 54px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-right: 1.5rem;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    transition: all 0.3s ease;
+}
+
+.step-content {
+    flex: 1;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+}
+
+.step-content h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.step-content p {
+    margin: 0;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+
+/* Enhanced Use Case List */
+.use-case-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.use-case {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.use-case::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--primary-color);
+}
+
+.use-case h4 {
+    margin: 0 0 1rem 0;
+    color: var(--text-dark);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.use-case h4 i {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.use-case p {
+    margin: 0;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+/* Enhanced Best Practices */
+.best-practices {
+    display: grid;
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.practice {
+    background: linear-gradient(135deg, #fefefe 0%, #f9fafb 100%);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.practice h4 {
+    margin: 0 0 0.75rem 0;
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.practice p {
+    margin: 0;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
