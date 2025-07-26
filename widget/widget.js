@@ -207,7 +207,7 @@ class PaymentWidget {
         nextButton.classList.add('loading');
 
         try {
-            let {address, authToken, publicKey, amount} = await this.sendPaymentRequest();
+            let {address, authToken, publicKey, amount, onGoingPaymentTime} = await this.sendPaymentRequest();
             
             this.config._authToken = authToken;
             this.config._publicKey = await this.crypto.subtle.importKey(
@@ -284,7 +284,7 @@ class PaymentWidget {
             }
 
             // Start timer
-            this.startTimer();
+            this.startTimer(onGoingPaymentTime);
         } catch (error) {
             console.error('Payment creation failed:', error);
             
@@ -493,7 +493,7 @@ class PaymentWidget {
 
     async sendPaymentRequest() {
 
-        let address, authToken, publicKey , amount, response, responseData;
+        let address, authToken, publicKey , amount, onGoingPaymentTime, response, responseData;
 
         switch (this.config.type) {
             case 'defaultPayment':
@@ -517,6 +517,7 @@ class PaymentWidget {
                 address = responseData.address;
                 authToken = responseData.authToken;
                 publicKey = responseData.publicKey;
+                onGoingPaymentTime = responseData.onGoingPaymentTime;
                 this.paymentID = responseData.paymentID;
                 break;
 
@@ -539,6 +540,7 @@ class PaymentWidget {
                 authToken = responseData.authToken;
                 publicKey = responseData.publicKey;
                 amount = responseData.amount;
+                onGoingPaymentTime = responseData.onGoingPaymentTime;
                 this.paymentID = this.config.paymentID;
                 break;
             
@@ -564,6 +566,7 @@ class PaymentWidget {
                 address = responseData.address;
                 authToken = responseData.authToken;
                 publicKey = responseData.publicKey;
+                onGoingPaymentTime = responseData.onGoingPaymentTime;
                 this.paymentID = responseData.paymentID;
                 break;
             
@@ -572,7 +575,7 @@ class PaymentWidget {
 
         }
 
-        return {address, authToken, publicKey , amount};
+        return {address, authToken, publicKey , amount, onGoingPaymentTime};
     }
 
     async fetchPaymentChains() {
@@ -725,9 +728,15 @@ class PaymentWidget {
 
     /*** Timer Functions ***/
 
-    startTimer() {
+    startTimer(onGoingPaymentTime = null) {
         const timerElement = this.shadow.querySelector("#timer");
-        this.timeLeft = 10 * 60; // 10 minutes in seconds
+
+        if (onGoingPaymentTime) {
+            this.timeLeft = onGoingPaymentTime;
+        } else {
+            this.timeLeft = 10 * 60; // 10 minutes in seconds
+        }
+
 
         this.countdown = setInterval(() => {
             const minutes = Math.floor(this.timeLeft / 60);
